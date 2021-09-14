@@ -2,11 +2,20 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use Carbon\Carbon;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
+use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
+use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
 class NbpDriver implements CurrencyInterface
 {
+    use RateTrait;
+
+    public string $currency = Currency::CUR_PLN;
+
+    /**
+     * @var array
+     */
     private array $config;
 
     public function __construct()
@@ -14,7 +23,13 @@ class NbpDriver implements CurrencyInterface
         $this->config = config('currency-rate.drivers.nbp');
     }
 
-    public function downloadRates(Carbon $date)
+    /**
+     * @param \DateTime $date
+     *
+     * @return mixed|void
+     * @throws \Exception
+     */
+    public function downloadRates(\DateTime $date)
     {
         $timestamp = $date->timestamp;
 
@@ -41,6 +56,23 @@ class NbpDriver implements CurrencyInterface
                     if (! empty($xml)) {
                         $currencies = new \SimpleXMLElement($xml);
                         $currencies = json_decode(json_encode($currencies), true);
+
+                        $param = [];
+                        $param['no'] = $currencies['numer_tabeli'];
+                        $param['driver'] = 'nbp';
+                        $param['date'] = $currencies['data_publikacji'];
+
+                        $toSave = [];
+                        foreach ($currencies->pozycje as $position) {
+                            $param['code'] = strtolower($position['kod_waluty']);
+                            if (in_array($param['code'], $this->config['supportedCurrency'])) {
+                                $param['rate'] = floatval($position['kurs_sredni']);
+                                $param['multiplier'] = floatval($position['przelicznik']);
+                                $toSave[] = $param;
+                            }
+                        }
+
+                        CurrencyRate::upsert($toSave, ['no', 'driver', 'code', 'date'], ['rate', 'multiplier']);
                     } else {
                         \Log::error('No XML: ' . $nbpNo . '.xml');
                     }
