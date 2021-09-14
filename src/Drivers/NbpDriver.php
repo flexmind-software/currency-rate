@@ -57,7 +57,7 @@ class NbpDriver implements CurrencyInterface
 
         $listOfCurses = file_get_contents($config['url'] . 'dir.txt');
 
-        if (preg_match_all('/([abch])([0-9]{3})z' . $date . '/', $listOfCurses, $matches)) {
+        if (preg_match_all('/(a)([0-9]{3})z' . $date . '/', $listOfCurses, $matches)) {
             if (! blank($matches[0])) {
                 foreach ($matches[0] as $match) {
                     $nbpNo = $match;
@@ -74,15 +74,15 @@ class NbpDriver implements CurrencyInterface
                         $toSave = [];
                         foreach ($currencies['pozycja'] as $position) {
                             if (isset($position['kod_waluty']) &&
-                                isset($position['kurs_sprzedazy']) &&
+                                isset($position['kurs_sredni']) &&
                                 isset($position['przelicznik'])
                             ) {
-                                $param['code'] = strtolower($position['kod_waluty']);
+                                $param['code'] = strtoupper($position['kod_waluty']);
                                 if (! count($this->config['supported-currency']) ||
-                                    in_array(strtoupper($param['code']), $this->config['supported-currency'])
+                                    in_array($param['code'], $this->config['supported-currency'])
                                 ) {
                                     $param['rate'] = floatval(
-                                        str_replace(',', '.', $position['kurs_sprzedazy'])
+                                        str_replace(',', '.', $position['kurs_sredni'])
                                     );
                                     $param['multiplier'] = floatval(
                                         str_replace(',', '.', $position['przelicznik'])

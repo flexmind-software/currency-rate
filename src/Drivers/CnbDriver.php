@@ -37,7 +37,7 @@ class CnbDriver implements CurrencyInterface
 
     public function __construct()
     {
-        $this->config = config('currency-rate.drivers.cnb');
+        $this->config = config('currency-rate');
     }
 
     public function downloadRates(\DateTime $date)
@@ -66,7 +66,7 @@ class CnbDriver implements CurrencyInterface
      */
     private function sourceUrl(Carbon $date)
     {
-        return sprintf($this->config['url'] . '?rok=%d', $date->format('Y'));
+        return sprintf($this->config['drivers'][$this->driverAlias]['url'] . '?rok=%d', $date->format('Y'));
     }
 
     /**
@@ -123,14 +123,14 @@ class CnbDriver implements CurrencyInterface
             $date = last($dateList);
         }
 
-        foreach ($this->data[$date] ?? []  as $currencyCode => $rateInfo) {
+        foreach ($this->data[$date] ?? [] as $currencyCode => $rateInfo) {
             if (! count($this->config['supported-currency']) ||
                 in_array(strtoupper($currencyCode), $this->config['supported-currency'])
             ) {
                 $item = [
                     'no' => null,
                     'driver' => $this->driverAlias,
-                    'code' => $currencyCode,
+                    'code' => strtoupper($currencyCode),
                     'date' => $date,
                     'multiplier' => $rateInfo['multiplier'],
                     'rate' => $rateInfo['rate'],
