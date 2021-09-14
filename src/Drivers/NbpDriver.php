@@ -11,8 +11,15 @@ class NbpDriver implements CurrencyInterface
 {
     use RateTrait;
 
+    /**
+     * @var string
+     */
     public string $currency = Currency::CUR_PLN;
 
+    /**
+     * @var string
+     */
+    private string $driverAlias = 'nbp';
     /**
      * @var array
      */
@@ -20,7 +27,7 @@ class NbpDriver implements CurrencyInterface
 
     public function __construct()
     {
-        $this->config = config('currency-rate.drivers.nbp');
+        $this->config = config('currency-rate');
     }
 
     /**
@@ -46,14 +53,16 @@ class NbpDriver implements CurrencyInterface
 
         $date = date('ymd', $timestamp);
 
-        $listOfCurses = file_get_contents($this->config['url'] . 'dir.txt');
+        $config = $this->config['drivers'][$this->driverAlias];
+
+        $listOfCurses = file_get_contents($config['url'] . 'dir.txt');
 
         if (preg_match_all('/([abch])([0-9]{3})z' . $date . '/', $listOfCurses, $matches)) {
-            if (! blank($matches[0])) {
+            if (!blank($matches[0])) {
                 foreach ($matches[0] as $match) {
                     $nbpNo = $match;
-                    $xml = file_get_contents($this->config['url'] . $nbpNo . '.xml');
-                    if (! empty($xml)) {
+                    $xml = file_get_contents($config['url'] . $nbpNo . '.xml');
+                    if (!empty($xml)) {
                         $currencies = new \SimpleXMLElement($xml);
                         $currencies = json_decode(json_encode($currencies), true);
 
@@ -63,12 +72,21 @@ class NbpDriver implements CurrencyInterface
                         $param['date'] = $currencies['data_publikacji'];
 
                         $toSave = [];
-                        foreach ($currencies->pozycje as $position) {
-                            $param['code'] = strtolower($position['kod_waluty']);
-                            if (in_array($param['code'], $this->config['supportedCurrency'])) {
-                                $param['rate'] = floatval($position['kurs_sredni']);
-                                $param['multiplier'] = floatval($position['przelicznik']);
-                                $toSave[] = $param;
+                        foreach ($currencies['pozycja'] as $position) {
+                            if (isset($position['kod_waluty']) &&
+                                isset($position['kurs_sprzedazy']) &&
+                                isset($position['przelicznik'])
+                            ) {
+                                $param['code'] = strtolower($position['kod_waluty']);
+                                if (in_array($param['code'], $this->config['supported-currency'])) {
+                                    $param['rate'] = floatval(
+                                        str_replace(',', '.', $position['kurs_sprzedazy'])
+                                    );
+                                    $param['multiplier'] = floatval(
+                                        str_replace(',', '.', $position['przelicznik'])
+                                    );
+                                    $toSave[] = $param;
+                                }
                             }
                         }
 
