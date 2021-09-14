@@ -71,12 +71,16 @@ class BankOfBulgariaDriver implements CurrencyInterface
     private function parseRates(array $rateList)
     {
         $this->data = [];
-        foreach ($rateList as $rates) {
+        foreach ($rateList as $i => $rates) {
+            if ($i <= 1) {
+                continue;
+            }
+
             $param = [];
             $param['no'] = null;
             $param['code'] = $rates[2];
             $param['driver'] = $this->driverAlias;
-            $param['date'] = DateTime::createFromFormat('d.m.Y', $rates[1]);
+            $param['date'] = DateTime::createFromFormat('d.m.Y', $rates[0])->format('Y-m-d');
             $param['multiplier'] = $rates[3];
             $param['rate'] = $rates[4];
 
