@@ -23,6 +23,5 @@ class BankOfSwedenDriver extends BaseDriver implements CurrencyInterface
 
     public function downloadRates(DateTime $date)
     {
-
     }
 }
