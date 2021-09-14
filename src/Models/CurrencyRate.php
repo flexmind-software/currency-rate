@@ -42,4 +42,9 @@ class CurrencyRate extends Model
     {
         return $this->rate * $this->multiplier;
     }
+
+    public function setCodeAttribute($value)
+    {
+        $this->attributes['code'] = strtoupper($value);
+    }
 }
