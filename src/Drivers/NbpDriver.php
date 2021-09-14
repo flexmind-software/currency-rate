@@ -41,7 +41,7 @@ class NbpDriver implements CurrencyInterface
                     if (!empty($xml)) {
                         $currencies = new \SimpleXMLElement($xml);
 
-                        
+
 
                     } else {
                         \Log::error('No XML: ' . $nbpNo . '.xml');
