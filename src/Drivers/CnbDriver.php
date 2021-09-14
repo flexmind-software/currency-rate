@@ -89,7 +89,7 @@ class CnbDriver implements CurrencyInterface
                 continue;
             }
             $date = \DateTime::createFromFormat('d.m.Y', $rates[0]);
-            if (!$date) {
+            if (! $date) {
                 break;
             }
 
@@ -118,7 +118,7 @@ class CnbDriver implements CurrencyInterface
                     'code' => $currencyCode,
                     'date' => $date,
                     'multiplier' => $rateInfo['multiplier'],
-                    'rate' => $rateInfo['rate']
+                    'rate' => $rateInfo['rate'],
                 ];
 
                 $toSave[] = $item;
