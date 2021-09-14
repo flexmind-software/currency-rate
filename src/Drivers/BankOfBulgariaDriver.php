@@ -8,7 +8,7 @@ use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
-class BankOfBulgariaDriver implements CurrencyInterface
+class BankOfBulgariaDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
@@ -19,19 +19,6 @@ class BankOfBulgariaDriver implements CurrencyInterface
      * @var array
      */
     private array $data;
-    /**
-     * @var array
-     */
-    private array $config;
-    /**
-     * @var DateTime
-     */
-    private DateTime $date;
-
-    public function __construct()
-    {
-        $this->config = config('currency-rate');
-    }
 
     public function downloadRates(DateTime $date)
     {

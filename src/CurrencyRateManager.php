@@ -6,7 +6,12 @@ use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Drivers\BankOfBulgariaDriver;
 use FlexMindSoftware\CurrencyRate\Drivers\BankOfCanadaDriver;
 use FlexMindSoftware\CurrencyRate\Drivers\BankOfCzechRepublicDriver;
+use FlexMindSoftware\CurrencyRate\Drivers\BankOfDenmarkDriver;
+use FlexMindSoftware\CurrencyRate\Drivers\BankOfEstoniaDriver;
+use FlexMindSoftware\CurrencyRate\Drivers\BankOfNorwayDriver;
 use FlexMindSoftware\CurrencyRate\Drivers\BankOfPolandDriver;
+use FlexMindSoftware\CurrencyRate\Drivers\BankOfSwedenDriver;
+use FlexMindSoftware\CurrencyRate\Drivers\EuropeanCentralBankDriver;
 use Illuminate\Support\Manager;
 
 class CurrencyRateManager extends Manager
@@ -51,5 +56,45 @@ class CurrencyRateManager extends Manager
     public function createBankOfBulgariaDriver(): CurrencyInterface
     {
         return new BankOfBulgariaDriver();
+    }
+
+    /**
+     * @return BankOfDenmarkDriver
+     */
+    public function createBankOfDenmarkDriver(): CurrencyInterface
+    {
+        return new BankOfDenmarkDriver();
+    }
+
+    /**
+     * @return BankOfEstoniaDriver
+     */
+    public function createBankOfEstoniaDriver(): CurrencyInterface
+    {
+        return new BankOfEstoniaDriver();
+    }
+
+    /**
+     * @return BankOfNorwayDriver
+     */
+    public function createBankOfNorwayDriver(): CurrencyInterface
+    {
+        return new BankOfNorwayDriver();
+    }
+
+    /**
+     * @return BankOfSwedenDriver
+     */
+    public function createBankOfSwedenDriver(): CurrencyInterface
+    {
+        return new BankOfSwedenDriver();
+    }
+
+    /**
+     * @return EuropeanCentralBankDriver
+     */
+    public function createEuropeanCentralBankDriver(): CurrencyInterface
+    {
+        return new EuropeanCentralBankDriver();
     }
 }

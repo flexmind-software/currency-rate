@@ -7,7 +7,7 @@ use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
-class BankOfCanadaDriver implements CurrencyInterface
+class BankOfCanadaDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
@@ -18,19 +18,6 @@ class BankOfCanadaDriver implements CurrencyInterface
      * @var array
      */
     private array $data;
-    /**
-     * @var array
-     */
-    private array $config;
-    /**
-     * @var \DateTime
-     */
-    private \DateTime $date;
-
-    public function __construct()
-    {
-        $this->config = config('currency-rate');
-    }
 
     public function downloadRates(\DateTime $date)
     {
