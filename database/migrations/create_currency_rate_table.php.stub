@@ -8,12 +8,24 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('currency_rate', function (Blueprint $table) {
+        Schema::create(config('currency-rate.table-name'), function (Blueprint $table) {
             $table->id();
 
-            // add fields
+            $table->string('driver')->index(DB::getTablePrefix() . '_currency_rates_driver_idx')
+            $table->date('date')->index(DB::getTablePrefix() . '_currency_rates_date_idx');
+            $table->string('no')->index(DB::getTablePrefix() . '_currency_rates_no_idx');
+            $table->string('code')->index(DB::getTablePrefix() . '_currency_rates_code_idx');
+            $table->float('rate');
+            $table->float('multiplier');
+
+            $table->unique(['date', 'code', 'driver'], DB::getTablePrefix() . '_currency_rates_unique_cols');
 
             $table->timestamps();
         });
+    }
+
+    public function down()
+    {
+        Schema::dropIfExists('currency_rates');
     }
 };

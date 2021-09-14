@@ -2,6 +2,7 @@
 
 $params = [
     'driver' => env('FLEXMIND_CURRENCY_RATE_DRIVER', 'nbp'),
+    'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates'),
     'supported-currency' => env('FLEXMIND_CURRENCY_RATE_SUPPORTED_CURRENCY', [
         'thb',
         'usd',
