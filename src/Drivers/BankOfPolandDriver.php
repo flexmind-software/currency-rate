@@ -2,12 +2,16 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
+use DateTime;
+use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
+use Log;
+use SimpleXMLElement;
 
-class NbpDriver implements CurrencyInterface
+class BankOfPolandDriver implements CurrencyInterface
 {
     use RateTrait;
 
@@ -19,7 +23,7 @@ class NbpDriver implements CurrencyInterface
     /**
      * @var string
      */
-    private string $driverAlias = 'nbp';
+    private string $driverAlias = 'bank-of-poland';
     /**
      * @var array
      */
@@ -31,12 +35,12 @@ class NbpDriver implements CurrencyInterface
     }
 
     /**
-     * @param \DateTime $date
+     * @param DateTime $date
      *
      * @return mixed|void
-     * @throws \Exception
+     * @throws Exception
      */
-    public function downloadRates(\DateTime $date)
+    public function downloadRates(DateTime $date)
     {
         $timestamp = $date->timestamp;
 
@@ -63,12 +67,12 @@ class NbpDriver implements CurrencyInterface
                     $nbpNo = $match;
                     $xml = file_get_contents($config['url'] . $nbpNo . '.xml');
                     if (! empty($xml)) {
-                        $currencies = new \SimpleXMLElement($xml);
+                        $currencies = new SimpleXMLElement($xml);
                         $currencies = json_decode(json_encode($currencies), true);
 
                         $param = [];
                         $param['no'] = $currencies['numer_tabeli'];
-                        $param['driver'] = 'nbp';
+                        $param['driver'] = 'bank-of-poland';
                         $param['date'] = $currencies['data_publikacji'];
 
                         $toSave = [];
@@ -94,12 +98,12 @@ class NbpDriver implements CurrencyInterface
 
                         CurrencyRate::upsert($toSave, ['no', 'driver', 'code', 'date'], ['rate', 'multiplier']);
                     } else {
-                        \Log::error('No XML: ' . $nbpNo . '.xml');
+                        Log::error('No XML: ' . $nbpNo . '.xml');
                     }
                 }
             }
         } else {
-            \Log::error('No NBP currency for: ' . date('Y-m-d', $timestamp));
+            Log::error('No NBP currency for: ' . date('Y-m-d', $timestamp));
         }
     }
 }
