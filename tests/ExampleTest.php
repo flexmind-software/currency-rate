@@ -1,6 +1,6 @@
 <?php
 
-namespace VendorName\Skeleton\Tests;
+namespace FlexMindSoftware\CurrencyRate\Tests;
 
 class ExampleTest extends TestCase
 {

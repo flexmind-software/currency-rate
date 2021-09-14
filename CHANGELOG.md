@@ -1,7 +1,7 @@
 # Changelog
 
-All notable changes to `:package_name` will be documented in this file.
+All notable changes to `flexmind-software/currency-rate` will be documented in this file.
 
-## 1.0.0 - 202X-XX-XX
+## 0.0.1 - 2021-09-14
 
 - initial release

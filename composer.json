@@ -1,17 +1,17 @@
 {
-    "name": ":vendor_slug/:package_slug",
+    "name": "flexmind-software/currency-rate",
     "description": ":package_description",
     "keywords": [
-        ":vendor_name",
+        "flexmind",
         "laravel",
-        ":package_slug"
+        "currency-rate"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/flexmind-software/currency-rate",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Krzysztof Bielecki",
+            "email": "krzysztof@flexmind.pl",
             "role": "Developer"
         }
     ],
@@ -25,18 +25,17 @@
         "nunomaduro/collision": "^5.3",
         "orchestra/testbench": "^6.15",
         "phpunit/phpunit": "^9.3",
-        "spatie/laravel-ray": "^1.23",
         "vimeo/psalm": "^4.8"
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories"
+            "FlexMindSoftware\\CurrencyRate\\": "src",
+            "FlexMindSoftware\\CurrencyRate\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "FlexMindSoftware\\CurrencyRate\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -50,10 +49,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "FlexMindSoftware\\CurrencyRate\\CurrencyRateServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\SkeletonFacade"
+                "CurrencyRate": "FlexMindSoftware\\CurrencyRate\\CurrencyRateFacade"
             }
         }
     },
