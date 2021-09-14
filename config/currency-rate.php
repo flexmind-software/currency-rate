@@ -8,7 +8,7 @@ $params = [
         'bank-of-poland' => [
             'url' => 'http://www.nbp.pl/kursy/xml/'
         ],
-        'bank-of-chech-republic' => [
+        'bank-of-czech-republic' => [
             'url' => 'http://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/rok.txt'
         ],
         'bank-of-canada' => [

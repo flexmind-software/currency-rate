@@ -2,7 +2,6 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use Carbon\Carbon;
 use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
@@ -15,7 +14,7 @@ class BankOfCzechRepublicDriver implements CurrencyInterface
 
     public string $currency = Currency::CUR_CZK;
 
-    private string $driverAlias = 'bank-of-chech-republic';
+    private string $driverAlias = 'bank-of-czech-republic';
     /**
      * @var array
      */
@@ -100,7 +99,7 @@ class BankOfCzechRepublicDriver implements CurrencyInterface
                 continue;
             }
             $date = DateTime::createFromFormat('d.m.Y', $rates[0]);
-            if (!$date) {
+            if (! $date) {
                 break;
             }
 
@@ -123,13 +122,13 @@ class BankOfCzechRepublicDriver implements CurrencyInterface
         $toSave = [];
 
         $date = $this->date->format('Y-m-d');
-        if (!isset($this->data[$date])) {
+        if (! isset($this->data[$date])) {
             $dateList = array_keys($this->data);
             $date = last($dateList);
         }
 
         foreach ($this->data[$date] ?? [] as $currencyCode => $rateInfo) {
-            if (!count($this->config['supported-currency']) ||
+            if (! count($this->config['supported-currency']) ||
                 in_array(strtoupper($currencyCode), $this->config['supported-currency'])
             ) {
                 $item = [
