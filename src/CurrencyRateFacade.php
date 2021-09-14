@@ -5,7 +5,7 @@ namespace FlexMindSoftware\CurrencyRate;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \FlexMindSoftware\CurrencyRate\CurrencyRate
+ * @see \FlexMindSoftware\CurrencyRate\CurrencyRateManager
  */
 class CurrencyRateFacade extends Facade
 {
