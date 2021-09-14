@@ -55,11 +55,9 @@ class BankOfCanadaDriver implements CurrencyInterface
 
     private function parseRates(array $jsonFile)
     {
-
     }
 
     private function saveInDatabase()
     {
-
     }
 }
