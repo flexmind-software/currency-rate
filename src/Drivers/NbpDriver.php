@@ -78,7 +78,9 @@ class NbpDriver implements CurrencyInterface
                                 isset($position['przelicznik'])
                             ) {
                                 $param['code'] = strtolower($position['kod_waluty']);
-                                if (in_array($param['code'], $this->config['supported-currency'])) {
+                                if (! count($this->config['supported-currency']) ||
+                                    in_array(strtoupper($param['code']), $this->config['supported-currency'])
+                                ) {
                                     $param['rate'] = floatval(
                                         str_replace(',', '.', $position['kurs_sprzedazy'])
                                     );

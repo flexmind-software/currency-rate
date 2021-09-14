@@ -30,6 +30,11 @@ class CnbDriver implements CurrencyInterface
      */
     private array $data;
 
+    /**
+     * @var \DateTime
+     */
+    private \DateTime $date;
+
     public function __construct()
     {
         $this->config = config('currency-rate.drivers.cnb');
@@ -37,10 +42,15 @@ class CnbDriver implements CurrencyInterface
 
     public function downloadRates(\DateTime $date)
     {
+        $this->date = $date;
         $sourceUrl = $this->sourceUrl($date);
 
         if ($fileContent = file_get_contents($sourceUrl)) {
-            $rateList = str_getcsv($fileContent, '|');
+            $explode = explode("\n", $fileContent);
+
+            $rateList = array_map(function ($item) {
+                return explode('|', $item);
+            }, $explode);
 
             $headers = head($rateList);
             $this->parseHeader($headers);
@@ -61,24 +71,20 @@ class CnbDriver implements CurrencyInterface
 
     /**
      * @param array $headers
-     *
-     * @return array
      */
-    private function parseHeader(array $headers): array
+    private function parseHeader(array $headers)
     {
-        $this->header = [];
+        $this->headers = [];
         foreach ($headers as $i => $value) {
             if ($i === 0) {
                 continue;
             }
             [$multiplier, $code] = explode(' ', $value);
-            $header[$i] = [
+            $this->headers[$i] = [
                 'multiplier' => $multiplier,
                 'code' => $code,
             ];
         }
-
-        return $this->header;
     }
 
     private function parseRates(array $rateList)
@@ -110,8 +116,17 @@ class CnbDriver implements CurrencyInterface
     private function saveInDatabase()
     {
         $toSave = [];
-        foreach ($this->data as $date => $params) {
-            foreach ($params as $currencyCode => $rateInfo) {
+
+        $date = $this->date->format('Y-m-d');
+        if (! isset($this->data[$date])) {
+            $dateList = array_keys($this->data);
+            $date = last($dateList);
+        }
+
+        foreach ($this->data[$date] ?? []  as $currencyCode => $rateInfo) {
+            if (! count($this->config['supported-currency']) ||
+                in_array(strtoupper($currencyCode), $this->config['supported-currency'])
+            ) {
                 $item = [
                     'no' => null,
                     'driver' => $this->driverAlias,
