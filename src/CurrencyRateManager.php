@@ -3,8 +3,9 @@
 namespace FlexMindSoftware\CurrencyRate;
 
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Drivers\CnbDriver;
-use FlexMindSoftware\CurrencyRate\Drivers\NbpDriver;
+use FlexMindSoftware\CurrencyRate\Drivers\BankOfCanadaDriver;
+use FlexMindSoftware\CurrencyRate\Drivers\BankOfCzechRepublicDriver;
+use FlexMindSoftware\CurrencyRate\Drivers\BankOfPolandDriver;
 use Illuminate\Support\Manager;
 
 class CurrencyRateManager extends Manager
@@ -16,26 +17,30 @@ class CurrencyRateManager extends Manager
      */
     public function getDefaultDriver()
     {
-        return config('currency-rate.driver') ?? 'nbp';
+        return config('currency-rate.driver') ?? 'bank-of-poland';
     }
 
     /**
-     * Get an instance of the log driver.
-     *
-     * @return NbpDriver
+     * @return BankOfPolandDriver
      */
-    public function createNbpDriver(): CurrencyInterface
+    public function createBankOfPolandDriver(): CurrencyInterface
     {
-        return new NbpDriver();
+        return new BankOfPolandDriver();
     }
 
     /**
-     * Get an instance of the log driver.
-     *
-     * @return CnbDriver
+     * @return BankOfCzechRepublicDriver
      */
-    public function createCnbDriver(): CurrencyInterface
+    public function createBankOfCzechRepublicDriver(): CurrencyInterface
     {
-        return new CnbDriver();
+        return new BankOfCzechRepublicDriver();
+    }
+
+    /**
+     * @return BankOfCzechRepublicDriver
+     */
+    public function createBankOfCanadaDriver(): CurrencyInterface
+    {
+        return new BankOfCanadaDriver();
     }
 }

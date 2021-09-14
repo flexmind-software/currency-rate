@@ -2,19 +2,19 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use Carbon\Carbon;
+use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
-class CnbDriver implements CurrencyInterface
+class BankOfCzechRepublicDriver implements CurrencyInterface
 {
     use RateTrait;
 
     public string $currency = Currency::CUR_CZK;
 
-    private string $driverAlias = 'cnb';
+    private string $driverAlias = 'bank-of-chech-republic';
     /**
      * @var array
      */
@@ -31,16 +31,16 @@ class CnbDriver implements CurrencyInterface
     private array $data;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      */
-    private \DateTime $date;
+    private DateTime $date;
 
     public function __construct()
     {
         $this->config = config('currency-rate');
     }
 
-    public function downloadRates(\DateTime $date)
+    public function downloadRates(DateTime $date)
     {
         $this->date = $date;
         $sourceUrl = $this->sourceUrl($date);
@@ -60,13 +60,17 @@ class CnbDriver implements CurrencyInterface
     }
 
     /**
-     * @param Carbon $date
+     * @param DateTime $date
      *
      * @return string
      */
-    private function sourceUrl(Carbon $date)
+    private function sourceUrl(DateTime $date): string
     {
-        return sprintf($this->config['drivers'][$this->driverAlias]['url'] . '?rok=%d', $date->format('Y'));
+        return sprintf(
+            '%s?rok=%d',
+            $this->config['drivers'][$this->driverAlias]['url'],
+            $date->format('Y')
+        );
     }
 
     /**
@@ -94,7 +98,7 @@ class CnbDriver implements CurrencyInterface
             if ($row === 0) {
                 continue;
             }
-            $date = \DateTime::createFromFormat('d.m.Y', $rates[0]);
+            $date = DateTime::createFromFormat('d.m.Y', $rates[0]);
             if (! $date) {
                 break;
             }
