@@ -8,17 +8,13 @@ use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
-class BankOfCzechRepublicDriver implements CurrencyInterface
+class BankOfCzechRepublicDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
     public string $currency = Currency::CUR_CZK;
 
     private string $driverAlias = 'bank-of-czech-republic';
-    /**
-     * @var array
-     */
-    private array $config;
 
     /**
      * @var array
@@ -29,16 +25,6 @@ class BankOfCzechRepublicDriver implements CurrencyInterface
      * @var array
      */
     private array $data;
-
-    /**
-     * @var DateTime
-     */
-    private DateTime $date;
-
-    public function __construct()
-    {
-        $this->config = config('currency-rate');
-    }
 
     public function downloadRates(DateTime $date)
     {

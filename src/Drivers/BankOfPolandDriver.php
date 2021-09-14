@@ -11,7 +11,7 @@ use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use Log;
 use SimpleXMLElement;
 
-class BankOfPolandDriver implements CurrencyInterface
+class BankOfPolandDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
@@ -24,15 +24,6 @@ class BankOfPolandDriver implements CurrencyInterface
      * @var string
      */
     private string $driverAlias = 'bank-of-poland';
-    /**
-     * @var array
-     */
-    private array $config;
-
-    public function __construct()
-    {
-        $this->config = config('currency-rate');
-    }
 
     /**
      * @param DateTime $date

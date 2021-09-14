@@ -21,7 +21,8 @@
         "illuminate/contracts": "^8.37",
         "nesbot/carbon": "^2.53.1",
         "ext-simplexml": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-libxml": "*"
     },
     "require-dev": {
         "brianium/paratest": "^6.2",
