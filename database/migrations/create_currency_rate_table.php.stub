@@ -15,8 +15,8 @@ return new class extends Migration
             $table->date('date')->index(DB::getTablePrefix() . '_currency_rates_date_idx');
             $table->string('no')->default(null)->nullable()->index(DB::getTablePrefix() . '_currency_rates_no_idx');
             $table->string('code')->index(DB::getTablePrefix() . '_currency_rates_code_idx');
-            $table->float('rate', 8, 4);
-            $table->float('multiplier', 8, 4);
+            $table->float('rate')->default(1);
+            $table->float('multiplier')->default(1);
 
             $table->unique(['date', 'code', 'driver'], DB::getTablePrefix() . '_currency_rates_unique_cols');
 
