@@ -33,16 +33,13 @@ class NbpDriver implements CurrencyInterface
 
         $listOfCurses = file_get_contents('http://www.nbp.pl/kursy/xml/dir.txt');
         if (preg_match_all('/([abch]([0-9]{3})z' . $date . '/', $listOfCurses, $matches)) {
-            if (!empty($matches[0][0])) {
+            if (! empty($matches[0][0])) {
                 $nbpNo = $matches[0][0];
 
                 if (empty($nbpExchangeRate)) {
                     $xml = file_get_contents('http://www.nbp.pl/kursy/xml/' . $nbpNo . '.xml');
-                    if (!empty($xml)) {
+                    if (! empty($xml)) {
                         $currencies = new \SimpleXMLElement($xml);
-
-                        
-
                     } else {
                         \Log::error('No XML: ' . $nbpNo . '.xml');
                     }
