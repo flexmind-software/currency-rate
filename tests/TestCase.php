@@ -2,9 +2,9 @@
 
 namespace FlexMindSoftware\CurrencyRate\Tests;
 
+use FlexMindSoftware\CurrencyRate\CurrencyRateServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Orchestra\Testbench\TestCase as Orchestra;
-use FlexMindSoftware\CurrencyRate\CurrencyRateServiceProvider;
 
 class TestCase extends Orchestra
 {

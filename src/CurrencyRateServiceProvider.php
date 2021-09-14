@@ -2,9 +2,9 @@
 
 namespace FlexMindSoftware\CurrencyRate;
 
+use FlexMindSoftware\CurrencyRate\Commands\CurrencyRateCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use FlexMindSoftware\CurrencyRate\Commands\CurrencyRateCommand;
 
 class CurrencyRateServiceProvider extends PackageServiceProvider
 {
