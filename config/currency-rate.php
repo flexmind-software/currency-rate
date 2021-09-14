@@ -44,6 +44,9 @@ $params = [
     'drivers' => [
         'nbp' => [
             'url' => 'http://www.nbp.pl/kursy/xml/'
+        ],
+        'cnb' => [
+            'url' => 'http://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/rok.txt'
         ]
     ]
 ];
