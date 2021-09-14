@@ -2,32 +2,33 @@
 
 namespace FlexMindSoftware\CurrencyRate\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputArgument;
 
 class CurrencyRateCommand extends Command
 {
-    public $signature = 'flexmind:currency-rate';
+    public $signature = 'flexmind:currency-rate
+        {date? : Date to download currency rate, if empty is today}
+        {--driver=default : Driver to download rate}';
 
     public $description = 'Download currency rate';
 
     public function handle()
     {
-        $currencyDate = $this->argument('currencyDate');
+        $currencyDate = $this->argument('date');
         $timestamp = ! blank($currencyDate) ? strtotime($currencyDate) : time();
 
-        \CurrencyRate::driver('nbp')->downloadRates(Carbon::createFromTimestamp($timestamp));
-    }
+        $driver = $this->option('driver');
+        if ($driver === 'default') {
+            $driver = config('currency-rate.driver');
+        }
 
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return [
-            ['currencyDate', InputArgument::OPTIONAL, 'Date'],
-        ];
+        if (! in_array($driver, array_keys(config('currency-rate.drivers')))) {
+            $this->error('Driver "'.$driver.'" not exists!');
+
+            return;
+        }
+
+        \CurrencyRate::driver($driver)->downloadRates(Carbon::createFromTimestamp($timestamp));
     }
 }

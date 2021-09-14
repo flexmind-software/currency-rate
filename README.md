@@ -16,13 +16,13 @@ composer require flexmind-software/currency-rate
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --provider="FlexMindSoftware\CurrencyRate\SkeletonServiceProvider" --tag="currency-rate-migrations"
+php artisan vendor:publish --provider="FlexMindSoftware\CurrencyRate\CurrencyRateProvider" --tag="currency-rate-migrations"
 php artisan migrate
 ```
 
 You can publish the config file with:
 ```bash
-php artisan vendor:publish --provider="FlexMindSoftware\CurrencyRate\SkeletonServiceProvider" --tag="currency-rate-config"
+php artisan vendor:publish --provider="FlexMindSoftware\CurrencyRate\CurrencyRateProvider" --tag="currency-rate-config"
 ```
 
 This is the contents of the published config file:

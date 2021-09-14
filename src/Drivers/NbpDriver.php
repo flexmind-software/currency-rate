@@ -31,20 +31,19 @@ class NbpDriver implements CurrencyInterface
 
         $date = date('ymd', $timestamp);
 
-        $listOfCurses = file_get_contents('http://www.nbp.pl/kursy/xml/dir.txt');
-        if (preg_match_all('/([abch]([0-9]{3})z' . $date . '/', $listOfCurses, $matches)) {
-            if (! empty($matches[0][0])) {
-                $nbpNo = $matches[0][0];
+        $listOfCurses = file_get_contents($this->config['url'] . 'dir.txt');
 
-                if (empty($nbpExchangeRate)) {
-                    $xml = file_get_contents('http://www.nbp.pl/kursy/xml/' . $nbpNo . '.xml');
+        if (preg_match_all('/([abch])([0-9]{3})z' . $date . '/', $listOfCurses, $matches)) {
+            if (! blank($matches[0])) {
+                foreach ($matches[0] as $match) {
+                    $nbpNo = $match;
+                    $xml = file_get_contents($this->config['url'] . $nbpNo . '.xml');
                     if (! empty($xml)) {
                         $currencies = new \SimpleXMLElement($xml);
+                        $currencies = json_decode(json_encode($currencies), true);
                     } else {
                         \Log::error('No XML: ' . $nbpNo . '.xml');
                     }
-                } else {
-                    \Log::error('NBP currency: ' . $nbpNo . ' is already in the db');
                 }
             }
         } else {
