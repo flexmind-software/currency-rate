@@ -1,6 +1,6 @@
 {
     "name": "flexmind-software/currency-rate",
-    "description": ":package_description",
+    "description": "Library download currency rate and save in database, It's designed to be extended by any available data source.",
     "keywords": [
         "flexmind",
         "laravel",
