@@ -11,12 +11,12 @@ return new class extends Migration
         Schema::create(config('currency-rate.table-name'), function (Blueprint $table) {
             $table->id();
 
-            $table->string('driver')->index(DB::getTablePrefix() . '_currency_rates_driver_idx')
+            $table->string('driver')->index(DB::getTablePrefix() . '_currency_rates_driver_idx');
             $table->date('date')->index(DB::getTablePrefix() . '_currency_rates_date_idx');
             $table->string('no')->index(DB::getTablePrefix() . '_currency_rates_no_idx');
             $table->string('code')->index(DB::getTablePrefix() . '_currency_rates_code_idx');
-            $table->float('rate');
-            $table->float('multiplier');
+            $table->float('rate', 8, 4);
+            $table->float('multiplier', 8, 4);
 
             $table->unique(['date', 'code', 'driver'], DB::getTablePrefix() . '_currency_rates_unique_cols');
 
