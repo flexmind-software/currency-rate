@@ -2,7 +2,6 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use Carbon\Carbon;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
@@ -50,11 +49,11 @@ class NbpDriver implements CurrencyInterface
         $listOfCurses = file_get_contents($this->config['url'] . 'dir.txt');
 
         if (preg_match_all('/([abch])([0-9]{3})z' . $date . '/', $listOfCurses, $matches)) {
-            if (!blank($matches[0])) {
+            if (! blank($matches[0])) {
                 foreach ($matches[0] as $match) {
                     $nbpNo = $match;
                     $xml = file_get_contents($this->config['url'] . $nbpNo . '.xml');
-                    if (!empty($xml)) {
+                    if (! empty($xml)) {
                         $currencies = new \SimpleXMLElement($xml);
                         $currencies = json_decode(json_encode($currencies), true);
 
@@ -74,7 +73,6 @@ class NbpDriver implements CurrencyInterface
                         }
 
                         CurrencyRate::upsert($toSave, ['no', 'driver', 'code', 'date'], ['rate', 'multiplier']);
-
                     } else {
                         \Log::error('No XML: ' . $nbpNo . '.xml');
                     }

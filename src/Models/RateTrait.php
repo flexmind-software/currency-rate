@@ -37,6 +37,7 @@ trait RateTrait
         if ($from && $to) {
             $from = $currencyFrom == $this->currency ? 1 : $from->calculate_rate;
             $to = $currencyTo == $this->currency ? 1 : $to->calculate_rate;
+
             return $to ? $from / $to : 0;
         }
 

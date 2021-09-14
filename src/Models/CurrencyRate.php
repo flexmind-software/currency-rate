@@ -21,7 +21,7 @@ class CurrencyRate extends Model
         'date',
         'rate',
         'multiplier',
-        'driver'
+        'driver',
     ];
 
     /**
@@ -30,7 +30,7 @@ class CurrencyRate extends Model
     protected $dates = [
         'date',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     public function getTable()
