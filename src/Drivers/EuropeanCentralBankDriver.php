@@ -7,6 +7,7 @@ use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
+use SimpleXMLElement;
 
 class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
 {
@@ -31,11 +32,11 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
         $this->date = $date;
 
         $url = $this->sourceUrl($date);
-        $xml = simplexml_load_file($url, "SimpleXMLElement", LIBXML_NOCDATA);
-        $xml = json_encode($xml);
-        $json = json_decode($xml, true);
 
-        $this->parseDate($json);
+        $string = file_get_contents($url);
+        $xml = new SimpleXMLElement($string);
+
+        $this->parseDate($xml->Cube->Cube);
         $this->findByDate($date);
         $this->saveInDatabase();
     }
@@ -45,19 +46,17 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
         return $this->config['drivers'][$this->driverAlias]['url'];
     }
 
-    private function parseDate(array $jsonData)
+    private function parseDate($jsonData)
     {
-        foreach ($jsonData['Cube'] ?? [] as $children) {
-            foreach ($children as $k => $child) {
-                if (! empty($child['@data']['time'])) {
-                    $this->data[$k]['time'] = $child['@data']['time'];
-
-                    foreach ($child['Cube'] ?? [] as $node) {
-                        if (! empty($node['@data'])) {
-                            $this->data[$k]['rates'][$node['@data']['currency']] = $node['@data']['rate'];
-                        }
-                    }
-                }
+        $jsonData = json_decode(json_encode($jsonData), true);
+        foreach ($jsonData['Cube'] ?? [] as $k => $children) {
+            foreach ($children as $node) {
+                $this->data[$node['currency']]['date'] = $jsonData['@attributes']['time'];
+                $this->data[$node['currency']]['rate'] = floatval($node['rate']);
+                $this->data[$node['currency']]['multiplier'] = 1;
+                $this->data[$node['currency']]['no'] = null;
+                $this->data[$node['currency']]['driver'] = $this->driverAlias;
+                $this->data[$node['currency']]['code'] = $node['currency'];
             }
         }
     }
@@ -77,15 +76,15 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
         $date = $date->format('Y-m-d');
 
         foreach ($this->data ?? [] as $data) {
-            if (empty($data['time']) || $data['time'] !== $date) {
+            if (empty($data['date']) || $data['date'] !== $date) {
                 continue;
             }
-            $this->data = $data;
+            $this->data[] = $data;
         }
     }
 
     private function saveInDatabase()
     {
-//        CurrencyRate::upsert($this->data, ['driver', 'code', 'date'], ['rate', 'multiplier']);
+        CurrencyRate::upsert($this->data, ['driver', 'code', 'date'], ['rate', 'multiplier']);
     }
 }
