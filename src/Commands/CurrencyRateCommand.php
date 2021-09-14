@@ -14,7 +14,7 @@ class CurrencyRateCommand extends Command
     public function handle()
     {
         $currencyDate = $this->argument('currencyDate');
-        $timestamp = !blank($currencyDate) ? strtotime($currencyDate) : time();
+        $timestamp = ! blank($currencyDate) ? strtotime($currencyDate) : time();
 
         \CurrencyRate::driver('nbp')->downloadRates(Carbon::createFromTimestamp($timestamp));
     }
