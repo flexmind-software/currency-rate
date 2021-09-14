@@ -13,6 +13,9 @@ $params = [
         ],
         'bank-of-canada' => [
             'url' => 'https://www.bankofcanada.ca/valet/observations/group/FX_RATES_DAILY/json'
+        ],
+        'bank-of-bulgaria' => [
+            'url' => 'http://www.bnb.bg/Statistics/StExternalSector/StExchangeRates/StERForeignCurrencies/index.htm?download=csv&search=&lang=EN'
         ]
     ]
 ];

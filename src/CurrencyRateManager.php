@@ -3,6 +3,7 @@
 namespace FlexMindSoftware\CurrencyRate;
 
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
+use FlexMindSoftware\CurrencyRate\Drivers\BankOfBulgariaDriver;
 use FlexMindSoftware\CurrencyRate\Drivers\BankOfCanadaDriver;
 use FlexMindSoftware\CurrencyRate\Drivers\BankOfCzechRepublicDriver;
 use FlexMindSoftware\CurrencyRate\Drivers\BankOfPolandDriver;
@@ -42,5 +43,13 @@ class CurrencyRateManager extends Manager
     public function createBankOfCanadaDriver(): CurrencyInterface
     {
         return new BankOfCanadaDriver();
+    }
+
+    /**
+     * @return BankOfBulgariaDriver
+     */
+    public function createBankOfBulgariaDriver(): CurrencyInterface
+    {
+        return new BankOfBulgariaDriver();
     }
 }
