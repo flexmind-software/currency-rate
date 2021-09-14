@@ -58,11 +58,11 @@ class NbpDriver implements CurrencyInterface
         $listOfCurses = file_get_contents($config['url'] . 'dir.txt');
 
         if (preg_match_all('/([abch])([0-9]{3})z' . $date . '/', $listOfCurses, $matches)) {
-            if (!blank($matches[0])) {
+            if (! blank($matches[0])) {
                 foreach ($matches[0] as $match) {
                     $nbpNo = $match;
                     $xml = file_get_contents($config['url'] . $nbpNo . '.xml');
-                    if (!empty($xml)) {
+                    if (! empty($xml)) {
                         $currencies = new \SimpleXMLElement($xml);
                         $currencies = json_decode(json_encode($currencies), true);
 
