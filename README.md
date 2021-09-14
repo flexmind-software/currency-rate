@@ -29,6 +29,23 @@ This is the contents of the published config file:
 
 ```php
 return [
+    'driver' => env('FLEXMIND_CURRENCY_RATE_DRIVER', 'bank-of-poland'),
+    'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates'),
+    'supported-currency' => env('FLEXMIND_CURRENCY_RATE_SUPPORTED_CURRENCY', []),
+    'drivers' => [
+        'bank-of-poland' => [
+            'url' => 'http://www.nbp.pl/kursy/xml/'
+        ],
+        'bank-of-czech-republic' => [
+            'url' => 'http://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/rok.txt'
+        ],
+        'bank-of-canada' => [
+            'url' => 'https://www.bankofcanada.ca/valet/observations/group/FX_RATES_DAILY/json'
+        ],
+        'bank-of-bulgaria' => [
+            'url' => 'http://www.bnb.bg/Statistics/StExternalSector/StExchangeRates/StERForeignCurrencies/index.htm?download=csv&search=&lang=EN'
+        ]
+    ]
 ];
 ```
 
@@ -44,14 +61,14 @@ composer test
 
 ## Sources
 
-- [ ] [Bank of Canada / Banqueu du Canada](https://www.bankofcanada.ca/)
+- [x] [Bank of Canada / Banqueu du Canada](https://www.bankofcanada.ca/)
 - [ ] [Danmark National Bank](http://www.nationalbanken.dk/en)
 - [ ] [Bank of Estonia / Eesti Pank](https://eestipank.ee/en)
 - [ ] [Bank of Sweden / Sveriges Riksbank](https://www.riksbank.se/en-gb/)
 - [ ] [Bank of Norway / Norges Bank](https://www.norges-bank.no/en/)
 - [ ] [European Central Bank](https://ecb.europa.eu)
 - [ ] [Bank of Romania / Banca Nationala a Romaniei](https://www.bnro.ro/Home.aspx)
-- [ ] [Bank of Bulgaria](http://www.bnb.bg/?toLang=_EN)
+- [x] [Bank of Bulgaria](http://www.bnb.bg/?toLang=_EN)
 - [ ] [Bank of Hungary / Magyar Nemzeti Bank](https://www.mnb.hu/en/)
 - [ ] [Bank of Netherlands / De Nederlandsche Bank](https://www.dnb.nl/en/)
 - [ ] [Bank of England](https://www.bankofengland.co.uk/)

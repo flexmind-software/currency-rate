@@ -8,11 +8,14 @@ $params = [
         'bank-of-poland' => [
             'url' => 'http://www.nbp.pl/kursy/xml/'
         ],
-        'bank-of-chech-republic' => [
+        'bank-of-czech-republic' => [
             'url' => 'http://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/rok.txt'
         ],
         'bank-of-canada' => [
             'url' => 'https://www.bankofcanada.ca/valet/observations/group/FX_RATES_DAILY/json'
+        ],
+        'bank-of-bulgaria' => [
+            'url' => 'http://www.bnb.bg/Statistics/StExternalSector/StExchangeRates/StERForeignCurrencies/index.htm?download=csv&search=&lang=EN'
         ]
     ]
 ];

@@ -4,6 +4,7 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
 class BankOfCanadaDriver implements CurrencyInterface
@@ -13,6 +14,10 @@ class BankOfCanadaDriver implements CurrencyInterface
     public string $currency = Currency::CUR_CAD;
 
     private string $driverAlias = 'bank-of-canada';
+    /**
+     * @var array
+     */
+    private array $data;
     /**
      * @var array
      */
@@ -34,7 +39,16 @@ class BankOfCanadaDriver implements CurrencyInterface
         $url = $this->sourceUrl($date);
 
         if ($jsonFile = file_get_contents($url)) {
-            $this->parseRates($jsonFile);
+            $jsonFile = json_decode($jsonFile, true);
+            if (blank($jsonFile['observations'])) {
+                $date->sub(\DateInterval::createFromDateString('1 day'));
+                $url = $this->sourceUrl($date);
+                if ($jsonFile = file_get_contents($url)) {
+                    $jsonFile = json_decode($jsonFile, true);
+                }
+            }
+
+            $this->parseRates($jsonFile['observations'] ?? []);
             $this->saveInDatabase();
         }
     }
@@ -53,11 +67,35 @@ class BankOfCanadaDriver implements CurrencyInterface
         );
     }
 
-    private function parseRates(array $jsonFile)
+    /**
+     * @param array $rateList
+     */
+    private function parseRates(array $rateList)
     {
+        $this->data = [];
+        $date = $this->date->format('Y-m-d');
+        foreach ($rateList as $rates) {
+            foreach ($rates as $key => $rate) {
+                if (strpos($key, 'FX') !== false) {
+                    $currency = str_replace('FX', '', $key);
+                    $currency = str_replace(Currency::CUR_CAD, '', $currency);
+
+                    $param = [];
+                    $param['no'] = null;
+                    $param['code'] = $currency;
+                    $param['driver'] = $this->driverAlias;
+                    $param['date'] = $date;
+                    $param['multiplier'] = 1;
+                    $param['rate'] = $rate['v'];
+
+                    $this->data[] = $param;
+                }
+            }
+        }
     }
 
     private function saveInDatabase()
     {
+        CurrencyRate::upsert($this->data, ['driver', 'code', 'date'], ['rate', 'multiplier']);
     }
 }

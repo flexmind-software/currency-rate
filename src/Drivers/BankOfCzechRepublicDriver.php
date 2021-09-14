@@ -14,7 +14,7 @@ class BankOfCzechRepublicDriver implements CurrencyInterface
 
     public string $currency = Currency::CUR_CZK;
 
-    private string $driverAlias = 'bank-of-chech-republic';
+    private string $driverAlias = 'bank-of-czech-republic';
     /**
      * @var array
      */
