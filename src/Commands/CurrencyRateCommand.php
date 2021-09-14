@@ -2,9 +2,8 @@
 
 namespace FlexMindSoftware\CurrencyRate\Commands;
 
-use Illuminate\Console\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Carbon\Carbon;
+use Illuminate\Console\Command;
 
 class CurrencyRateCommand extends Command
 {
@@ -24,8 +23,9 @@ class CurrencyRateCommand extends Command
             $driver = config('currency-rate.driver');
         }
 
-        if (!in_array($driver, array_keys(config('currency-rate.drivers')))) {
+        if (! in_array($driver, array_keys(config('currency-rate.drivers')))) {
             $this->error('Driver "'.$driver.'" not exists!');
+
             return;
         }
 
