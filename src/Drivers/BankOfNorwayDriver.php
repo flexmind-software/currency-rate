@@ -22,7 +22,7 @@ class BankOfNorwayDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    private string $driverAlias = 'bank-of-norway';
+    public const DRIVER_NAME = 'bank-of-norway';
 
     public function downloadRates(DateTime $date)
     {

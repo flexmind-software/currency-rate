@@ -24,7 +24,7 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    private string $driverAlias = 'european-central-bank';
+    public const DRIVER_NAME = 'european-central-bank';
     /**
      * @var array
      */
@@ -72,7 +72,7 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
                 $this->data[$node['currency']]['rate'] = floatval($node['rate']);
                 $this->data[$node['currency']]['multiplier'] = 1;
                 $this->data[$node['currency']]['no'] = null;
-                $this->data[$node['currency']]['driver'] = $this->driverAlias;
+                $this->data[$node['currency']]['driver'] = static::DRIVER_NAME;
                 $this->data[$node['currency']]['code'] = $node['currency'];
             }
         }

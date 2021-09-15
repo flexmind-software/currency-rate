@@ -16,7 +16,7 @@ class BankOfCzechRepublicDriver extends BaseDriver implements CurrencyInterface
     public const QUERY_STRING = 'rok=%s';
     public string $currency = Currency::CUR_CZK;
 
-    private string $driverAlias = 'bank-of-czech-republic';
+    public const DRIVER_NAME = 'bank-of-czech-republic';
 
     /**
      * @var array
@@ -121,7 +121,7 @@ class BankOfCzechRepublicDriver extends BaseDriver implements CurrencyInterface
             ) {
                 $item = [
                     'no' => null,
-                    'driver' => $this->driverAlias,
+                    'driver' => static::DRIVER_NAME,
                     'code' => strtoupper($currencyCode),
                     'date' => $date,
                     'multiplier' => $rateInfo['multiplier'],

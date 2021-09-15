@@ -20,6 +20,7 @@
         "php": "^7.4",
         "spatie/laravel-package-tools": "^1.4.3",
         "illuminate/contracts": "^8.37",
+        "illuminate/support": "^8.37",
         "ext-simplexml": "*",
         "ext-json": "*",
         "ext-libxml": "*"

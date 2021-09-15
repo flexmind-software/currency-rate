@@ -16,7 +16,7 @@ class BankOfBulgariaDriver extends BaseDriver implements CurrencyInterface
 
     public string $currency = Currency::CUR_BGN;
 
-    private string $driverAlias = 'bank-of-bulgaria';
+    public const DRIVER_NAME = 'bank-of-bulgaria';
     /**
      * @var array
      */
@@ -74,7 +74,7 @@ class BankOfBulgariaDriver extends BaseDriver implements CurrencyInterface
             $param = [];
             $param['no'] = null;
             $param['code'] = $rates[2];
-            $param['driver'] = $this->driverAlias;
+            $param['driver'] = static::DRIVER_NAME;
             $param['date'] = DateTime::createFromFormat('d.m.Y', $rates[0])->format('Y-m-d');
             $param['multiplier'] = $rates[3];
             $param['rate'] = $rates[4];

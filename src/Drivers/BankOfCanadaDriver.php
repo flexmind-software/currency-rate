@@ -15,7 +15,7 @@ class BankOfCanadaDriver extends BaseDriver implements CurrencyInterface
 
     public string $currency = Currency::CUR_CAD;
 
-    private string $driverAlias = 'bank-of-canada';
+    public const DRIVER_NAME = 'bank-of-canada';
     /**
      * @var array
      */
@@ -72,7 +72,7 @@ class BankOfCanadaDriver extends BaseDriver implements CurrencyInterface
                     $param = [];
                     $param['no'] = null;
                     $param['code'] = $currency;
-                    $param['driver'] = $this->driverAlias;
+                    $param['driver'] = static::DRIVER_NAME;
                     $param['date'] = $date;
                     $param['multiplier'] = 1;
                     $param['rate'] = $rate['v'];
