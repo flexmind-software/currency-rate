@@ -12,6 +12,8 @@ class BankOfBulgariaDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
+    public const URI = 'https://www.bnb.bg/Statistics/StExternalSector/StExchangeRates/StERForeignCurrencies/index.htm';
+
     public string $currency = Currency::CUR_BGN;
 
     private string $driverAlias = 'bank-of-bulgaria';
@@ -49,7 +51,12 @@ class BankOfBulgariaDriver extends BaseDriver implements CurrencyInterface
      */
     private function sourceUrl(DateTime $date): string
     {
-        return $this->config['drivers'][$this->driverAlias]['url'];
+        $queryString = http_build_query([
+            'download' => 'csv',
+            'search' => '',
+            'lang' => 'EN'
+        ]);
+        return sprintf('%s?%s', static::URI, $queryString);
     }
 
     /**

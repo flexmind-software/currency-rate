@@ -11,6 +11,9 @@ class BankOfNorwayDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
+    public const URI = 'https://data.norges-bank.no/api/data/EXR/B..NOK.SP';
+    public const QUERY_STRING = 'startPeriod=%s&endPeriod=%s&format=sdmx-json&locale=en';
+
     /**
      * @var string
      */
@@ -23,5 +26,19 @@ class BankOfNorwayDriver extends BaseDriver implements CurrencyInterface
 
     public function downloadRates(DateTime $date)
     {
+    }
+
+    /**
+     * @param DateTime $date
+     *
+     * @return string
+     */
+    private function sourceUrl(DateTime $date): string
+    {
+        return sprintf(
+            '%s?%s',
+            static::URI,
+            static::QUERY_STRING
+        );
     }
 }

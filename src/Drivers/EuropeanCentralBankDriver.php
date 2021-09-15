@@ -3,6 +3,7 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateTime;
+use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
@@ -12,6 +13,8 @@ use SimpleXMLElement;
 class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
+
+    public const URI = 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml';
 
     /**
      * @var string
@@ -27,6 +30,12 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
      */
     private array $data = [];
 
+    /**
+     * @param DateTime $date
+     *
+     * @return void
+     * @throws Exception
+     */
     public function downloadRates(DateTime $date)
     {
         $this->date = $date;
@@ -41,12 +50,20 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
         $this->saveInDatabase();
     }
 
-    private function sourceUrl(DateTime $date)
+    /**
+     * @param DateTime $date
+     *
+     * @return string
+     */
+    private function sourceUrl(DateTime $date): string
     {
-        return $this->config['drivers'][$this->driverAlias]['url'];
+        return static::URI;
     }
 
-    private function parseDate($jsonData)
+    /**
+     * @param SimpleXMLElement $jsonData
+     */
+    private function parseDate(SimpleXMLElement $jsonData)
     {
         $jsonData = json_decode(json_encode($jsonData), true);
         foreach ($jsonData['Cube'] ?? [] as $k => $children) {

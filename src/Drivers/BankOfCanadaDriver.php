@@ -11,6 +11,8 @@ class BankOfCanadaDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
+    public const URI = 'https://www.bankofcanada.ca/valet/observations/group/FX_RATES_DAILY/json';
+
     public string $currency = Currency::CUR_CAD;
 
     private string $driverAlias = 'bank-of-canada';
@@ -49,7 +51,7 @@ class BankOfCanadaDriver extends BaseDriver implements CurrencyInterface
     {
         return sprintf(
             '%s?start_date=%s',
-            $this->config['drivers'][$this->driverAlias]['url'],
+            static::URI,
             $date->format('Y-m-d')
         );
     }

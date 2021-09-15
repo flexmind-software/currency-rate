@@ -12,6 +12,8 @@ class BankOfCzechRepublicDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
+    public const URI = 'https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/rok.txt';
+    public const QUERY_STRING = 'rok=%s';
     public string $currency = Currency::CUR_CZK;
 
     private string $driverAlias = 'bank-of-czech-republic';
@@ -53,9 +55,9 @@ class BankOfCzechRepublicDriver extends BaseDriver implements CurrencyInterface
     private function sourceUrl(DateTime $date): string
     {
         return sprintf(
-            '%s?rok=%d',
-            $this->config['drivers'][$this->driverAlias]['url'],
-            $date->format('Y')
+            '%s?%s',
+            static::URI,
+            sprintf(static::QUERY_STRING, $date->format('Y'))
         );
     }
 
@@ -85,7 +87,7 @@ class BankOfCzechRepublicDriver extends BaseDriver implements CurrencyInterface
                 continue;
             }
             $date = DateTime::createFromFormat('d.m.Y', $rates[0]);
-            if (! $date) {
+            if (!$date) {
                 break;
             }
 
@@ -108,13 +110,13 @@ class BankOfCzechRepublicDriver extends BaseDriver implements CurrencyInterface
         $toSave = [];
 
         $date = $this->date->format('Y-m-d');
-        if (! isset($this->data[$date])) {
+        if (!isset($this->data[$date])) {
             $dateList = array_keys($this->data);
             $date = last($dateList);
         }
 
         foreach ($this->data[$date] ?? [] as $currencyCode => $rateInfo) {
-            if (! count($this->config['supported-currency']) ||
+            if (!count($this->config['supported-currency']) ||
                 in_array(strtoupper($currencyCode), $this->config['supported-currency'])
             ) {
                 $item = [
