@@ -15,26 +15,24 @@ class BankOfPolandDriver extends BaseDriver implements CurrencyInterface
     use RateTrait;
 
     public const URI = 'https://www.nbp.pl/kursy/xml/';
-
+    /**
+     * @var string
+     */
+    public const DRIVER_NAME = 'bank-of-poland';
     /**
      * @var string
      */
     public string $currency = Currency::CUR_PLN;
 
     /**
-     * @var string
-     */
-    private string $driverAlias = 'bank-of-poland';
-
-    /**
      * @param DateTime $date
      *
-     * @return mixed|void
+     * @return void
      * @throws Exception
      */
     public function downloadRates(DateTime $date)
     {
-        $timestamp = $date->timestamp;
+        $timestamp = $date->getTimestamp();
 
         /**
          * Tabela A kursów średnich walut obcych publikowana (aktualizowana) jest na stronie internetowej NBP w
@@ -62,7 +60,7 @@ class BankOfPolandDriver extends BaseDriver implements CurrencyInterface
 
                         $param = [];
                         $param['no'] = $currencies['numer_tabeli'];
-                        $param['driver'] = 'bank-of-poland';
+                        $param['driver'] = static::DRIVER_NAME;
                         $param['date'] = $currencies['data_publikacji'];
 
                         $toSave = [];

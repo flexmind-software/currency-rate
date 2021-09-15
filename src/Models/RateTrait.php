@@ -15,7 +15,7 @@ trait RateTrait
     {
         $row = CurrencyRate::where(
             [
-                'driver' => $this->driverAlias,
+                'driver' => static::DRIVER_NAME,
                 'date' => $date->format('Y-m-d'),
             ]
         )->where(function ($builder) use ($currencyFrom, $currencyTo) {

@@ -1,6 +1,6 @@
 {
     "name": "flexmind-software/currency-rate",
-    "vesrion": "0.0.6",
+    "vesrion": "0.0.7",
     "description": "Library download currency rate and save in database, It's designed to be extended by any available data source.",
     "keywords": [
         "flexmind",
@@ -20,6 +20,7 @@
         "php": "^7.4",
         "spatie/laravel-package-tools": "^1.4.3",
         "illuminate/contracts": "^8.37",
+        "illuminate/support": "^8.37",
         "ext-simplexml": "*",
         "ext-json": "*",
         "ext-libxml": "*"

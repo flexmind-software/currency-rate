@@ -51,7 +51,7 @@ class CurrencyRateManager extends Manager
         } else {
             $class = 'FlexMindSoftware\\CurrencyRate\\Drivers\\' . Str::studly($driver) . 'Driver';
             if (class_exists($class)) {
-                return new $class();
+                return $this->getContainer()->make($class);
             }
         }
 
