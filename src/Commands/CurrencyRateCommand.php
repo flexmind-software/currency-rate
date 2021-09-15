@@ -17,7 +17,7 @@ class CurrencyRateCommand extends Command
     public function handle()
     {
         $currencyDate = $this->argument('date');
-        $timestamp = !blank($currencyDate) ? strtotime($currencyDate) : time();
+        $timestamp = ! blank($currencyDate) ? strtotime($currencyDate) : time();
 
         $driver = $this->option('driver');
 
@@ -44,6 +44,7 @@ class CurrencyRateCommand extends Command
         $drivers = array_map(function ($item) {
             $baseName = basename($item, '.php');
             $className = 'FlexMindSoftware\\CurrencyRate\\Drivers\\' . $baseName;
+
             return $className::DRIVER_NAME;
         }, $drivers);
 
