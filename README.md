@@ -44,7 +44,7 @@ Arguments:
   date               Date to download currency rate, if empty is today
   
 Options:
-  --driver[=DRIVER]  Driver to download rate [default: "default"]
+  --driver[=DRIVER]  Driver to download rate [default: "all"]
 ```
 ## Testing
 
