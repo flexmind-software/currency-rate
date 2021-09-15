@@ -76,16 +76,18 @@ composer test
 
 ### Asia
 
+
 ### Africa
 
+
 ### North America
-- [x] [Bank of Canada / Banqueu du Canada](https://www.bankofcanada.ca/) (driver name 'european-central-bank')
+- [x] [Bank of Canada / Banqueu du Canada](https://www.bankofcanada.ca/) (driver name 'bank-of-canada')
 
 ### South America
 - [ ] [Bank of Argentina / Banco Central de la Republica Argentina](http://www.bcra.gob.ar/default.asp)
 - [ ] [Bank of Brasil / Banco Central Do Brasil](https://www.bcb.gov.br/en)
 - [ ] [Bank of Chile / Banco Central de Chile](https://www.bcentral.cl/en/web/banco-central)
-- 
+
 ### Oceania
 - [ ] [Bank of Australia / Reserve Bank of Australia](https://www.rba.gov.au/)
 
