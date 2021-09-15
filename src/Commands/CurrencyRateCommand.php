@@ -10,9 +10,9 @@ class CurrencyRateCommand extends Command
 {
     public $signature = 'flexmind:currency-rate
         {date? : Date to download currency rate, if empty is today}
-        {--driver=default : Driver to download rate}';
+        {--driver=all : Driver to download rate}';
 
-    public $description = 'Download currency rate';
+    public $description = 'Download and save into database currency rates from different national bank';
 
     public function handle()
     {
