@@ -24,7 +24,6 @@ class BankOfBelarusDriver extends BaseDriver implements CurrencyInterface
 
     public function downloadRates(DateTime $date)
     {
-
     }
 
     /**
@@ -52,7 +51,7 @@ class BankOfBelarusDriver extends BaseDriver implements CurrencyInterface
             'Date' => $date->format('Y-m-d'),
             'Date' => $date->format('d/m/Y'),
             'Type' => 'Day',
-            'X-Requested-With' => 'XMLHttpRequest'
+            'X-Requested-With' => 'XMLHttpRequest',
         ];
 
         return $queryString;

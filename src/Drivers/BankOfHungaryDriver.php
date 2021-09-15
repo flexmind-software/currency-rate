@@ -24,7 +24,6 @@ class BankOfHungaryDriver extends BaseDriver implements CurrencyInterface
 
     public function downloadRates(DateTime $date)
     {
-
     }
 
     /**
@@ -39,7 +38,7 @@ class BankOfHungaryDriver extends BaseDriver implements CurrencyInterface
             'devizaSelected' => 'ZAR',
             'datetill' => $date->format('d/m/Y'),
             'datefrom' => $date->format('01/01/Y'),
-            'order' => 1
+            'order' => 1,
         ];
 
         return sprintf(

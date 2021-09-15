@@ -24,7 +24,6 @@ class BankOfBosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInt
 
     public function downloadRates(DateTime $date)
     {
-
     }
 
     /**
@@ -36,7 +35,7 @@ class BankOfBosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInt
     {
         $queryString = [
             'dateFrom' => 'Sun,%2028%20Feb%202021%2023:00:00%20GMT',
-            'dateTo' => 'Wed,%2030%20Jun%202021%2022:00:00%20GMT'
+            'dateTo' => 'Wed,%2030%20Jun%202021%2022:00:00%20GMT',
         ];
 
         return sprintf(

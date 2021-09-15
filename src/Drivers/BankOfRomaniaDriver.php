@@ -24,7 +24,6 @@ class BankOfRomaniaDriver extends BaseDriver implements CurrencyInterface
 
     public function downloadRates(DateTime $date)
     {
-
     }
 
     /**

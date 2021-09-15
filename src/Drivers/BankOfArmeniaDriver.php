@@ -24,7 +24,6 @@ class BankOfArmeniaDriver extends BaseDriver implements CurrencyInterface
 
     public function downloadRates(DateTime $date)
     {
-
     }
 
     /**
@@ -40,7 +39,7 @@ class BankOfArmeniaDriver extends BaseDriver implements CurrencyInterface
                 'USD,UZS,XDR',
             'DateTo' => $date->format('d/m/Y'),
             'DateFrom' => $date->format('01/01/Y'),
-            'order' => 1
+            'order' => 1,
         ];
 
         return sprintf(
