@@ -66,12 +66,10 @@ composer test
 - [x] [Bank of Danmark / Danmarks Nationalbanks](http://www.nationalbanken.dk/en) (driver name 'bank-of-denmark')
 - [ ] [Bank of England](https://www.bankofengland.co.uk/)
 - [ ] [Bank of Hungary / Magyar Nemzeti Bank](https://www.mnb.hu/en/)
-- [ ] [Bank of Ireland / Banc Ceannais na heireann](https://www.centralbank.ie/)
 - [ ] [Bank of Norway / Norges Bank](https://www.norges-bank.no/en/)
 - [x] [Bank of Poland / Narodowy Bank Polski](https://www.nbp.pl/) (driver name 'bank-of-poland')
 - [ ] [Bank of Romania / Banca Nationala a Romaniei](https://www.bnro.ro/Home.aspx)
 - [ ] [Bank of Serbia / Narodna banka Srbije](https://www.nbs.rs/en/indeks/index.html)
-- [ ] [Bank of Slovenia / Banka Slovenije](https://www.bsi.si/en/) 
 - [ ] [Bank of Sweden / Sveriges Riksbank](https://www.riksbank.se/en-gb/)
 
 ### Asia
