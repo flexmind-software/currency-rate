@@ -88,7 +88,7 @@ class BankOfSwedenDriver extends BaseDriver implements CurrencyInterface
             'g130-SEKTRLPMI' => 'on',
             'g130-SEKTRYPMI' => 'on',
             'g130-SEKUSDPMI' => 'on',
-            'g130-SEKZARPMI' => 'on'
+            'g130-SEKZARPMI' => 'on',
         ];
 
         return sprintf(

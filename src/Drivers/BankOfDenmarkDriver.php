@@ -51,11 +51,11 @@ class BankOfDenmarkDriver extends BaseDriver implements CurrencyInterface
     {
         foreach ($jsonData['Cube'] ?? [] as $children) {
             foreach ($children as $k => $child) {
-                if (!empty($child['@data']['time'])) {
+                if (! empty($child['@data']['time'])) {
                     $this->data[$k]['time'] = $child['@data']['time'];
 
                     foreach ($child['Cube'] ?? [] as $node) {
-                        if (!empty($node['@data'])) {
+                        if (! empty($node['@data'])) {
                             $this->data[$k]['rates'][$node['@data']['currency']] = $node['@data']['rate'];
                         }
                     }
@@ -72,8 +72,8 @@ class BankOfDenmarkDriver extends BaseDriver implements CurrencyInterface
      */
     private function findByDate(?DateTime $date = null)
     {
-        if (!$date) {
-            !$this->data ?: $this->data = reset($this->data);
+        if (! $date) {
+            ! $this->data ?: $this->data = reset($this->data);
         }
 
         $date = $date->format('Y-m-d');

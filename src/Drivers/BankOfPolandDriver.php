@@ -52,11 +52,11 @@ class BankOfPolandDriver extends BaseDriver implements CurrencyInterface
         $listOfCurses = file_get_contents(static::URI . 'dir.txt');
 
         if (preg_match_all('/(a)([0-9]{3})z' . $date . '/', $listOfCurses, $matches)) {
-            if (!blank($matches[0])) {
+            if (! blank($matches[0])) {
                 foreach ($matches[0] as $match) {
                     $nbpNo = $match;
                     $xml = file_get_contents(static::URI . $nbpNo . '.xml');
-                    if (!empty($xml)) {
+                    if (! empty($xml)) {
                         $currencies = new SimpleXMLElement($xml);
                         $currencies = json_decode(json_encode($currencies), true);
 
@@ -72,7 +72,7 @@ class BankOfPolandDriver extends BaseDriver implements CurrencyInterface
                                 isset($position['przelicznik'])
                             ) {
                                 $param['code'] = strtoupper($position['kod_waluty']);
-                                if (!count($this->config['supported-currency']) ||
+                                if (! count($this->config['supported-currency']) ||
                                     in_array($param['code'], $this->config['supported-currency'])
                                 ) {
                                     $param['rate'] = floatval(

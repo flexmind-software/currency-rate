@@ -25,8 +25,10 @@ class CurrencyRateManager extends Manager
         if ($driver) {
             return $driver;
         }
+
         throw new InvalidArgumentException(sprintf(
-            'Unable to resolve NULL driver for [%s].', static::class
+            'Unable to resolve NULL driver for [%s].',
+            static::class
         ));
     }
 
@@ -47,7 +49,6 @@ class CurrencyRateManager extends Manager
         if (isset($this->customCreators[$driver])) {
             return $this->callCustomCreator($driver);
         } else {
-
             $class = 'FlexMindSoftware\\CurrencyRate\\Drivers\\' . Str::studly($driver) . 'Driver';
             if (class_exists($class)) {
                 return new $class();

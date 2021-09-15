@@ -54,8 +54,9 @@ class BankOfBulgariaDriver extends BaseDriver implements CurrencyInterface
         $queryString = http_build_query([
             'download' => 'csv',
             'search' => '',
-            'lang' => 'EN'
+            'lang' => 'EN',
         ]);
+
         return sprintf('%s?%s', static::URI, $queryString);
     }
 

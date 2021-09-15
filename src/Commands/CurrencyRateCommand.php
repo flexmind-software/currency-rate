@@ -15,7 +15,7 @@ class CurrencyRateCommand extends Command
     public function handle()
     {
         $currencyDate = $this->argument('date');
-        $timestamp = !blank($currencyDate) ? strtotime($currencyDate) : time();
+        $timestamp = ! blank($currencyDate) ? strtotime($currencyDate) : time();
 
         $driver = $this->option('driver');
         if ($driver === 'default') {
