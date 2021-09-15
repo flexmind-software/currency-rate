@@ -2,7 +2,9 @@
 
 namespace FlexMindSoftware\CurrencyRate\Commands;
 
+use DateTime;
 use Illuminate\Console\Command;
+use Illuminate\Support\Arr;
 
 class CurrencyRateCommand extends Command
 {
@@ -15,15 +17,38 @@ class CurrencyRateCommand extends Command
     public function handle()
     {
         $currencyDate = $this->argument('date');
-        $timestamp = ! blank($currencyDate) ? strtotime($currencyDate) : time();
+        $timestamp = !blank($currencyDate) ? strtotime($currencyDate) : time();
 
         $driver = $this->option('driver');
-        if ($driver === 'default') {
-            $driver = config('currency-rate.driver');
+
+        if ($driver === 'all') {
+            $driver = $this->getAllDrivers();
+        } elseif ($driver === 'default') {
+            $driver = Arr::wrap(config('currency-rate.driver'));
         }
 
+        $drivers = Arr::wrap($driver);
         $date = new DateTime("@$timestamp");
+        foreach ($drivers as $driver) {
+            \CurrencyRate::driver($driver)->downloadRates($date);
+        }
+    }
 
-        \CurrencyRate::driver($driver)->downloadRates($date);
+    private function getAllDrivers(): array
+    {
+        $drivers = glob(__DIR__ . '/../Drivers/*Driver.php');
+        $drivers = array_filter($drivers, function ($item) {
+            return strpos($item, 'BaseDriver') === false;
+        });
+
+        $drivers = array_map(function ($item) {
+            $baseName = basename($item, '.php');
+            $className = 'FlexMindSoftware\\CurrencyRate\\Drivers\\' . $baseName;
+            return $className::DRIVER_NAME;
+        }, $drivers);
+
+        sort($drivers);
+
+        return $drivers;
     }
 }
