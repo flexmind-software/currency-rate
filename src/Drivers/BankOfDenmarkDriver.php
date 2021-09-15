@@ -11,6 +11,9 @@ class BankOfDenmarkDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
+    public const URI = 'https://www.nationalbanken.dk/_vti_bin/DN/DataService.svc/CurrencyRatesHistoryXML';
+    public const QUERY_STRING = 'lang=en';
+
     /**
      * @var string
      */
@@ -37,7 +40,11 @@ class BankOfDenmarkDriver extends BaseDriver implements CurrencyInterface
 
     private function sourceUrl(DateTime $date)
     {
-        return $this->config['drivers'][$this->driverAlias]['url'];
+        return sprintf(
+            '%s?%s',
+            static::URI,
+            static::QUERY_STRING
+        );
     }
 
     private function parseDate(array $jsonData)

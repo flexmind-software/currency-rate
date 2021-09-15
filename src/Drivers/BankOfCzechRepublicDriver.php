@@ -12,6 +12,8 @@ class BankOfCzechRepublicDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
+    public const URI = 'https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/rok.txt';
+    public const QUERY_STRING = 'rok=%s';
     public string $currency = Currency::CUR_CZK;
 
     private string $driverAlias = 'bank-of-czech-republic';
@@ -53,9 +55,9 @@ class BankOfCzechRepublicDriver extends BaseDriver implements CurrencyInterface
     private function sourceUrl(DateTime $date): string
     {
         return sprintf(
-            '%s?rok=%d',
-            $this->config['drivers'][$this->driverAlias]['url'],
-            $date->format('Y')
+            '%s?%s',
+            static::URI,
+            sprintf(static::QUERY_STRING, $date->format('Y'))
         );
     }
 

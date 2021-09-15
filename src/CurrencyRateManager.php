@@ -2,20 +2,62 @@
 
 namespace FlexMindSoftware\CurrencyRate;
 
-use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Drivers\BankOfBulgariaDriver;
-use FlexMindSoftware\CurrencyRate\Drivers\BankOfCanadaDriver;
-use FlexMindSoftware\CurrencyRate\Drivers\BankOfCzechRepublicDriver;
-use FlexMindSoftware\CurrencyRate\Drivers\BankOfDenmarkDriver;
-use FlexMindSoftware\CurrencyRate\Drivers\BankOfEstoniaDriver;
-use FlexMindSoftware\CurrencyRate\Drivers\BankOfNorwayDriver;
-use FlexMindSoftware\CurrencyRate\Drivers\BankOfPolandDriver;
-use FlexMindSoftware\CurrencyRate\Drivers\BankOfSwedenDriver;
-use FlexMindSoftware\CurrencyRate\Drivers\EuropeanCentralBankDriver;
 use Illuminate\Support\Manager;
+use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 class CurrencyRateManager extends Manager
 {
+    /**
+     * Get a driver instance.
+     *
+     * @param string $driver
+     *
+     * @return mixed
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function driver($driver = null)
+    {
+        $driver = $this->createDriver(
+            $driver ?: $this->getDefaultDriver()
+        );
+        if ($driver) {
+            return $driver;
+        }
+
+        throw new InvalidArgumentException(sprintf(
+            'Unable to resolve NULL driver for [%s].',
+            static::class
+        ));
+    }
+
+    /**
+     * Create a new driver instance.
+     *
+     * @param string $driver
+     *
+     * @return mixed
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function createDriver($driver)
+    {
+        // First, we will determine if a custom driver creator exists for the given driver and
+        // if it does not we will check for a creator method for the driver. Custom creator
+        // callbacks allow developers to build their own "drivers" easily using Closures.
+        if (isset($this->customCreators[$driver])) {
+            return $this->callCustomCreator($driver);
+        } else {
+            $class = 'FlexMindSoftware\\CurrencyRate\\Drivers\\' . Str::studly($driver) . 'Driver';
+            if (class_exists($class)) {
+                return new $class();
+            }
+        }
+
+        throw new InvalidArgumentException("Driver [$driver] not supported.");
+    }
+
     /**
      * Get the default driver name.
      *
@@ -24,77 +66,5 @@ class CurrencyRateManager extends Manager
     public function getDefaultDriver()
     {
         return config('currency-rate.driver') ?? 'bank-of-poland';
-    }
-
-    /**
-     * @return BankOfPolandDriver
-     */
-    public function createBankOfPolandDriver(): CurrencyInterface
-    {
-        return new BankOfPolandDriver();
-    }
-
-    /**
-     * @return BankOfCzechRepublicDriver
-     */
-    public function createBankOfCzechRepublicDriver(): CurrencyInterface
-    {
-        return new BankOfCzechRepublicDriver();
-    }
-
-    /**
-     * @return BankOfCzechRepublicDriver
-     */
-    public function createBankOfCanadaDriver(): CurrencyInterface
-    {
-        return new BankOfCanadaDriver();
-    }
-
-    /**
-     * @return BankOfBulgariaDriver
-     */
-    public function createBankOfBulgariaDriver(): CurrencyInterface
-    {
-        return new BankOfBulgariaDriver();
-    }
-
-    /**
-     * @return BankOfDenmarkDriver
-     */
-    public function createBankOfDenmarkDriver(): CurrencyInterface
-    {
-        return new BankOfDenmarkDriver();
-    }
-
-    /**
-     * @return BankOfEstoniaDriver
-     */
-    public function createBankOfEstoniaDriver(): CurrencyInterface
-    {
-        return new BankOfEstoniaDriver();
-    }
-
-    /**
-     * @return BankOfNorwayDriver
-     */
-    public function createBankOfNorwayDriver(): CurrencyInterface
-    {
-        return new BankOfNorwayDriver();
-    }
-
-    /**
-     * @return BankOfSwedenDriver
-     */
-    public function createBankOfSwedenDriver(): CurrencyInterface
-    {
-        return new BankOfSwedenDriver();
-    }
-
-    /**
-     * @return EuropeanCentralBankDriver
-     */
-    public function createEuropeanCentralBankDriver(): CurrencyInterface
-    {
-        return new EuropeanCentralBankDriver();
     }
 }
