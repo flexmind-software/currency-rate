@@ -72,7 +72,7 @@ composer test
 - [ ] [Liechtenstein / Liechtensteinische Landesbank](https://www.llb.li/en)
 - [ ] [Macedonia / Narodna Banka na Republika Severna Makedonija](http://www.nbrm.mk/)
 - [ ] [Moldavia / Banca Naţională a Moldovei](http://www.bnm.md/)
-- [ ] [Norway / Norges Bank](https://www.norges-bank.no/en/)
+- [x] [Norway / Norges Bank](https://www.norges-bank.no/en/)
 - [x] [Poland / Narodowy Bank Polski](https://www.nbp.pl/) (driver name 'poland')
 - [ ] [Russia / Tsentral'nyy bank Rossiyskoy Federatsii](http://cbr.ru/)
 - [x] [Romania / Banca Nationala a Romaniei](https://www.bnro.ro/Home.aspx) (driver name 'romania')
