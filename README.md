@@ -30,8 +30,7 @@ This is the contents of the published config file:
 ```php
 return [
     'driver' => env('FLEXMIND_CURRENCY_RATE_DRIVER', 'poland'),
-    'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates'),
-    'supported-currency' => env('FLEXMIND_CURRENCY_RATE_SUPPORTED_CURRENCY', [])
+    'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates')
 ];
 ```
 
@@ -76,10 +75,10 @@ composer test
 - [ ] [Norway / Norges Bank](https://www.norges-bank.no/en/)
 - [x] [Poland / Narodowy Bank Polski](https://www.nbp.pl/) (driver name 'poland')
 - [ ] [Russia / Tsentral'nyy bank Rossiyskoy Federatsii](http://cbr.ru/)
-- [ ] [Romania / Banca Nationala a Romaniei](https://www.bnro.ro/Home.aspx)
+- [x] [Romania / Banca Nationala a Romaniei](https://www.bnro.ro/Home.aspx) (driver name 'romania')
 - [ ] [Serbia / Narodna banka Srbije](https://www.nbs.rs/en/indeks/index.html)
 - [ ] [Switzerland / Banca naziunala svizra](http://www.snb.ch/)
-- [ ] [Sweden / Sveriges Riksbank](https://www.riksbank.se/en-gb/)
+- [x] [Sweden / Sveriges Riksbank](https://www.riksbank.se/en-gb/) (driver name 'sweden')
 - [ ] [Turkey / Türkiye Cumhuriyet Merkez Bankası](http://www.tcmb.gov.tr/)
 - [ ] [Ukraine / Natsionalʹnyy bank Ukrayiny](http://www.bank.gov.ua/)
 

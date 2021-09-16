@@ -6,7 +6,11 @@ use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
+use Illuminate\Support\Facades\Http;
 
+/**
+ *
+ */
 class SwedenDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
@@ -25,6 +29,10 @@ class SwedenDriver extends BaseDriver implements CurrencyInterface
      * @var string
      */
     public string $currency = Currency::CUR_DKK;
+    /**
+     * @var string
+     */
+    private string $response;
 
     /**
      * @param DateTime $date
@@ -33,17 +41,23 @@ class SwedenDriver extends BaseDriver implements CurrencyInterface
      */
     public function downloadRates(DateTime $date)
     {
-        $url = $this->sourceUrl($date);
+        $response = Http::get(static::URI, $this->getQueryString($date));
+        if ($response->ok()) {
+            $this->response = $response->body();
+
+            $this->parseResponse();
+            $this->saveInDatabase();
+        }
     }
 
     /**
      * @param DateTime $date
      *
-     * @return string
+     * @return array
      */
-    private function sourceUrl(DateTime $date): string
+    private function getQueryString(DateTime $date): array
     {
-        $options = [
+        return [
             'to' => $date->format('d/m/y'),
             'from' => $date->sub(\DateInterval::createFromDateString('1 day'))->format('d/m/y'),
             'c' => 'cAverage',
@@ -99,13 +113,36 @@ class SwedenDriver extends BaseDriver implements CurrencyInterface
             'g130-SEKUSDPMI' => 'on',
             'g130-SEKZARPMI' => 'on',
         ];
-
-        return sprintf(
-            '%s?%s',
-            static::URI,
-            http_build_query($options)
-        );
     }
 
-    //
+    /**
+     *
+     */
+    private function parseResponse()
+    {
+        $rows = explode("\r\n", $this->response);
+        $rows = array_map(function ($line) {
+            return explode(';', $line);
+        }, $rows);
+
+        $rows = array_filter($rows, function ($line) {
+            return count($line) === 4;
+        });
+
+        foreach ($rows as $k => $row) {
+            if ($k === 0) {
+                continue;
+            }
+            [$multiplier, $code] = explode(' ', $row[2]);
+            [$day, $month, $year] = explode('/', $row[0]); //16/09/2021
+
+            $this->data[] = [
+                'date' => sprintf('%s-%s-%s', $year, $month, $day),
+                'driver' => static::DRIVER_NAME,
+                'code' => $code,
+                'rate' => (float)($row[3] == 'n/a' ? 0 : $row[3]),
+                'multiplier' => (int)$multiplier,
+            ];
+        }
+    }
 }

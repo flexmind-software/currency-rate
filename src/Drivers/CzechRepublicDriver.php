@@ -135,20 +135,16 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
         }
 
         foreach ($this->data[$date] ?? [] as $currencyCode => $rateInfo) {
-            if (! count($this->config['supported-currency']) ||
-                in_array(strtoupper($currencyCode), $this->config['supported-currency'])
-            ) {
-                $item = [
-                    'no' => null,
-                    'driver' => static::DRIVER_NAME,
-                    'code' => strtoupper($currencyCode),
-                    'date' => $date,
-                    'multiplier' => $rateInfo['multiplier'],
-                    'rate' => $rateInfo['rate'],
-                ];
+            $item = [
+                'no' => null,
+                'driver' => static::DRIVER_NAME,
+                'code' => strtoupper($currencyCode),
+                'date' => $date,
+                'multiplier' => $rateInfo['multiplier'],
+                'rate' => $rateInfo['rate'],
+            ];
 
-                $toSave[] = $item;
-            }
+            $toSave[] = $item;
         }
 
         CurrencyRate::upsert($toSave, ['driver', 'code', 'date'], ['rate', 'multiplier']);
