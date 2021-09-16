@@ -3,16 +3,20 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateTime;
+use DOMDocument;
+use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
+use Illuminate\Support\Facades\Http;
 
 class BankOfBelarusDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
     // https://www.nbrb.by/engl/statistics/rates/ratesdaily.asp
-    public const URI = 'https://api.cba.am/ExchangeRatesToCSV.ashx';
+    public const URI = 'https://www.nbrb.by/engl/statistics/rates/ratesdaily.asp';
     /**
      * @var string
      */
@@ -21,22 +25,34 @@ class BankOfBelarusDriver extends BaseDriver implements CurrencyInterface
      * @var string
      */
     public string $currency = Currency::CUR_BYN;
-
-    public function downloadRates(DateTime $date)
-    {
-    }
+    /**
+     * @var string
+     */
+    private string $html;
+    /**
+     * @var array
+     */
+    private array $data;
 
     /**
      * @param DateTime $date
      *
-     * @return string
+     * @return void
      */
-    private function sourceUrl(DateTime $date): string
+    public function downloadRates(DateTime $date)
     {
-        return sprintf(
-            '%s?%s',
-            static::URI
-        );
+        $this->date = $date;
+
+        $response = Http::asForm()
+            ->post(static::URI, $this->queryString($date));
+
+        if ($response->ok()) {
+            $this->html = $response->body();
+            $this->parseResponse();
+            $this->saveInDatabase();
+        }
+
+
     }
 
     /**
@@ -55,5 +71,52 @@ class BankOfBelarusDriver extends BaseDriver implements CurrencyInterface
         ];
 
         return $queryString;
+    }
+
+
+    private function parseResponse()
+    {
+        $this->data = [];
+
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->loadHTML($this->html);
+        $xpath = new DOMXpath($dom);
+
+        $tableRows = $xpath->query('//table/tbody/tr');
+        foreach($tableRows as $row => $tr) {
+            foreach($tr->childNodes as $td) {
+                $this->data[$row][] = preg_replace('~[\r\n]+~', '', trim($td->nodeValue));
+            }
+            $this->data[$row] = array_values(array_filter($this->data[$row]));
+        }
+
+        $this->data = array_map(function ($item) {
+
+            [$multiplier, $code] = explode(' ', $item[1]);
+
+            return [
+                'no' => null,
+                'code' => $code,
+                'date' => $this->date->format('Y-m-d'),
+                'driver' => static::DRIVER_NAME,
+                'multiplier' => floatval($multiplier),
+                'rate' => floatval($item[2]),
+            ];
+        }, $this->data);
+    }
+
+    /**
+     * @param DateTime $date
+     *
+     * @return string
+     */
+    private function sourceUrl(DateTime $date): string
+    {
+        return sprintf('%s', static::URI);
+    }
+
+    private function saveInDatabase()
+    {
+        CurrencyRate::upsert($this->data, ['driver', 'code', 'date'], ['rate', 'multiplier']);
     }
 }
