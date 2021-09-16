@@ -124,7 +124,7 @@ class BankOfCzechRepublicDriver extends BaseDriver implements CurrencyInterface
     /**
      *
      */
-    private function saveInDatabase()
+    protected function saveInDatabase()
     {
         $toSave = [];
 

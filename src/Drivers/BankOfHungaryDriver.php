@@ -25,6 +25,11 @@ class BankOfHungaryDriver extends BaseDriver implements CurrencyInterface
      */
     public string $currency = Currency::CUR_HUF;
 
+    /**
+     * @param DateTime $date
+     *
+     * @return void
+     */
     public function downloadRates(DateTime $date)
     {
     }

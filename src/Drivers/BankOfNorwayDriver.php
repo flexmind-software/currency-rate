@@ -30,6 +30,11 @@ class BankOfNorwayDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'bank-of-norway';
 
+    /**
+     * @param DateTime $date
+     *
+     * @return void
+     */
     public function downloadRates(DateTime $date)
     {
     }

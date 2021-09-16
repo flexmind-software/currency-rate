@@ -65,7 +65,7 @@ class BankOfBelarusDriver extends BaseDriver implements CurrencyInterface
     {
         // query send over POST method
         return [
-            'Date' => $date->format('Y-m-d'),
+//            'Date' => $date->format('Y-m-d'),
             'Date' => $date->format('d/m/Y'),
             'Type' => 'Day',
             'X-Requested-With' => 'XMLHttpRequest',
