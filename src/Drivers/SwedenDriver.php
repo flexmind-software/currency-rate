@@ -141,7 +141,7 @@ class SwedenDriver extends BaseDriver implements CurrencyInterface
                 'driver' => static::DRIVER_NAME,
                 'code' => $code,
                 'rate' => (float)($row[3] == 'n/a' ? 0 : $row[3]),
-                'multiplier' => (int)$multiplier
+                'multiplier' => (int)$multiplier,
             ];
         }
     }
