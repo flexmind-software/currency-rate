@@ -11,16 +11,20 @@ class BankOfSwedenDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
+    /**
+     * @const string
+     *
+     * eg. https://www.riksbank.se/en-gb/statistics/search-interest--exchange-rates/
+     */
     public const URI = 'https://www.riksbank.se/en-gb/statistics/search-interest--exchange-rates/';
+    /**
+     * @const string
+     */
+    public const DRIVER_NAME = 'bank-of-sweden';
     /**
      * @var string
      */
     public string $currency = Currency::CUR_DKK;
-
-    /**
-     * @var string
-     */
-    public const DRIVER_NAME = 'bank-of-sweden';
 
     public function downloadRates(DateTime $date)
     {

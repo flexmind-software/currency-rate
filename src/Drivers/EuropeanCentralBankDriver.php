@@ -6,7 +6,6 @@ use DateTime;
 use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
-use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use SimpleXMLElement;
 
@@ -14,17 +13,18 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
+    /**
+     * @const string
+     */
     public const URI = 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml';
-
+    /**
+     * @const string
+     */
+    public const DRIVER_NAME = 'european-central-bank';
     /**
      * @var string
      */
     public string $currency = Currency::CUR_EUR;
-
-    /**
-     * @var string
-     */
-    public const DRIVER_NAME = 'european-central-bank';
 
     /**
      * @param DateTime $date
@@ -82,8 +82,8 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
      */
     private function findByDate(?DateTime $date = null)
     {
-        if (! $date) {
-            ! $this->data ?: $this->data = reset($this->data);
+        if (!$date) {
+            !$this->data ?: $this->data = reset($this->data);
         }
 
         $date = $date->format('Y-m-d');

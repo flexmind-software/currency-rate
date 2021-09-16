@@ -7,18 +7,23 @@ use DOMDocument;
 use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
-use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use Illuminate\Support\Facades\Http;
 
+/**
+ *
+ */
 class BankOfBelarusDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
     // https://www.nbrb.by/engl/statistics/rates/ratesdaily.asp
+    /**
+     * @const string
+     */
     public const URI = 'https://www.nbrb.by/engl/statistics/rates/ratesdaily.asp';
     /**
-     * @var string
+     * @const string
      */
     public const DRIVER_NAME = 'bank-of-belarus';
     /**
@@ -40,7 +45,7 @@ class BankOfBelarusDriver extends BaseDriver implements CurrencyInterface
         $this->date = $date;
 
         $response = Http::asForm()
-            ->post(static::URI, $this->queryString($date));
+            ->post(static::URI, $this->getFormParams($date));
 
         if ($response->ok()) {
             $this->html = $response->body();
@@ -56,20 +61,20 @@ class BankOfBelarusDriver extends BaseDriver implements CurrencyInterface
      *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function getFormParams(DateTime $date): array
     {
         // query send over POST method
-        $queryString = [
+        return [
             'Date' => $date->format('Y-m-d'),
             'Date' => $date->format('d/m/Y'),
             'Type' => 'Day',
             'X-Requested-With' => 'XMLHttpRequest',
         ];
-
-        return $queryString;
     }
 
-
+    /**
+     *
+     */
     private function parseResponse()
     {
         $this->data = [];
@@ -79,8 +84,8 @@ class BankOfBelarusDriver extends BaseDriver implements CurrencyInterface
         $xpath = new DOMXpath($dom);
 
         $tableRows = $xpath->query('//table/tbody/tr');
-        foreach($tableRows as $row => $tr) {
-            foreach($tr->childNodes as $td) {
+        foreach ($tableRows as $row => $tr) {
+            foreach ($tr->childNodes as $td) {
                 $this->data[$row][] = preg_replace('~[\r\n]+~', '', trim($td->nodeValue));
             }
             $this->data[$row] = array_values(array_filter($this->data[$row]));

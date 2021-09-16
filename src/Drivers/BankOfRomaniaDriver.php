@@ -11,10 +11,14 @@ class BankOfRomaniaDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
-    // https://www.bnro.ro/files/xml/years/nbrfxrates2021.xml
+    /**
+     * @const string
+     *
+     * eg. https://www.bnro.ro/files/xml/years/nbrfxrates2021.xml
+     */
     public const URI = 'https://www.bnro.ro/files/xml/years/nbrfxrates%s.xml';
     /**
-     * @var string
+     * @const string
      */
     public const DRIVER_NAME = 'bank-of-romania';
     /**
@@ -22,6 +26,11 @@ class BankOfRomaniaDriver extends BaseDriver implements CurrencyInterface
      */
     public string $currency = Currency::CUR_RSD;
 
+    /**
+     * @param DateTime $date
+     *
+     * @return void
+     */
     public function downloadRates(DateTime $date)
     {
     }

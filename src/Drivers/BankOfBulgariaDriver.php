@@ -5,19 +5,33 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
-use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
+/**
+ *
+ */
 class BankOfBulgariaDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
+    /**
+     * @const string
+     */
     public const URI = 'https://www.bnb.bg/Statistics/StExternalSector/StExchangeRates/StERForeignCurrencies/index.htm';
-
+    /**
+     * @const string
+     */
+    public const DRIVER_NAME = 'bank-of-bulgaria';
+    /**
+     * @var string
+     */
     public string $currency = Currency::CUR_BGN;
 
-    public const DRIVER_NAME = 'bank-of-bulgaria';
-
+    /**
+     * @param DateTime $date
+     *
+     * @return void
+     */
     public function downloadRates(DateTime $date)
     {
         $this->date = $date;

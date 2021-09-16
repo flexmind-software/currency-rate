@@ -12,6 +12,9 @@ class BankOfHungaryDriver extends BaseDriver implements CurrencyInterface
     use RateTrait;
 
     // https://www.mnb.hu/en/arfolyam-tablazat?deviza=rbCurrencyAll&devizaSelected=ZAR&datefrom=01%2F01%2F2021&datetill=15%2F09%2F2021&order=1
+    /**
+     * @const string
+     */
     public const URI = 'https://www.mnb.hu/en/arfolyam-tablazat';
     /**
      * @var string

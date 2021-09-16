@@ -7,14 +7,20 @@ use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
+/**
+ *
+ */
 class BankOfArmeniaDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
     // https://api.cba.am/ExchangeRatesToCSV.ashx?DateFrom=2021-01-01&DateTo=2021-09-15&ISOCodes=AED,ARS,AUD,BGN,BRL,BYN,CAD,CHF,CNY,CZK,DKK,EGP,EUR,GBP,GEL,HKD,HUF,ILS,INR,IRR,ISK,JPY,KGS,KRW,KWD,KZT,LBP,LTL,LVL,MDL,MXN,NOK,PLN,RON,RUB,SAR,SEK,SGD,SKK,SYP,TJS,TMT,TRY,UAH,USD,UZS,XDR
+    /**
+     * @const string
+     */
     public const URI = 'https://api.cba.am/ExchangeRatesToCSV.ashx';
     /**
-     * @var string
+     * @const string
      */
     public const DRIVER_NAME = 'bank-of-armenia';
     /**
@@ -22,6 +28,11 @@ class BankOfArmeniaDriver extends BaseDriver implements CurrencyInterface
      */
     public string $currency = Currency::CUR_AMD;
 
+    /**
+     * @param DateTime $date
+     *
+     * @return void
+     */
     public function downloadRates(DateTime $date)
     {
     }

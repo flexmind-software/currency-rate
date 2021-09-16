@@ -11,7 +11,13 @@ class BankOfNorwayDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
+    /**
+     * @const string
+     */
     public const URI = 'https://data.norges-bank.no/api/data/EXR/B..NOK.SP';
+    /**
+     * @const string
+     */
     public const QUERY_STRING = 'startPeriod=%s&endPeriod=%s&format=sdmx-json&locale=en';
 
     /**

@@ -7,23 +7,35 @@ use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
+/**
+ *
+ */
 class BankOfDenmarkDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
+    /**
+     * @const string
+     */
     public const URI = 'https://www.nationalbanken.dk/_vti_bin/DN/DataService.svc/CurrencyRatesHistoryXML';
+    /**
+     * @const string
+     */
     public const QUERY_STRING = 'lang=en';
-
+    /**
+     * @var string
+     */
+    public const DRIVER_NAME = 'bank-of-denmark';
     /**
      * @var string
      */
     public string $currency = Currency::CUR_DKK;
 
     /**
-     * @var string
+     * @param DateTime $date
+     *
+     * @return void
      */
-    public const DRIVER_NAME = 'bank-of-denmark';
-
     public function downloadRates(DateTime $date)
     {
         $this->date = $date;
@@ -38,24 +50,28 @@ class BankOfDenmarkDriver extends BaseDriver implements CurrencyInterface
         $this->saveInDatabase();
     }
 
-    private function sourceUrl(DateTime $date)
+    /**
+     * @param DateTime $date
+     *
+     * @return string
+     */
+    private function sourceUrl(DateTime $date): string
     {
-        return sprintf(
-            '%s?%s',
-            static::URI,
-            static::QUERY_STRING
-        );
+        return sprintf('%s?%s', static::URI, static::QUERY_STRING);
     }
 
+    /**
+     * @param array $jsonData
+     */
     private function parseDate(array $jsonData)
     {
         foreach ($jsonData['Cube'] ?? [] as $children) {
             foreach ($children as $k => $child) {
-                if (! empty($child['@data']['time'])) {
+                if (!empty($child['@data']['time'])) {
                     $this->data[$k]['time'] = $child['@data']['time'];
 
                     foreach ($child['Cube'] ?? [] as $node) {
-                        if (! empty($node['@data'])) {
+                        if (!empty($node['@data'])) {
                             $this->data[$k]['rates'][$node['@data']['currency']] = $node['@data']['rate'];
                         }
                     }
@@ -72,8 +88,8 @@ class BankOfDenmarkDriver extends BaseDriver implements CurrencyInterface
      */
     private function findByDate(?DateTime $date = null)
     {
-        if (! $date) {
-            ! $this->data ?: $this->data = reset($this->data);
+        if (!$date) {
+            !$this->data ?: $this->data = reset($this->data);
         }
 
         $date = $date->format('Y-m-d');

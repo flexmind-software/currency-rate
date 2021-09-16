@@ -7,14 +7,20 @@ use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
+/**
+ *
+ */
 class BankOfBosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
     // https://www.cbbh.ba/CurrencyExchange/GetJsonForPeriod?dateFrom=Sun,%2028%20Feb%202021%2023:00:00%20GMT&dateTo=Wed,%2030%20Jun%202021%2022:00:00%20GMT
+    /**
+     * @const string
+     */
     public const URI = 'https://www.cbbh.ba/CurrencyExchange/GetJsonForPeriod';
     /**
-     * @var string
+     * @const string
      */
     public const DRIVER_NAME = 'bank-of-belarus';
     /**
@@ -22,6 +28,11 @@ class BankOfBosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInt
      */
     public string $currency = Currency::CUR_BAM;
 
+    /**
+     * @param DateTime $date
+     *
+     * @return mixed|void
+     */
     public function downloadRates(DateTime $date)
     {
     }
