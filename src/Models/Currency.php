@@ -4,10 +4,12 @@ namespace FlexMindSoftware\CurrencyRate\Models;
 
 class Currency
 {
+    public const CUR_AMD = 'AMD'; // Armenia
     public const CUR_CZK = 'CZK'; // Czech Republic
     public const CUR_AUD = 'AUD'; // Australia
     public const CUR_BRL = 'BRL'; // Brazil
     public const CUR_BGN = 'BGN'; // Bulgaria
+    public const CUR_BYN = 'BYN'; // Belarus
     public const CUR_CNY = 'CNY'; // China
     public const CUR_DKK = 'DKK'; // Denmark
     public const CUR_EUR = 'EUR'; // EMU
@@ -37,4 +39,6 @@ class Currency
     public const CUR_TRY = 'TRY'; // Turkish
     public const CUR_USD = 'USD'; // USA
     public const CUR_GBP = 'GBP'; // Great Britain
+    public const CUR_BAM = 'BAM'; // Bosnia And Herzegovina
+    public const CUR_RSD = 'RSD'; // Serbia
 }

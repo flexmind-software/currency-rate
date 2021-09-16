@@ -7,7 +7,7 @@ interface CurrencyInterface
     /**
      * @param \DateTime $date
      *
-     * @return mixed
+     * @return mixed|void
      */
     public function downloadRates(\DateTime $date);
 

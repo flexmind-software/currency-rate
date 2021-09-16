@@ -2,26 +2,38 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
+use DateInterval;
+use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
-use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
+/**
+ *
+ */
 class BankOfCanadaDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
+    /**
+     * @const string
+     */
     public const URI = 'https://www.bankofcanada.ca/valet/observations/group/FX_RATES_DAILY/json';
-
-    public string $currency = Currency::CUR_CAD;
-
+    /**
+     * @const string
+     */
     public const DRIVER_NAME = 'bank-of-canada';
     /**
-     * @var array
+     * @var string
      */
-    private array $data;
+    public string $currency = Currency::CUR_CAD;
 
-    public function downloadRates(\DateTime $date)
+    /**
+     * @param DateTime $date
+     *
+     * @return void
+     */
+    public function downloadRates(DateTime $date)
     {
         $this->date = $date;
 
@@ -30,7 +42,7 @@ class BankOfCanadaDriver extends BaseDriver implements CurrencyInterface
         if ($jsonFile = file_get_contents($url)) {
             $jsonFile = json_decode($jsonFile, true);
             if (blank($jsonFile['observations'])) {
-                $date->sub(\DateInterval::createFromDateString('1 day'));
+                $date->sub(DateInterval::createFromDateString('1 day'));
                 $url = $this->sourceUrl($date);
                 if ($jsonFile = file_get_contents($url)) {
                     $jsonFile = json_decode($jsonFile, true);
@@ -43,11 +55,11 @@ class BankOfCanadaDriver extends BaseDriver implements CurrencyInterface
     }
 
     /**
-     * @param \DateTime $date
+     * @param DateTime $date
      *
      * @return string
      */
-    private function sourceUrl(\DateTime $date): string
+    private function sourceUrl(DateTime $date): string
     {
         return sprintf(
             '%s?start_date=%s',
@@ -81,10 +93,5 @@ class BankOfCanadaDriver extends BaseDriver implements CurrencyInterface
                 }
             }
         }
-    }
-
-    private function saveInDatabase()
-    {
-        CurrencyRate::upsert($this->data, ['driver', 'code', 'date'], ['rate', 'multiplier']);
     }
 }

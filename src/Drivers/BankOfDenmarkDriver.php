@@ -7,23 +7,35 @@ use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
+/**
+ *
+ */
 class BankOfDenmarkDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
+    /**
+     * @const string
+     */
     public const URI = 'https://www.nationalbanken.dk/_vti_bin/DN/DataService.svc/CurrencyRatesHistoryXML';
+    /**
+     * @const string
+     */
     public const QUERY_STRING = 'lang=en';
-
+    /**
+     * @var string
+     */
+    public const DRIVER_NAME = 'bank-of-denmark';
     /**
      * @var string
      */
     public string $currency = Currency::CUR_DKK;
 
     /**
-     * @var string
+     * @param DateTime $date
+     *
+     * @return void
      */
-    public const DRIVER_NAME = 'bank-of-denmark';
-
     public function downloadRates(DateTime $date)
     {
         $this->date = $date;
@@ -38,15 +50,19 @@ class BankOfDenmarkDriver extends BaseDriver implements CurrencyInterface
         $this->saveInDatabase();
     }
 
-    private function sourceUrl(DateTime $date)
+    /**
+     * @param DateTime $date
+     *
+     * @return string
+     */
+    private function sourceUrl(DateTime $date): string
     {
-        return sprintf(
-            '%s?%s',
-            static::URI,
-            static::QUERY_STRING
-        );
+        return sprintf('%s?%s', static::URI, static::QUERY_STRING);
     }
 
+    /**
+     * @param array $jsonData
+     */
     private function parseDate(array $jsonData)
     {
         foreach ($jsonData['Cube'] ?? [] as $children) {
@@ -85,10 +101,5 @@ class BankOfDenmarkDriver extends BaseDriver implements CurrencyInterface
 
             $this->data = $data;
         }
-    }
-
-    private function saveInDatabase()
-    {
-//        CurrencyRate::upsert($this->data, ['driver', 'code', 'date'], ['rate', 'multiplier']);
     }
 }

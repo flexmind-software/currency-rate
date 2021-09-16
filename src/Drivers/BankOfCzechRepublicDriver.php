@@ -8,26 +8,39 @@ use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
+/**
+ *
+ */
 class BankOfCzechRepublicDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
+    /**
+     * @const string
+     */
     public const URI = 'https://www.cnb.cz/cs/financni_trhy/devizovy_trh/kurzy_devizoveho_trhu/rok.txt';
+    /**
+     * @const string
+     */
     public const QUERY_STRING = 'rok=%s';
-    public string $currency = Currency::CUR_CZK;
-
+    /**
+     * @const string
+     */
     public const DRIVER_NAME = 'bank-of-czech-republic';
-
+    /**
+     * @var string
+     */
+    public string $currency = Currency::CUR_CZK;
     /**
      * @var array
      */
     private array $headers;
 
     /**
-     * @var array
+     * @param DateTime $date
+     *
+     * @return mixed|void
      */
-    private array $data;
-
     public function downloadRates(DateTime $date)
     {
         $this->date = $date;
@@ -79,6 +92,9 @@ class BankOfCzechRepublicDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @param array $rateList
+     */
     private function parseRates(array $rateList)
     {
         $this->data = [];
@@ -105,7 +121,10 @@ class BankOfCzechRepublicDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
-    private function saveInDatabase()
+    /**
+     *
+     */
+    protected function saveInDatabase()
     {
         $toSave = [];
 

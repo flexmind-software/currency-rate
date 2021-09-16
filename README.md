@@ -44,6 +44,7 @@ Arguments:
   date               Date to download currency rate, if empty is today
   
 Options:
+  --queue[=QUEUE]    Queue name, if set "none" cmd run without add job to queue [default: "none"]
   --driver[=DRIVER]  Driver to download rate [default: "all"]
 ```
 ## Testing
@@ -58,20 +59,18 @@ composer test
 - [x] [European Central Bank](https://ecb.europa.eu) (driver name 'european-central-bank')
 - [ ] [Bank of Albania / Banka e Shqiperise](https://www.bankofalbania.org/home/)
 - [ ] [Bank of Armenia / Hayastani Hanrapetut’yan Kentronakan Bank](https://www.cba.am/en/sitepages/default.aspx)
-- [ ] [Bank of Belarus / Natsional'nyy bank Respubliki Belarus'](http://www.nbrb.by/engl/)
-- [ ] [Bank of Bosnia and Herzegovina / Centralna Banka Bosne I Hergegovine](https://www.cbbh.ba/?lang=en)
+- [x] [Bank of Belarus / Natsional'nyy bank Respubliki Belarus'](http://www.nbrb.by/engl/)
+- [x] [Bank of Bosnia and Herzegovina / Centralna Banka Bosne I Hergegovine](https://www.cbbh.ba/?lang=en)
 - [x] [Bank of Bulgaria / Bŭlgarska narodna banka](http://www.bnb.bg/?toLang=_EN) (driver name 'bank-of-bulgaria')
 - [ ] [Bank of Croatia / Hrvatska Narodna Banka](https://www.hnb.hr/home)
 - [x] [Bank of Czech Republic / Ceska Narodni Banka](https://www.cnb.cz/en/index.html) (driver name 'bank-of-czech-republic')
 - [x] [Bank of Danmark / Danmarks Nationalbanks](http://www.nationalbanken.dk/en) (driver name 'bank-of-denmark')
 - [ ] [Bank of England](https://www.bankofengland.co.uk/)
 - [ ] [Bank of Hungary / Magyar Nemzeti Bank](https://www.mnb.hu/en/)
-- [ ] [Bank of Ireland / Banc Ceannais na heireann](https://www.centralbank.ie/)
 - [ ] [Bank of Norway / Norges Bank](https://www.norges-bank.no/en/)
 - [x] [Bank of Poland / Narodowy Bank Polski](https://www.nbp.pl/) (driver name 'bank-of-poland')
 - [ ] [Bank of Romania / Banca Nationala a Romaniei](https://www.bnro.ro/Home.aspx)
 - [ ] [Bank of Serbia / Narodna banka Srbije](https://www.nbs.rs/en/indeks/index.html)
-- [ ] [Bank of Slovenia / Banka Slovenije](https://www.bsi.si/en/) 
 - [ ] [Bank of Sweden / Sveriges Riksbank](https://www.riksbank.se/en-gb/)
 
 ### Asia

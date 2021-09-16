@@ -6,7 +6,6 @@ use DateTime;
 use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
-use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use SimpleXMLElement;
 
@@ -14,21 +13,18 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
+    /**
+     * @const string
+     */
     public const URI = 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.xml';
-
+    /**
+     * @const string
+     */
+    public const DRIVER_NAME = 'european-central-bank';
     /**
      * @var string
      */
     public string $currency = Currency::CUR_EUR;
-
-    /**
-     * @var string
-     */
-    public const DRIVER_NAME = 'european-central-bank';
-    /**
-     * @var array
-     */
-    private array $data = [];
 
     /**
      * @param DateTime $date
@@ -98,10 +94,5 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
             }
             $this->data[] = $data;
         }
-    }
-
-    private function saveInDatabase()
-    {
-        CurrencyRate::upsert($this->data, ['driver', 'code', 'date'], ['rate', 'multiplier']);
     }
 }

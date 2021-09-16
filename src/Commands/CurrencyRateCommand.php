@@ -3,6 +3,7 @@
 namespace FlexMindSoftware\CurrencyRate\Commands;
 
 use DateTime;
+use FlexMindSoftware\CurrencyRate\Jobs\QueueDownload;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 
@@ -10,6 +11,7 @@ class CurrencyRateCommand extends Command
 {
     public $signature = 'flexmind:currency-rate
         {date? : Date to download currency rate, if empty is today}
+        {--queue=none : Queue name, if set "none" cmd run without add job to queue};
         {--driver=all : Driver to download rate}';
 
     public $description = 'Download and save into database currency rates from different national bank';
@@ -18,6 +20,8 @@ class CurrencyRateCommand extends Command
     {
         $currencyDate = $this->argument('date');
         $timestamp = ! blank($currencyDate) ? strtotime($currencyDate) : time();
+
+        $queue = $this->option('queue');
 
         $driver = $this->option('driver');
 
@@ -30,7 +34,11 @@ class CurrencyRateCommand extends Command
         $drivers = Arr::wrap($driver);
         $date = new DateTime("@$timestamp");
         foreach ($drivers as $driver) {
-            \CurrencyRate::driver($driver)->downloadRates($date);
+            if ($queue == 'none') {
+                \CurrencyRate::driver($driver)->downloadRates($date);
+            } else {
+                QueueDownload::dispatch($driver, $date)->onQueue($queue);
+            }
         }
     }
 
