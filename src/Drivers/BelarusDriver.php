@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Http;
 /**
  *
  */
-class BankOfBelarusDriver extends BaseDriver implements CurrencyInterface
+class BelarusDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
@@ -25,7 +25,7 @@ class BankOfBelarusDriver extends BaseDriver implements CurrencyInterface
     /**
      * @const string
      */
-    public const DRIVER_NAME = 'bank-of-belarus';
+    public const DRIVER_NAME = 'belarus';
     /**
      * @var string
      */

@@ -10,7 +10,7 @@ use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 /**
  *
  */
-class BankOfArmeniaDriver extends BaseDriver implements CurrencyInterface
+class ArmeniaDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
@@ -22,7 +22,7 @@ class BankOfArmeniaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @const string
      */
-    public const DRIVER_NAME = 'bank-of-armenia';
+    public const DRIVER_NAME = 'armenia';
     /**
      * @var string
      */
