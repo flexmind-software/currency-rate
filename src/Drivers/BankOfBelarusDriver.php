@@ -52,8 +52,6 @@ class BankOfBelarusDriver extends BaseDriver implements CurrencyInterface
             $this->parseResponse();
             $this->saveInDatabase();
         }
-
-
     }
 
     /**
@@ -92,7 +90,6 @@ class BankOfBelarusDriver extends BaseDriver implements CurrencyInterface
         }
 
         $this->data = array_map(function ($item) {
-
             [$multiplier, $code] = explode(' ', $item[1]);
 
             return [

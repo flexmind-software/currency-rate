@@ -57,7 +57,7 @@ class BankOfBosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInt
     private function getQueryString(DateTime $date): array
     {
         return [
-            'date' => $date->format("m/d/Y 00:00:00")
+            'date' => $date->format("m/d/Y 00:00:00"),
         ];
     }
 
@@ -70,7 +70,7 @@ class BankOfBosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInt
                 'date' => date('Y-m-d', strtotime($this->jsonData['Date'])),
                 'driver' => static::DRIVER_NAME,
                 'multiplier' => floatval($item['Units']),
-                'rate' => floatval(str_replace(',', '.', $item['Middle']))
+                'rate' => floatval(str_replace(',', '.', $item['Middle'])),
             ];
         }
     }
