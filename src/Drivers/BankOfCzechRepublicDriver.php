@@ -23,11 +23,6 @@ class BankOfCzechRepublicDriver extends BaseDriver implements CurrencyInterface
      */
     private array $headers;
 
-    /**
-     * @var array
-     */
-    private array $data;
-
     public function downloadRates(DateTime $date)
     {
         $this->date = $date;

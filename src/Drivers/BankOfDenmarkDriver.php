@@ -86,9 +86,4 @@ class BankOfDenmarkDriver extends BaseDriver implements CurrencyInterface
             $this->data = $data;
         }
     }
-
-    private function saveInDatabase()
-    {
-//        CurrencyRate::upsert($this->data, ['driver', 'code', 'date'], ['rate', 'multiplier']);
-    }
 }

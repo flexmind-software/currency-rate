@@ -17,10 +17,6 @@ class BankOfBulgariaDriver extends BaseDriver implements CurrencyInterface
     public string $currency = Currency::CUR_BGN;
 
     public const DRIVER_NAME = 'bank-of-bulgaria';
-    /**
-     * @var array
-     */
-    private array $data;
 
     public function downloadRates(DateTime $date)
     {
@@ -81,10 +77,5 @@ class BankOfBulgariaDriver extends BaseDriver implements CurrencyInterface
 
             $this->data[] = $param;
         }
-    }
-
-    private function saveInDatabase()
-    {
-        CurrencyRate::upsert($this->data, ['driver', 'code', 'date'], ['rate', 'multiplier']);
     }
 }

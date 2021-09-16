@@ -16,10 +16,6 @@ class BankOfCanadaDriver extends BaseDriver implements CurrencyInterface
     public string $currency = Currency::CUR_CAD;
 
     public const DRIVER_NAME = 'bank-of-canada';
-    /**
-     * @var array
-     */
-    private array $data;
 
     public function downloadRates(\DateTime $date)
     {
@@ -81,10 +77,5 @@ class BankOfCanadaDriver extends BaseDriver implements CurrencyInterface
                 }
             }
         }
-    }
-
-    private function saveInDatabase()
-    {
-        CurrencyRate::upsert($this->data, ['driver', 'code', 'date'], ['rate', 'multiplier']);
     }
 }

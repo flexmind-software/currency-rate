@@ -25,10 +25,6 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
      * @var string
      */
     public const DRIVER_NAME = 'european-central-bank';
-    /**
-     * @var array
-     */
-    private array $data = [];
 
     /**
      * @param DateTime $date
@@ -98,10 +94,5 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
             }
             $this->data[] = $data;
         }
-    }
-
-    private function saveInDatabase()
-    {
-        CurrencyRate::upsert($this->data, ['driver', 'code', 'date'], ['rate', 'multiplier']);
     }
 }

@@ -29,10 +29,6 @@ class BankOfBelarusDriver extends BaseDriver implements CurrencyInterface
      * @var string
      */
     private string $html;
-    /**
-     * @var array
-     */
-    private array $data;
 
     /**
      * @param DateTime $date
@@ -113,10 +109,5 @@ class BankOfBelarusDriver extends BaseDriver implements CurrencyInterface
     private function sourceUrl(DateTime $date): string
     {
         return sprintf('%s', static::URI);
-    }
-
-    private function saveInDatabase()
-    {
-        CurrencyRate::upsert($this->data, ['driver', 'code', 'date'], ['rate', 'multiplier']);
     }
 }
