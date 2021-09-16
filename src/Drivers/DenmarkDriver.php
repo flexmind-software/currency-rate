@@ -6,6 +6,7 @@ use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
+use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -39,15 +40,19 @@ class DenmarkDriver extends BaseDriver implements CurrencyInterface
     public function downloadRates(DateTime $date)
     {
         $this->date = $date;
+        $response = Http::get($this->sourceUrl($date));
+        if ($response->ok()) {
+            $xml = $response->body();
 
-        $url = $this->sourceUrl($date);
-        $xml = simplexml_load_file($url, "SimpleXMLElement", LIBXML_NOCDATA);
-        $xml = json_encode($xml);
-        $json = json_decode($xml, true);
+            $xml = simplexml_load_string($xml, "SimpleXMLElement", LIBXML_NOCDATA);
+            $json = json_decode(json_encode($xml), true);
 
-        $this->parseDate($json);
-        $this->findByDate($date);
-        $this->saveInDatabase();
+            $this->parseDate($json);
+            $this->findByDate($date);
+            $this->saveInDatabase();
+        }
+
+
     }
 
     /**
@@ -67,11 +72,11 @@ class DenmarkDriver extends BaseDriver implements CurrencyInterface
     {
         foreach ($jsonData['Cube'] ?? [] as $children) {
             foreach ($children as $k => $child) {
-                if (! empty($child['@data']['time'])) {
+                if (!empty($child['@data']['time'])) {
                     $this->data[$k]['time'] = $child['@data']['time'];
 
                     foreach ($child['Cube'] ?? [] as $node) {
-                        if (! empty($node['@data'])) {
+                        if (!empty($node['@data'])) {
                             $this->data[$k]['rates'][$node['@data']['currency']] = $node['@data']['rate'];
                         }
                     }
@@ -88,8 +93,8 @@ class DenmarkDriver extends BaseDriver implements CurrencyInterface
      */
     private function findByDate(?DateTime $date = null)
     {
-        if (! $date) {
-            ! $this->data ?: $this->data = reset($this->data);
+        if (!$date) {
+            !$this->data ?: $this->data = reset($this->data);
         }
 
         $date = $date->format('Y-m-d');
