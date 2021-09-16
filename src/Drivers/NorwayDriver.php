@@ -55,7 +55,7 @@ class NorwayDriver extends BaseDriver implements CurrencyInterface
             'endPeriod' => $date->format('Y-m-d'),
             'startPeriod' => $date->sub(\DateInterval::createFromDateString('1 day'))->format('Y-m-d'),
             'format' => 'sdmx-json',
-            'locale' => 'en'
+            'locale' => 'en',
         ];
     }
 
@@ -79,7 +79,7 @@ class NorwayDriver extends BaseDriver implements CurrencyInterface
                     'driver' => static::DRIVER_NAME,
                     'code' => strtoupper($currencies[$id[1]]),
                     'rate' => (float)head(head($item['observations'])),
-                    'multiplier' => pow(100, $unitMulti)
+                    'multiplier' => pow(100, $unitMulti),
                 ];
             }
         }
