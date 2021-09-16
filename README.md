@@ -44,6 +44,7 @@ Arguments:
   date               Date to download currency rate, if empty is today
   
 Options:
+  --queue[=QUEUE]    Queue name, if set "none" cmd run without add job to queue [default: "none"]
   --driver[=DRIVER]  Driver to download rate [default: "all"]
 ```
 ## Testing
