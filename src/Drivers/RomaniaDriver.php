@@ -7,28 +7,24 @@ use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
-class BankOfNorwayDriver extends BaseDriver implements CurrencyInterface
+class RomaniaDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
     /**
      * @const string
+     *
+     * eg. https://www.bnro.ro/files/xml/years/nbrfxrates2021.xml
      */
-    public const URI = 'https://data.norges-bank.no/api/data/EXR/B..NOK.SP';
+    public const URI = 'https://www.bnro.ro/files/xml/years/nbrfxrates%s.xml';
     /**
      * @const string
      */
-    public const QUERY_STRING = 'startPeriod=%s&endPeriod=%s&format=sdmx-json&locale=en';
-
+    public const DRIVER_NAME = 'romania';
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_DKK;
-
-    /**
-     * @var string
-     */
-    public const DRIVER_NAME = 'bank-of-norway';
+    public string $currency = Currency::CUR_RSD;
 
     /**
      * @param DateTime $date
@@ -47,9 +43,8 @@ class BankOfNorwayDriver extends BaseDriver implements CurrencyInterface
     private function sourceUrl(DateTime $date): string
     {
         return sprintf(
-            '%s?%s',
-            static::URI,
-            static::QUERY_STRING
+            '%s',
+            sprintf(static::URI, $date->format('Y')),
         );
     }
 }

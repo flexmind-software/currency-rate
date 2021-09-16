@@ -65,6 +65,6 @@ class CurrencyRateManager extends Manager
      */
     public function getDefaultDriver()
     {
-        return config('currency-rate.driver') ?? 'bank-of-poland';
+        return config('currency-rate.driver') ?? 'european-central-bank';
     }
 }

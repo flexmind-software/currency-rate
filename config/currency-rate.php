@@ -1,7 +1,7 @@
 <?php
 
 $params = [
-    'driver' => env('FLEXMIND_CURRENCY_RATE_DRIVER', 'bank-of-poland'),
+    'driver' => env('FLEXMIND_CURRENCY_RATE_DRIVER', 'european-central-bank'),
     'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates'),
     'supported-currency' => env('FLEXMIND_CURRENCY_RATE_SUPPORTED_CURRENCY', [])
 ];

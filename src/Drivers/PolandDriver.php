@@ -11,7 +11,7 @@ use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use Illuminate\Support\Facades\Http;
 use SimpleXMLElement;
 
-class BankOfPolandDriver extends BaseDriver implements CurrencyInterface
+class PolandDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
@@ -22,7 +22,7 @@ class BankOfPolandDriver extends BaseDriver implements CurrencyInterface
     /**
      * @const string
      */
-    public const DRIVER_NAME = 'bank-of-poland';
+    public const DRIVER_NAME = 'poland';
     /**
      * @var string
      */

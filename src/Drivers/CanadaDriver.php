@@ -11,7 +11,7 @@ use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 /**
  *
  */
-class BankOfCanadaDriver extends BaseDriver implements CurrencyInterface
+class CanadaDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
@@ -22,7 +22,7 @@ class BankOfCanadaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @const string
      */
-    public const DRIVER_NAME = 'bank-of-canada';
+    public const DRIVER_NAME = 'canada';
     /**
      * @var string
      */

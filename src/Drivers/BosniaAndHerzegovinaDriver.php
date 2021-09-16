@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Http;
 /**
  *
  */
-class BankOfBosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInterface
+class BosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
@@ -24,7 +24,7 @@ class BankOfBosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInt
     /**
      * @const string
      */
-    public const DRIVER_NAME = 'bank-of-bosnia-and-herzegovina';
+    public const DRIVER_NAME = 'bosnia-and-herzegovina';
     /**
      * @var string
      */

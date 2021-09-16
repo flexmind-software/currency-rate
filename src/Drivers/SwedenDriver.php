@@ -7,7 +7,7 @@ use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
-class BankOfSwedenDriver extends BaseDriver implements CurrencyInterface
+class SwedenDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
@@ -20,7 +20,7 @@ class BankOfSwedenDriver extends BaseDriver implements CurrencyInterface
     /**
      * @const string
      */
-    public const DRIVER_NAME = 'bank-of-sweden';
+    public const DRIVER_NAME = 'sweden';
     /**
      * @var string
      */
