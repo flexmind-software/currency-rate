@@ -67,7 +67,7 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
             $date = date('ymd', $timestamp);
 
             if (preg_match_all('/(a)([0-9]{3})z' . $date . '/', $listOfCurses, $matches)) {
-                if (! blank($matches[0])) {
+                if (!blank($matches[0])) {
                     foreach ($matches[0] as $nbpNo) {
                         $response = Http::get(static::URI . $nbpNo . '.xml');
                         if ($response->ok()) {
@@ -101,17 +101,13 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
                 isset($position['przelicznik'])
             ) {
                 $param['code'] = strtoupper($position['kod_waluty']);
-                if (! count($this->config['supported-currency']) ||
-                    in_array($param['code'], $this->config['supported-currency'])
-                ) {
-                    $param['rate'] = floatval(
-                        str_replace(',', '.', $position['kurs_sredni'])
-                    );
-                    $param['multiplier'] = floatval(
-                        str_replace(',', '.', $position['przelicznik'])
-                    );
-                    $this->data[] = $param;
-                }
+                $param['rate'] = floatval(
+                    str_replace(',', '.', $position['kurs_sredni'])
+                );
+                $param['multiplier'] = floatval(
+                    str_replace(',', '.', $position['przelicznik'])
+                );
+                $this->data[] = $param;
             }
         }
     }
