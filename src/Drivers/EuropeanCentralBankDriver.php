@@ -82,8 +82,8 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
      */
     private function findByDate(?DateTime $date = null)
     {
-        if (!$date) {
-            !$this->data ?: $this->data = reset($this->data);
+        if (! $date) {
+            ! $this->data ?: $this->data = reset($this->data);
         }
 
         $date = $date->format('Y-m-d');
