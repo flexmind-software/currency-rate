@@ -7,6 +7,7 @@ use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
+use Illuminate\Support\Facades\Http;
 use SimpleXMLElement;
 
 class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
@@ -36,25 +37,18 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
     {
         $this->date = $date;
 
-        $url = $this->sourceUrl($date);
+        $respond = Http::get(static::URI);
+        if ($respond->ok()) {
 
-        $string = file_get_contents($url);
-        $xml = new SimpleXMLElement($string);
+            $string = $respond->body();
+            $xml = new SimpleXMLElement($string);
 
-        $this->parseDate($xml->Cube->Cube);
-        $this->findByDate($date);
-        $this->saveInDatabase();
+            $this->parseDate($xml->Cube->Cube);
+            $this->findByDate($date);
+            $this->saveInDatabase();
+        }
     }
 
-    /**
-     * @param DateTime $date
-     *
-     * @return string
-     */
-    private function sourceUrl(DateTime $date): string
-    {
-        return static::URI;
-    }
 
     /**
      * @param SimpleXMLElement $jsonData

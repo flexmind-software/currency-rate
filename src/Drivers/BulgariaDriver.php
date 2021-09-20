@@ -6,6 +6,7 @@ use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
+use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -36,9 +37,12 @@ class BulgariaDriver extends BaseDriver implements CurrencyInterface
     {
         $this->date = $date;
 
-        $url = $this->sourceUrl($date);
+        $response = Http::get(static::URI, $this->queryString($date));
 
-        if ($fileContent = file_get_contents($url)) {
+        if ($response->ok()) {
+
+            $fileContent = $response->body();
+
             $explode = explode("\n", $fileContent);
 
             $rateList = array_map(function ($item) {
@@ -57,17 +61,15 @@ class BulgariaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @param DateTime $date
      *
-     * @return string
+     * @return array
      */
-    private function sourceUrl(DateTime $date): string
+    private function queryString(DateTime $date): array
     {
-        $queryString = http_build_query([
+        return [
             'download' => 'csv',
             'search' => '',
             'lang' => 'EN',
-        ]);
-
-        return sprintf('%s?%s', static::URI, $queryString);
+        ];
     }
 
     /**
@@ -81,11 +83,13 @@ class BulgariaDriver extends BaseDriver implements CurrencyInterface
                 continue;
             }
 
+            $date =  DateTime::createFromFormat('d.m.Y', $rates[0])->format('Y-m-d');
+
             $param = [];
             $param['no'] = null;
             $param['code'] = $rates[2];
             $param['driver'] = static::DRIVER_NAME;
-            $param['date'] = DateTime::createFromFormat('d.m.Y', $rates[0])->format('Y-m-d');
+            $param['date'] = $date;
             $param['multiplier'] = $rates[3];
             $param['rate'] = $rates[4];
 

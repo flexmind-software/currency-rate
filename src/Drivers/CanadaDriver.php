@@ -7,6 +7,7 @@ use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
+use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -27,6 +28,10 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
      * @var string
      */
     public string $currency = Currency::CUR_CAD;
+    /**
+     * @var mixed
+     */
+    private $jsonFile;
 
     /**
      * @param DateTime $date
@@ -37,21 +42,23 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
     {
         $this->date = $date;
 
-        $url = $this->sourceUrl($date);
+        $this->getObservation();
+        $this->parseRates();
+        $this->saveInDatabase();
+    }
 
-        if ($jsonFile = file_get_contents($url)) {
-            $jsonFile = json_decode($jsonFile, true);
-            if (blank($jsonFile['observations'])) {
-                $date->sub(DateInterval::createFromDateString('1 day'));
-                $url = $this->sourceUrl($date);
-                if ($jsonFile = file_get_contents($url)) {
-                    $jsonFile = json_decode($jsonFile, true);
+    private function getObservation()
+    {
+        do {
+            $url = $this->sourceUrl($this->date);
+            $response = Http::get($url);
+            if ($response->ok()) {
+                $this->jsonFile = $response->json();
+                if (blank($this->jsonFile['observations'])) {
+                    $this->date->sub(DateInterval::createFromDateString('1 day'));
                 }
             }
-
-            $this->parseRates($jsonFile['observations'] ?? []);
-            $this->saveInDatabase();
-        }
+        } while (count((array)$this->jsonFile['observations']) === 0);
     }
 
     /**
@@ -68,22 +75,19 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
         );
     }
 
-    /**
-     * @param array $rateList
-     */
-    private function parseRates(array $rateList)
+    private function parseRates()
     {
         $this->data = [];
         $date = $this->date->format('Y-m-d');
-        foreach ($rateList as $rates) {
+        foreach ($this->jsonFile['observations'] as $rates) {
             foreach ($rates as $key => $rate) {
                 if (strpos($key, 'FX') !== false) {
-                    $currency = str_replace('FX', '', $key);
-                    $currency = str_replace(Currency::CUR_CAD, '', $currency);
+                    $rowCurrency = str_replace('FX', '', $key);
+                    $rowCurrency = str_replace(Currency::CUR_CAD, '', $rowCurrency);
 
                     $param = [];
                     $param['no'] = null;
-                    $param['code'] = $currency;
+                    $param['code'] = $rowCurrency;
                     $param['driver'] = static::DRIVER_NAME;
                     $param['date'] = $date;
                     $param['multiplier'] = 1;

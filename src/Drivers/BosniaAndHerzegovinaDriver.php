@@ -70,7 +70,7 @@ class BosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInterface
                 'date' => date('Y-m-d', strtotime($this->jsonData['Date'])),
                 'driver' => static::DRIVER_NAME,
                 'multiplier' => floatval($item['Units']),
-                'rate' => floatval(str_replace(',', '.', $item['Middle'])),
+                'rate' => $this->stringToFloat($item['Middle']),
             ];
         }
     }

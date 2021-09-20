@@ -3,9 +3,12 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateTime;
+use DOMDocument;
+use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
+use Illuminate\Support\Facades\Http;
 
 class HungaryDriver extends BaseDriver implements CurrencyInterface
 {
@@ -26,33 +29,88 @@ class HungaryDriver extends BaseDriver implements CurrencyInterface
     public string $currency = Currency::CUR_HUF;
 
     /**
+     * @var string
+     */
+    private string $html;
+
+    /**
      * @param DateTime $date
      *
      * @return void
      */
     public function downloadRates(DateTime $date)
     {
+        $response = Http::get(static::URI, $this->queryString($date));
+        if ($response->ok()) {
+            $this->html = $response->body();
+            $this->parseResponse();
+            $this->saveInDatabase();
+        }
     }
 
     /**
      * @param DateTime $date
      *
-     * @return string
+     * @return array
      */
-    private function sourceUrl(DateTime $date): string
+    private function queryString(DateTime $date): array
     {
-        $queryString = [
+        return [
             'deviza' => 'rbCurrencyAll',
             'devizaSelected' => 'ZAR',
             'datetill' => $date->format('d/m/Y'),
-            'datefrom' => $date->format('01/01/Y'),
+            'datefrom' => ($this->lastDate ?? $date)->format('01/01/Y'),
             'order' => 1,
         ];
+    }
 
-        return sprintf(
-            '%s?%s',
-            static::URI,
-            http_build_query($queryString)
-        );
+    private function parseResponse()
+    {
+        $this->data = [];
+
+        $dom = new DOMDocument('1.0', 'UTF-8');
+
+        preg_match_all('/<table.*?>(.*?)<\/table>/si', $this->html, $matches);
+
+        $dom->loadHTML($matches[0][0]);
+        $xpath = new DOMXpath($dom);
+
+        $tableRows = $xpath->query("//table//thead//tr");
+
+        $currencies = [];
+        foreach ($tableRows[0]->childNodes as $c => $th) {
+            if ($code = $this->clearRow($th->nodeValue)) {
+                $currencies[] = [
+                    'code' => $code,
+                    'multiplier' => (int)$this->clearRow($tableRows[2]->childNodes[$c]->nodeValue),
+                    'driver' => static::DRIVER_NAME
+                ];
+            }
+        }
+
+        $this->data = [];
+        $tableRows = $xpath->query("//table//tbody//tr");
+        foreach ($tableRows as $r => $tr) {
+
+            $row = [];
+            foreach ($tr->childNodes as $c => $td) {
+                $row[] = $this->clearRow($td->nodeValue);
+            }
+
+            $row = array_filter($row);
+            $row = array_values($row);
+
+            $date = array_shift($row);
+
+            foreach ($row as $i => $item) {
+                if ($item != '-') {
+                    $line = $currencies[$i];
+                    $line['date'] = date('Y-m-d', strtotime($date));
+                    $line['rate'] = (float)$item;
+
+                    $this->data[] = $line;
+                }
+            }
+        }
     }
 }
