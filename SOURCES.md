@@ -25,7 +25,7 @@
 - [ ] [Serbia / Narodna banka Srbije](https://www.nbs.rs/en/indeks/index.html)
 - [ ] [Switzerland / Banca naziunala svizra](http://www.snb.ch/)
 - [x] [Sweden / Sveriges Riksbank](https://www.riksbank.se/en-gb/) (driver name 'sweden')
-- [ ] [Turkey / Türkiye Cumhuriyet Merkez Bankası](http://www.tcmb.gov.tr/)
+- [x] [Turkey / Türkiye Cumhuriyet Merkez Bankası](http://www.tcmb.gov.tr/) (driver name 'turkey')
 - [x] [Ukraine / Natsionalʹnyy bank Ukrayiny](http://www.bank.gov.ua/) (driver name 'ukraine')
 
 ### Asia [0 / 19]
