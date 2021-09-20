@@ -39,7 +39,6 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
 
         $respond = Http::get(static::URI);
         if ($respond->ok()) {
-
             $string = $respond->body();
             $xml = new SimpleXMLElement($string);
 
@@ -48,7 +47,6 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
             $this->saveInDatabase();
         }
     }
-
 
     /**
      * @param SimpleXMLElement $jsonData
