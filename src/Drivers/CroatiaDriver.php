@@ -65,6 +65,9 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return array
+     */
     private function queryString()
     {
         return [
@@ -77,6 +80,10 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
         ];
     }
 
+    /**
+     * @param DateTime $date
+     * @return array
+     */
     private function postParams(DateTime $date)
     {
         $lastDate = $this->lastDate ?? $date;
