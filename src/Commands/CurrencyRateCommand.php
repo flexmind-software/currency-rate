@@ -7,6 +7,9 @@ use FlexMindSoftware\CurrencyRate\Jobs\QueueDownload;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 
+/**
+ * php artisan flexmind:currency-rate --driver=
+ */
 class CurrencyRateCommand extends Command
 {
     public $signature = 'flexmind:currency-rate

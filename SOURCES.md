@@ -1,6 +1,6 @@
 ## Sources
 
-### Europe [14 / 26]
+### Europe [15 / 26]
 - [x] [European Central Bank](https://ecb.europa.eu) (driver name 'european-central-bank')
 - [ ] [Albania / Bankës së Shqipërisë](https://www.bankofalbania.org/home/)
 - [ ] [Armenia / Hayastani Hanrapetut’yan Kentronakan Bank](https://www.cba.am/en/sitepages/default.aspx)
@@ -23,7 +23,7 @@
 - [ ] [Russia / Tsentral'nyy bank Rossiyskoy Federatsii](http://cbr.ru/)
 - [x] [Romania / Banca Nationala a Romaniei](https://www.bnro.ro/Home.aspx) (driver name 'romania')
 - [ ] [Serbia / Narodna banka Srbije](https://www.nbs.rs/en/indeks/index.html)
-- [ ] [Switzerland / Banca naziunala svizra](http://www.snb.ch/)
+- [x] [Switzerland / Banca naziunala svizra](http://www.snb.ch/)
 - [x] [Sweden / Sveriges Riksbank](https://www.riksbank.se/en-gb/) (driver name 'sweden')
 - [x] [Turkey / Türkiye Cumhuriyet Merkez Bankası](http://www.tcmb.gov.tr/) (driver name 'turkey')
 - [x] [Ukraine / Natsionalʹnyy bank Ukrayiny](http://www.bank.gov.ua/) (driver name 'ukraine')
