@@ -83,7 +83,7 @@ class HungaryDriver extends BaseDriver implements CurrencyInterface
                 $currencies[] = [
                     'code' => $code,
                     'multiplier' => (int)$this->clearRow($tableRows[2]->childNodes[$c]->nodeValue),
-                    'driver' => static::DRIVER_NAME
+                    'driver' => static::DRIVER_NAME,
                 ];
             }
         }
@@ -91,7 +91,6 @@ class HungaryDriver extends BaseDriver implements CurrencyInterface
         $this->data = [];
         $tableRows = $xpath->query("//table//tbody//tr");
         foreach ($tableRows as $r => $tr) {
-
             $row = [];
             foreach ($tr->childNodes as $c => $td) {
                 $row[] = $this->clearRow($td->nodeValue);

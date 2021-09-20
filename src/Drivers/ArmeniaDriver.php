@@ -47,7 +47,6 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
 //            $this->html = $response->body();
 //            $this->parseResponse();
 //        }
-
     }
 
     /**
@@ -60,7 +59,7 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
         libxml_use_internal_errors(true);
 
         $dom = new DOMDocument('1.0', 'UTF-8');
-        $dom->loadHTML($this->html, LIBXML_NOERROR & LIBXML_NOWARNING );
+        $dom->loadHTML($this->html, LIBXML_NOERROR & LIBXML_NOWARNING);
         $xpath = new DOMXpath($dom);
 
         libxml_clear_errors();
