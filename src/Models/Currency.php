@@ -42,4 +42,5 @@ class Currency
     public const CUR_USD = 'USD'; // USA
     public const CUR_GBP = 'GBP'; // Great Britain
     public const CUR_RSD = 'RSD'; // Serbia
+    public const CUR_UAH = 'UAH'; // Ukraine
 }
