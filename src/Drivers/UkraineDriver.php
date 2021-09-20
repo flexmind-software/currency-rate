@@ -91,7 +91,7 @@ class UkraineDriver extends BaseDriver implements CurrencyInterface
     {
         return [
             'date' => $date->format('Y-m-d'),
-            'period' => 'daily'
+            'period' => 'daily',
         ];
     }
 }
