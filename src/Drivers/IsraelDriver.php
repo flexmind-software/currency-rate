@@ -52,7 +52,6 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
         if ($respond->ok()) {
             $this->xml = $respond->body();
             $this->makeCountryMap();
-
         }
 
         $respond = Http::get(static::URI, $this->queryString($date));
@@ -70,7 +69,7 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
         $json = json_decode(json_encode($xmlElement), true);
 
         $this->countryList = [];
-        foreach ($json['CURRENCY'] ?? [] AS $item) {
+        foreach ($json['CURRENCY'] ?? [] as $item) {
             $this->countryList[$item['COUNTRY']] = $item['CURRENCYCODE'];
         }
     }
@@ -88,7 +87,7 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
             'date' => $this->date->format('d/m/Y'),
             'graphUrl' => '/en/Markets/ExchangeRates/Pages/Chart.aspx',
             'webUrl' => '/en/Markets/ExchangeRates',
-            '_' => time()
+            '_' => time(),
         ];
     }
 

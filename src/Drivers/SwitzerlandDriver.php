@@ -50,7 +50,6 @@ class SwitzerlandDriver extends BaseDriver implements CurrencyInterface
         $simpleXMLElement = simplexml_load_string($this->xml, "SimpleXMLElement", LIBXML_NOCDATA, "", true);
 
         foreach ($simpleXMLElement->channel->item as $line) {
-
             preg_match(
                 "/(CH:\s)(.*)\s(.{3})\s\=\s(\d+)\s(.{3})\s([0-9]{4}-[0-9]{2}-[0-9]{2})(.*)/im",
                 (string)$line->title,
