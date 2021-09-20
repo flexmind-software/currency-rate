@@ -10,27 +10,23 @@ use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use Illuminate\Support\Facades\Http;
 
-/**
- *
- */
-class BelarusDriver extends BaseDriver implements CurrencyInterface
+class RussiaDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
     /**
      * @const string
-     *
-     * https://www.nbrb.by/engl/statistics/rates/ratesdaily.asp
      */
-    public const URI = 'https://www.nbrb.by/engl/statistics/rates/ratesdaily.asp';
+    public const URI = 'https://www.cbr.ru/eng/currency_base/daily/';
     /**
      * @const string
      */
-    public const DRIVER_NAME = 'belarus';
+    public const DRIVER_NAME = 'russia';
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_BYN;
+    public string $currency = Currency::CUR_RUB;
+
     /**
      * @var string
      */
@@ -43,13 +39,9 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
      */
     public function downloadRates(DateTime $date)
     {
-        $this->date = $date;
-
-        $response = Http::asForm()
-            ->post(static::URI, $this->getFormParams($date));
-
-        if ($response->ok()) {
-            $this->html = $response->body();
+        $respond = Http::get(static::URI, $this->queryString($date));
+        if ($respond->ok()) {
+            $this->html = $respond->body();
             $this->parseResponse();
             $this->saveInDatabase();
         }
@@ -60,29 +52,28 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
      *
      * @return array
      */
-    private function getFormParams(DateTime $date): array
+    private function queryString(DateTime $date): array
     {
-        // query send over POST method
         return [
-//            'Date' => $date->format('Y-m-d'),
-            'Date' => $date->format('d/m/Y'),
-            'Type' => 'Day',
-            'X-Requested-With' => 'XMLHttpRequest',
+            'UniDbQuery.Posted' => 'True',
+            'UniDbQuery.To' => $date->format('d/m/Y')
         ];
     }
 
-    /**
-     *
-     */
     private function parseResponse()
     {
         $this->data = [];
+
+        libxml_use_internal_errors(true);
 
         $dom = new DOMDocument('1.0', 'UTF-8');
         $dom->loadHTML($this->html);
         $xpath = new DOMXpath($dom);
 
-        $tableRows = $xpath->query('//table/tbody/tr');
+        libxml_clear_errors();
+
+        $tableRows = $xpath->query('//table[@class="data"]/tbody/tr');
+
         foreach ($tableRows as $row => $tr) {
             foreach ($tr->childNodes as $td) {
                 $this->data[$row][] = $this->clearRow($td->nodeValue);
@@ -90,27 +81,23 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
             $this->data[$row] = array_values(array_filter($this->data[$row]));
         }
 
-        $this->data = array_map(function ($item) {
-            [$multiplier, $code] = explode(' ', $item[1]);
+        $this->data = array_filter($this->data, function ($item) {
+            return $item[0] != 'Num сode';
+        });
 
+        $h3 = $xpath->query('//h2[@class="h3"]')->item(0)->nodeValue;
+        preg_match('/(.*)([0-9]{2}\/[0-9]{2}\/[0-9]{4})(.+)/im', $h3, $match);
+        $date = DateTime::createFromFormat('d/m/Y', $match[2])->format('Y-m-d');
+
+        $this->data = array_map(function ($item) use ($date) {
             return [
                 'no' => null,
-                'code' => $code,
-                'date' => $this->date->format('Y-m-d'),
+                'code' => $item[1],
+                'date' => $date ,
                 'driver' => static::DRIVER_NAME,
-                'multiplier' => $this->stringToFloat($multiplier),
-                'rate' => $this->stringToFloat($item[2]),
+                'multiplier' => $this->stringToFloat($item[2]),
+                'rate' => $this->stringToFloat($item[4]),
             ];
         }, $this->data);
-    }
-
-    /**
-     * @param DateTime $date
-     *
-     * @return string
-     */
-    private function sourceUrl(DateTime $date): string
-    {
-        return sprintf('%s', static::URI);
     }
 }

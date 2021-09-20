@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - add support for Bank Of Croatia / Hrvatska Narodna Banka
 - add support for Bank Of Ukraine / Natsionalʹnyy bank Ukrayiny
 - add support for Bank Of Turkey / Türkiye Cumhuriyet Merkez Bankası
+- add support for Bank Of Russia / Tsentral'nyy bank Rossiyskoy Federatsii
 
 ## [0.0.10] - 2021-09-20
 
