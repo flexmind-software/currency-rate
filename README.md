@@ -167,6 +167,14 @@ composer test
             <td><a href="https://www.bankofcanada.ca/" target="_blank">Banqueu du Canada</a></td>
             <td>canada</td>
         </tr>
+        <tr>
+            <td colspan="4">Oceania</td>
+        </tr>
+        <tr>
+            <td>Australia</td>
+            <td><a href="https://www.rba.gov.au/" target="_blank">Reserve Bank of Australia</a></td>
+            <td>australia</td>
+        </tr>
         </tbody>
 </table>
 
