@@ -44,12 +44,11 @@ class TurkeyDriver extends BaseDriver implements CurrencyInterface
                 $this->xml = $respond->body();
             }
             $this->date = $date->sub(\DateInterval::createFromDateString('1 day'));
-        } while (!$respond->ok());
+        } while (! $respond->ok());
 
         $this->parseResponse();
         $this->saveInDatabase();
     }
-
 
     /**
      * @param DateTime $date
@@ -68,7 +67,6 @@ class TurkeyDriver extends BaseDriver implements CurrencyInterface
 
         $this->data = [];
         foreach ($simpleXMLElement->Currency as $element) {
-
             $rate = (float)$element->CrossRateUSD ?: (float)$element->CrossRateOther;
 
             $this->data[] = [
@@ -77,7 +75,7 @@ class TurkeyDriver extends BaseDriver implements CurrencyInterface
                 'date' => $date,
                 'driver' => static::DRIVER_NAME,
                 'multiplier' => $this->stringToFloat((float)$element->Unit),
-                'rate' => $rate
+                'rate' => $rate,
             ];
         }
     }

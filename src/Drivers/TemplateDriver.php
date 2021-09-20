@@ -48,7 +48,6 @@ class TemplateDriver extends BaseDriver implements CurrencyInterface
 
     private function parseResponse()
     {
-
     }
 
     /**
