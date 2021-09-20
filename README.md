@@ -72,6 +72,11 @@ composer test
             <td>european-central-bank</td>
         </tr>
                             <tr>
+            <td>Azerbaijan</td>
+            <td><a href="https://www.cbar.az" target="_blank">Azərbaycan Mərkəzi Bankı</a></td>
+            <td>azerbaijan</td>
+        </tr>
+                            <tr>
             <td>Belarus</td>
             <td><a href="http://www.nbrb.by/engl/" target="_blank">Нацыянальны банк Рэспублікі Беларусь</a></td>
             <td>belarus</td>
@@ -85,6 +90,11 @@ composer test
             <td>Bulgaria</td>
             <td><a href="http://www.bnb.bg/?toLang=_EN" target="_blank">Bŭlgarska narodna banka</a></td>
             <td>bulgaria</td>
+        </tr>
+                            <tr>
+            <td>Croatia</td>
+            <td><a href="https://www.hnb.hr/home" target="_blank">Hrvatska Narodna Banka</a></td>
+            <td>croatia</td>
         </tr>
                             <tr>
             <td>Czech Republic</td>
@@ -131,7 +141,6 @@ composer test
         </tr>
                 </tbody>
 </table>
-
 
 ## Changelog
 

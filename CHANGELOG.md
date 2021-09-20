@@ -5,6 +5,12 @@ All notable changes to `flexmind-software/currency-rate` will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- add support for Bank Of Azerbaijan
+- add support for Bank Of Croatia
+
 ## [0.0.10] - 2021-09-20
 
 ### Added
