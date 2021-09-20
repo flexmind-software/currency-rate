@@ -51,7 +51,7 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
             file_put_contents($tmp, $zippedContent);
 
             // Uncompress and read the ZIP archive
-            $zip = new ZipArchive;
+            $zip = new ZipArchive();
             if (true === $zip->open($tmp) && true === $zip->extractTo($dir)) {
                 $file = head(glob($dir . '/*.json'));
                 $this->json = json_decode(file_get_contents($file), true);
@@ -73,7 +73,7 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
             'p_p_state' => 'normal',
             'p_p_mode' => 'view',
             'p_p_resource_id' => 'downloadDataURL',
-            'p_p_cacheability' => 'cacheLevelPage'
+            'p_p_cacheability' => 'cacheLevelPage',
         ];
     }
 
@@ -101,7 +101,7 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
             'izborValuta' => -1,
             '_izborValuta' => 1,
             '_tecajnalista_WAR_hnbtecajnalistaportlet_vrstaTecaja' => 'srednji',
-            '_tecajnalista_WAR_hnbtecajnalistaportlet_fileTypeForDownload' => 'JSON'
+            '_tecajnalista_WAR_hnbtecajnalistaportlet_fileTypeForDownload' => 'JSON',
         ];
     }
 
@@ -111,7 +111,7 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
             $this->data[] = [
                 'no' => $item['Exchange rate list number'],
                 'code' => $item['Currency'],
-                'date' => DateTime::createFromFormat('d.m.Y', $item['Date'],)->format('Y-m-d'),
+                'date' => DateTime::createFromFormat('d.m.Y', $item['Date'], )->format('Y-m-d'),
                 'driver' => static::DRIVER_NAME,
                 'multiplier' => floatval($item['Unit']),
                 'rate' => $this->stringToFloat($item['Middle rate']),
