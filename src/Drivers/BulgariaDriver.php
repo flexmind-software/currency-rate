@@ -40,7 +40,6 @@ class BulgariaDriver extends BaseDriver implements CurrencyInterface
         $response = Http::get(static::URI, $this->queryString($date));
 
         if ($response->ok()) {
-
             $fileContent = $response->body();
 
             $explode = explode("\n", $fileContent);
@@ -83,7 +82,7 @@ class BulgariaDriver extends BaseDriver implements CurrencyInterface
                 continue;
             }
 
-            $date =  DateTime::createFromFormat('d.m.Y', $rates[0])->format('Y-m-d');
+            $date = DateTime::createFromFormat('d.m.Y', $rates[0])->format('Y-m-d');
 
             $param = [];
             $param['no'] = null;
