@@ -13,7 +13,7 @@
 - [x] [Danmark / Danmarks Nationalbanks](http://www.nationalbanken.dk/en) (driver name 'denmark')
 - [ ] [Georgia / Sakartvelos Erovnuli Bank’i](http://www.nbg.gov.ge)
 - [ ] [United Kingdom / Bank of England](https://www.bankofengland.co.uk/)
-- [ ] [Hungary / Magyar Nemzeti Bank](https://www.mnb.hu/en/)
+- [x] [Hungary / Magyar Nemzeti Bank](https://www.mnb.hu/en/)
 - [ ] [Iceland / Seðlabanki Íslands)](https://cb.is)
 - [ ] [Liechtenstein / Liechtensteinische Landesbank](https://www.llb.li/en)
 - [ ] [Macedonia / Narodna Banka na Republika Severna Makedonija](http://www.nbrm.mk/)

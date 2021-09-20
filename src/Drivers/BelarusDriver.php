@@ -17,9 +17,10 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
-    // https://www.nbrb.by/engl/statistics/rates/ratesdaily.asp
     /**
      * @const string
+     *
+     * https://www.nbrb.by/engl/statistics/rates/ratesdaily.asp
      */
     public const URI = 'https://www.nbrb.by/engl/statistics/rates/ratesdaily.asp';
     /**
@@ -84,7 +85,7 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
         $tableRows = $xpath->query('//table/tbody/tr');
         foreach ($tableRows as $row => $tr) {
             foreach ($tr->childNodes as $td) {
-                $this->data[$row][] = preg_replace('~[\r\n]+~', '', trim($td->nodeValue));
+                $this->data[$row][] = $this->clearRow($td->nodeValue);
             }
             $this->data[$row] = array_values(array_filter($this->data[$row]));
         }

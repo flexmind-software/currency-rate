@@ -101,12 +101,8 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
                 isset($position['przelicznik'])
             ) {
                 $param['code'] = strtoupper($position['kod_waluty']);
-                $param['rate'] = floatval(
-                    str_replace(',', '.', $position['kurs_sredni'])
-                );
-                $param['multiplier'] = floatval(
-                    str_replace(',', '.', $position['przelicznik'])
-                );
+                $param['rate'] = $this->stringToFloat($position['kurs_sredni']);
+                $param['multiplier'] = $this->stringToFloat($position['przelicznik']);
                 $this->data[] = $param;
             }
         }

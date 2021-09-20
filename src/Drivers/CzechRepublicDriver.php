@@ -7,6 +7,7 @@ use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
+use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -35,27 +36,33 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
      * @var array
      */
     private array $headers;
+    /**
+     * @var array|false[]|\string[][]
+     */
+    private array $rateList;
 
     /**
      * @param DateTime $date
      *
-     * @return mixed|void
+     * @return void
      */
     public function downloadRates(DateTime $date)
     {
         $this->date = $date;
         $sourceUrl = $this->sourceUrl($date);
 
-        if ($fileContent = file_get_contents($sourceUrl)) {
+        $response = Http::get($sourceUrl);
+        if ($response->ok()) {
+            $fileContent = $response->body();
+
             $explode = explode("\n", $fileContent);
 
-            $rateList = array_map(function ($item) {
+            $this->rateList = array_map(function ($item) {
                 return explode('|', $item);
             }, $explode);
 
-            $headers = head($rateList);
-            $this->parseHeader($headers);
-            $this->parseRates($rateList);
+            $this->parseHeader();
+            $this->parseRates();
             $this->saveInDatabase();
         }
     }
@@ -75,12 +82,14 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
     }
 
     /**
-     * @param array $headers
+     * @param
      */
-    private function parseHeader(array $headers)
+    private function parseHeader()
     {
+        $headerList = head($this->rateList);
+
         $this->headers = [];
-        foreach ($headers as $i => $value) {
+        foreach ($headerList as $i => $value) {
             if ($i === 0) {
                 continue;
             }
@@ -92,13 +101,10 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
-    /**
-     * @param array $rateList
-     */
-    private function parseRates(array $rateList)
+    private function parseRates()
     {
         $this->data = [];
-        foreach ($rateList as $row => $rates) {
+        foreach ($this->rateList as $row => $rates) {
             if ($row === 0) {
                 continue;
             }
@@ -114,7 +120,7 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
                 }
 
                 $item[$this->headers[$key]['code']]['multiplier'] = $this->headers[$key]['multiplier'];
-                $item[$this->headers[$key]['code']]['rate'] = floatval(str_replace(',', '.', $value));
+                $item[$this->headers[$key]['code']]['rate'] = $this->stringToFloat($value);
             }
 
             $this->data[$date->format('Y-m-d')] = $item;

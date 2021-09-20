@@ -53,12 +53,12 @@ composer test
 ```
 
 ## Sources
+
 <table>
     <thead>
     <tr>
         <th>Country name</th>
         <th>Central Bank</th>
-        <th>Website</th>
         <th>Driver name</th>
     </tr>
     </thead>
@@ -68,62 +68,57 @@ composer test
         </tr>
                             <tr>
             <td></td>
-            <td>European Central Bank</td>
-            <td><a href="https://ecb.europa.eu" target="_blank">https://ecb.europa.eu</a></td>
+            <td><a href="https://ecb.europa.eu" target="_blank">European Central Bank</a></td>
             <td>european-central-bank</td>
         </tr>
                             <tr>
             <td>Belarus</td>
-            <td>Natsional'nyy bank Respubliki Belarus'</td>
-            <td><a href="http://www.nbrb.by/engl/" target="_blank">http://www.nbrb.by/engl/</a></td>
+            <td><a href="http://www.nbrb.by/engl/" target="_blank">Нацыянальны банк Рэспублікі Беларусь</a></td>
             <td>belarus</td>
         </tr>
                             <tr>
             <td>Bosnia and Herzegovina</td>
-            <td>Centralna Banka Bosne I Hergegovine</td>
-            <td><a href="https://www.cbbh.ba/?lang=en" target="_blank">https://www.cbbh.ba/?lang=en</a></td>
+            <td><a href="https://www.cbbh.ba/?lang=en" target="_blank">Централна банка Босне и Херцеговине</a></td>
             <td>bosnia-and-herzegovina</td>
         </tr>
                             <tr>
             <td>Bulgaria</td>
-            <td>Bŭlgarska narodna banka</td>
-            <td><a href="http://www.bnb.bg/?toLang=_EN" target="_blank">http://www.bnb.bg/?toLang=_EN</a></td>
+            <td><a href="http://www.bnb.bg/?toLang=_EN" target="_blank">Bŭlgarska narodna banka</a></td>
             <td>bulgaria</td>
         </tr>
-        <tr>
+                            <tr>
             <td>Czech Republic</td>
-            <td>Ceska Narodni Banka</td>
-            <td><a href="https://www.cnb.cz/en/index.html" target="_blank">https://www.cnb.cz/en/index.html</a></td>
+            <td><a href="https://www.cnb.cz/en/index.html" target="_blank">Česká národní banka</a></td>
             <td>czech-republic</td>
         </tr>
-        <tr>
+                            <tr>
             <td>Danmark</td>
-            <td>Danmarks Nationalbanks</td>
-            <td><a href="http://www.nationalbanken.dk/en" target="_blank">http://www.nationalbanken.dk/en</a></td>
+            <td><a href="http://www.nationalbanken.dk/en" target="_blank">Danmarks Nationalbanks</a></td>
             <td>denmark</td>
         </tr>
                             <tr>
+            <td>Hungary</td>
+            <td><a href="https://www.mnb.hu/en/" target="_blank">Magyar Nemzeti Bank</a></td>
+            <td>hungary</td>
+        </tr>
+                            <tr>
             <td>Norway</td>
-            <td>Norges Bank</td>
-            <td><a href="https://www.norges-bank.no/en/" target="_blank">https://www.norges-bank.no/en/</a></td>
+            <td><a href="https://www.norges-bank.no/en/" target="_blank">Norges Bank</a></td>
             <td>norway</td>
         </tr>
                             <tr>
             <td>Poland</td>
-            <td>Narodowy Bank Polski</td>
-            <td><a href="https://www.nbp.pl/" target="_blank">https://www.nbp.pl/</a></td>
+            <td><a href="https://www.nbp.pl/" target="_blank">Narodowy Bank Polski</a></td>
             <td>poland</td>
         </tr>
                             <tr>
             <td>Romania</td>
-            <td>Banca Nationala a Romaniei</td>
-            <td><a href="https://www.bnro.ro/Home.aspx" target="_blank">https://www.bnro.ro/Home.aspx</a></td>
+            <td><a href="https://www.bnro.ro/Home.aspx" target="_blank">Banca Națională a României</a></td>
             <td>romania</td>
         </tr>
                             <tr>
             <td>Sweden</td>
-            <td>Sveriges Riksbank</td>
-            <td><a href="https://www.riksbank.se/en-gb/" target="_blank">https://www.riksbank.se/en-gb/</a></td>
+            <td><a href="https://www.riksbank.se/en-gb/" target="_blank">Sveriges Riksbank</a></td>
             <td>sweden</td>
         </tr>
                             <tr>
@@ -131,14 +126,11 @@ composer test
         </tr>
                             <tr>
             <td>Canada</td>
-            <td>Banqueu du Canada</td>
-            <td><a href="https://www.bankofcanada.ca/" target="_blank">https://www.bankofcanada.ca/</a></td>
+            <td><a href="https://www.bankofcanada.ca/" target="_blank">Banqueu du Canada</a></td>
             <td>canada</td>
         </tr>
                 </tbody>
 </table>
-
-
 
 
 ## Changelog
