@@ -1,6 +1,6 @@
 {
     "name": "flexmind-software/currency-rate",
-    "vesrion": "0.0.9",
+    "vesrion": "0.0.10",
     "description": "Library download currency rate and save in database, It's designed to be extended by any available data source.",
     "keywords": [
         "flexmind",
