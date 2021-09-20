@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.9] - 2021-09-16
 
 ### Added
+- add support for Bank Of Hungary
+
+### Changed
+- from now all driver user Http object instead of file_get_content function
+
+## [0.0.9] - 2021-09-16
+
+### Added
 - list countries to Bank list in README
 
 ### Changed
