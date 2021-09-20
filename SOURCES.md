@@ -2,9 +2,9 @@
 
 ### Europe
 - [x] [European Central Bank](https://ecb.europa.eu) (driver name 'european-central-bank')
-- [ ] [Albania / Banka e Shqiperise](https://www.bankofalbania.org/home/)
+- [ ] [Albania / Bankës së Shqipërisë](https://www.bankofalbania.org/home/)
 - [ ] [Armenia / Hayastani Hanrapetut’yan Kentronakan Bank](https://www.cba.am/en/sitepages/default.aspx)
-- [ ] [Azerbaijan / Azərbaycan Mərkəzi Bankı](https://www.cbar.az)
+- [x] [Azerbaijan / Azərbaycan Mərkəzi Bankı](https://www.cbar.az)
 - [x] [Belarus / Natsional'nyy bank Respubliki Belarus'](http://www.nbrb.by/engl/) (driver name 'belarus')
 - [x] [Bosnia and Herzegovina / Centralna Banka Bosne I Hergegovine](https://www.cbbh.ba/?lang=en) (driver name 'bosnia-and-herzegovina')
 - [x] [Bulgaria / Bŭlgarska narodna banka](http://www.bnb.bg/?toLang=_EN) (driver name 'bulgaria')

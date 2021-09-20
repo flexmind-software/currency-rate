@@ -5,7 +5,14 @@
     "keywords": [
         "flexmind",
         "laravel",
-        "currency-rate"
+        "pachages",
+        "php",
+        "mysql", "postresql", "mongo",
+        "currency-converter",
+        "currency-exchange",
+        "currency rate",
+        "currency rates",
+        "foreign exchange rates"
     ],
     "homepage": "https://github.com/flexmind-software/currency-rate",
     "license": "MIT",
