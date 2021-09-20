@@ -58,8 +58,7 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
         if ($respond->ok()) {
             $this->html = $respond->body();
             $this->parseResponse();
-//            $this->saveInDatabase();
-            dd($this->data);
+            $this->saveInDatabase();
         }
     }
 
