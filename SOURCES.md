@@ -23,19 +23,19 @@
 - [ ] [Russia / Tsentral'nyy bank Rossiyskoy Federatsii](http://cbr.ru/)
 - [x] [Romania / Banca Nationala a Romaniei](https://www.bnro.ro/Home.aspx) (driver name 'romania')
 - [ ] [Serbia / Narodna banka Srbije](https://www.nbs.rs/en/indeks/index.html)
-- [x] [Switzerland / Banca naziunala svizra](http://www.snb.ch/)
+- [x] [Switzerland / Banca naziunala svizra](http://www.snb.ch/) (driver name 'switzerland')
 - [x] [Sweden / Sveriges Riksbank](https://www.riksbank.se/en-gb/) (driver name 'sweden')
 - [x] [Turkey / Türkiye Cumhuriyet Merkez Bankası](http://www.tcmb.gov.tr/) (driver name 'turkey')
 - [x] [Ukraine / Natsionalʹnyy bank Ukrayiny](http://www.bank.gov.ua/) (driver name 'ukraine')
 
-### Asia [0 / 19]
+### Asia [1 / 19]
 - [ ] [China / Zhōngguó Rénmín Yínháng](http://www.pbc.gov.cn/en/3688006/index.html)
 - [ ] [India](http://rbi.org.in/)
 - [ ] [Indonesia](http://www.bi.go.id/)
 - [ ] [Iran / Bank Markazi-ye Jomhuri-ye Eslāmi-ye Irān](http://www.cbi.ir/default_en.aspx)
 - [ ] [Iraq / Albank Almarkaziu Aleiraqiu](https://www.cbi.iq/)
 - [ ] [Japan / Nippon Ginkō](http://www.boj.or.jp/en/)
-- [ ] [Israel / בנק ישראל](https://www.boi.org.il/)
+- [x] [Israel / בנק ישראל](https://www.boi.org.il/) (driver name 'israel')
 - [ ] [Korea / Hanguk Eunhaeng](http://www.bok.or.kr/eng/)
 - [ ] [Lebanon / مصرف لبنان](http://www.bdl.gov.lb/)
 - [ ] [Myanmar / မြန်မာနိုင်ငံတော်ဗဟိုဘဏ်](http://www.cbm.gov.mm/)

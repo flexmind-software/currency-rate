@@ -125,7 +125,12 @@ composer test
             <td><a href="https://www.bnro.ro/Home.aspx" target="_blank">Banca Națională a României</a></td>
             <td>romania</td>
         </tr>
-                            <tr>
+        <tr>
+            <td>Switzerland</td>
+            <td><a href="http://www.snb.ch/" target="_blank">Banca naziunala svizra</a></td>
+            <td>switzerland</td>
+        </tr>
+        <tr>
             <td>Sweden</td>
             <td><a href="https://www.riksbank.se/en-gb/" target="_blank">Sveriges Riksbank</a></td>
             <td>sweden</td>
@@ -140,15 +145,24 @@ composer test
             <td><a href="http://www.bank.gov.ua/" target="_blank">Natsionalʹnyy bank Ukrayiny</a></td>
             <td>ukraine</td>
         </tr>
-                            <tr>
+        <tr>
+            <td colspan="4">Asia</td>
+        </tr>
+        <tr>
+            <td>Israel</td>
+            <td><a href="https://www.bankofcanada.ca/" target="_blank">בנק ישראל</a></td>
+            <td>israel</td>
+        </tr>
+        </tbody>
+        <tr>
             <td colspan="4">North America</td>
         </tr>
-                            <tr>
+        <tr>
             <td>Canada</td>
             <td><a href="https://www.bankofcanada.ca/" target="_blank">Banqueu du Canada</a></td>
             <td>canada</td>
         </tr>
-                </tbody>
+        </tbody>
 </table>
 
 
