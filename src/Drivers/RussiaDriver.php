@@ -56,7 +56,7 @@ class RussiaDriver extends BaseDriver implements CurrencyInterface
     {
         return [
             'UniDbQuery.Posted' => 'True',
-            'UniDbQuery.To' => $date->format('d/m/Y')
+            'UniDbQuery.To' => $date->format('d/m/Y'),
         ];
     }
 

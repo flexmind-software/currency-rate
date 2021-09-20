@@ -59,6 +59,7 @@ class AustraliaDriver extends BaseDriver implements CurrencyInterface
             switch ($target) {
                 case 'SDR': // Special Drawing Rights
                     $target = 'XDR';
+
                     break;
                 case 'TWI_4pm':
                     continue 2;
