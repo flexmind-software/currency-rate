@@ -1,6 +1,6 @@
 ## Sources
 
-### Europe
+### Europe [13 / 26]
 - [x] [European Central Bank](https://ecb.europa.eu) (driver name 'european-central-bank')
 - [ ] [Albania / Bankës së Shqipërisë](https://www.bankofalbania.org/home/)
 - [ ] [Armenia / Hayastani Hanrapetut’yan Kentronakan Bank](https://www.cba.am/en/sitepages/default.aspx)
@@ -28,7 +28,7 @@
 - [ ] [Turkey / Türkiye Cumhuriyet Merkez Bankası](http://www.tcmb.gov.tr/)
 - [ ] [Ukraine / Natsionalʹnyy bank Ukrayiny](http://www.bank.gov.ua/)
 
-### Asia
+### Asia [0 / 19]
 - [ ] [China / Zhōngguó Rénmín Yínháng](http://www.pbc.gov.cn/en/3688006/index.html)
 - [ ] [India](http://rbi.org.in/)
 - [ ] [Indonesia](http://www.bi.go.id/)
@@ -49,7 +49,7 @@
 - [ ] [Vietnam / Ngân hàng Nhà nước Việt Nam](http://www.sbv.gov.vn/)
 - [ ] [Yemen / البنك الأهلي اليمني](www.nbyemen.com/iNav/index_ar.html)
 
-### Africa
+### Africa [0 / 54]
 https://en.wikipedia.org/wiki/List_of_banks_in_Africa
 - [ ] [Algeria / ]()
 - [ ] [Angola / ]()
@@ -106,7 +106,7 @@ https://en.wikipedia.org/wiki/List_of_banks_in_Africa
 - [ ] [Zambia / ]()
 - [ ] [Zimbabwe / ]()
 
-### North America
+### North America [1 / 15]
 - [x] [Canada / Banqueu du Canada](https://www.bankofcanada.ca/) (driver name 'canada')
 - [ ] [Antigua and Barbuda]()
 - [ ] [Bahamas]()
@@ -123,7 +123,7 @@ https://en.wikipedia.org/wiki/List_of_banks_in_Africa
 - [ ] [Saint Lucia]()
 - [ ] [Trinidad and Tobago]()
 
-### South America
+### South America [0 / 19]
 - [ ] [Argentina / Banco Central de la Republica Argentina](http://www.bcra.gob.ar/default.asp)
 - [ ] [Belize]()
 - [ ] [Bolivia]()
@@ -141,7 +141,7 @@ https://en.wikipedia.org/wiki/List_of_banks_in_Africa
 - [ ] [Uruguay]()
 - [ ] [Venezuela]()
 
-### Oceania
+### Oceania [0 / 7]
 - [ ] [Australia / Reserve Bank of Australia](https://www.rba.gov.au/)
 - [ ] [Fiji / Reserve Bank of Fiji](http://www.rbf.gov.fj/)
 - [ ] [New Zealand / Te Pūtea Matua](http://www.rbnz.govt.nz/index.html)
