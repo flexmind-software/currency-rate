@@ -17,6 +17,8 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
 
     /**
      * @const string
+     *
+     * https://www.nbrb.by/Services/XmlExRatesDyn.aspx?curId=440&fromDate=9/01/2021&toDate=9/21/2021 - history
      */
     public const URI = 'https://www.nbrb.by/Services/XmlExRates.aspx';
     /**
