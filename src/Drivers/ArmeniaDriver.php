@@ -59,4 +59,19 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
             http_build_query($queryString)
         );
     }
+
+    public function fullName(): string
+    {
+        return '';
+    }
+
+    public function homeUrl(): string
+    {
+        return '';
+    }
+
+    public function infoAboutFrequency(): string
+    {
+        return '';
+    }
 }

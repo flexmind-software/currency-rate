@@ -100,4 +100,19 @@ class RussiaDriver extends BaseDriver implements CurrencyInterface
             ];
         }, $this->data);
     }
+
+    public function fullName(): string
+    {
+       return 'Central Bank of the Russian Federation';
+    }
+
+    public function homeUrl(): string
+    {
+        return 'https://www.cbr.ru/';
+    }
+
+    public function infoAboutFrequency(): string
+    {
+        return 'Daily';
+    }
 }

@@ -76,4 +76,19 @@ class AustraliaDriver extends BaseDriver implements CurrencyInterface
 
         $this->data = $currencyList;
     }
+
+    public function fullName(): string
+    {
+        return 'Reserve Bank of Australia';
+    }
+
+    public function homeUrl(): string
+    {
+        return 'https://www.rba.gov.au/';
+    }
+
+    public function infoAboutFrequency(): string
+    {
+        return 'Weekdays around 4.00 PM Eastern Australian Time';
+    }
 }

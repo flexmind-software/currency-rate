@@ -68,4 +68,19 @@ class SwitzerlandDriver extends BaseDriver implements CurrencyInterface
             }
         }
     }
+
+    public function fullName(): string
+    {
+        return 'Swiss National Bank';
+    }
+
+    public function homeUrl(): string
+    {
+        return 'https://www.snb.ch/';
+    }
+
+    public function infoAboutFrequency(): string
+    {
+        return 'Weekday rates at 11:00 AM Central European Time (CET)';
+    }
 }

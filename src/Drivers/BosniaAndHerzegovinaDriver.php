@@ -82,4 +82,19 @@ class BosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInterface
     {
         CurrencyRate::upsert($this->data, ['no', 'driver', 'code', 'date'], ['rate', 'multiplier']);
     }
+
+    public function fullName(): string
+    {
+        return '';
+    }
+
+    public function homeUrl(): string
+    {
+        return '';
+    }
+
+    public function infoAboutFrequency(): string
+    {
+        return '';
+    }
 }

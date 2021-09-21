@@ -141,7 +141,7 @@ https://en.wikipedia.org/wiki/List_of_banks_in_Africa
 - [ ] [Uruguay]()
 - [ ] [Venezuela]()
 
-### Oceania [0 / 7]
+### Oceania [1 / 7]
 - [x] [Australia / Reserve Bank of Australia](https://www.rba.gov.au/)
 - [ ] [Fiji / Reserve Bank of Fiji](http://www.rbf.gov.fj/)
 - [ ] [New Zealand / Te Pūtea Matua](http://www.rbnz.govt.nz/index.html)

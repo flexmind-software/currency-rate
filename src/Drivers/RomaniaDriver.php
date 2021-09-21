@@ -112,4 +112,19 @@ class RomaniaDriver extends BaseDriver implements CurrencyInterface
             $this->data = last($this->data);
         }
     }
+
+    public function fullName(): string
+    {
+        return '';
+    }
+
+    public function homeUrl(): string
+    {
+        return '';
+    }
+
+    public function infoAboutFrequency(): string
+    {
+        return '';
+    }
 }

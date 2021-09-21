@@ -98,4 +98,19 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
             }
         }
     }
+
+    public function fullName(): string
+    {
+        return '';
+    }
+
+    public function homeUrl(): string
+    {
+        return '';
+    }
+
+    public function infoAboutFrequency(): string
+    {
+        return '';
+    }
 }

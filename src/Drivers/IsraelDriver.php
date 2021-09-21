@@ -130,4 +130,19 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
     {
         return $this->countryList[$country] ?? null;
     }
+
+    public function fullName(): string
+    {
+        return 'Bank of Israel';
+    }
+
+    public function homeUrl(): string
+    {
+        return 'https://www.boi.org.il/';
+    }
+
+    public function infoAboutFrequency(): string
+    {
+        return 'Daily';
+    }
 }
