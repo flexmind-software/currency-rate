@@ -102,8 +102,13 @@ composer test
         </tr>
         <tr>
             <td>Danmark</td>
-            <td><a href="http://www.nationalbanken.dk/en" target="_blank">Danmarks Nationalbanks</a></td>
+            <td><a href="http://www.nationalbanken.dk" target="_blank">Danmarks Nationalbanks</a></td>
             <td>denmark</td>
+        </tr>
+        <tr>
+            <td>Georgia</td>
+            <td><a href="http://www.nbg.gov.ge" target="_blank">Sakartvelos Erovnuli Bank’i</a></td>
+            <td>georgia</td>
         </tr>
         <tr>
             <td>Hungary</td>
