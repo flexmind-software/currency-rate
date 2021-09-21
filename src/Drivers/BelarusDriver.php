@@ -3,12 +3,9 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateTime;
-use DOMDocument;
-use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Http;
 
 /**
@@ -61,7 +58,7 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
     private function queryString(DateTime $date): array
     {
         return [
-            'ondate' => $date->format('m/d/Y')
+            'ondate' => $date->format('m/d/Y'),
         ];
     }
 

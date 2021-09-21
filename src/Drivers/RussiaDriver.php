@@ -103,7 +103,7 @@ class RussiaDriver extends BaseDriver implements CurrencyInterface
 
     public function fullName(): string
     {
-       return 'Central Bank of the Russian Federation';
+        return 'Central Bank of the Russian Federation';
     }
 
     public function homeUrl(): string
