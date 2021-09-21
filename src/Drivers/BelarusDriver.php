@@ -3,8 +3,6 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateTime;
-use DOMDocument;
-use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -20,9 +18,9 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
     /**
      * @const string
      *
-     * https://www.nbrb.by/engl/statistics/rates/ratesdaily.asp
+     * https://www.nbrb.by/Services/XmlExRatesDyn.aspx?curId=440&fromDate=9/01/2021&toDate=9/21/2021 - history
      */
-    public const URI = 'https://www.nbrb.by/engl/statistics/rates/ratesdaily.asp';
+    public const URI = 'https://www.nbrb.by/Services/XmlExRates.aspx';
     /**
      * @const string
      */
@@ -34,7 +32,7 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    private string $html;
+    private string $xml;
 
     /**
      * @param DateTime $date
@@ -45,11 +43,10 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
     {
         $this->date = $date;
 
-        $response = Http::asForm()
-            ->post(static::URI, $this->getFormParams($date));
+        $response = Http::get(static::URI, $this->queryString($date));
 
         if ($response->ok()) {
-            $this->html = $response->body();
+            $this->xml = $response->body();
             $this->parseResponse();
             $this->saveInDatabase();
         }
@@ -60,14 +57,10 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
      *
      * @return array
      */
-    private function getFormParams(DateTime $date): array
+    private function queryString(DateTime $date): array
     {
-        // query send over POST method
         return [
-//            'Date' => $date->format('Y-m-d'),
-            'Date' => $date->format('d/m/Y'),
-            'Type' => 'Day',
-            'X-Requested-With' => 'XMLHttpRequest',
+            'ondate' => $date->format('m/d/Y'),
         ];
     }
 
@@ -76,41 +69,36 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
      */
     private function parseResponse()
     {
-        $this->data = [];
+        $xml = simplexml_load_string($this->xml);
 
-        $dom = new DOMDocument('1.0', 'UTF-8');
-        $dom->loadHTML($this->html);
-        $xpath = new DOMXpath($dom);
+        if (count($xml->Currency)) {
+            $date = DateTime::createFromFormat('m/d/Y', $xml->attributes()[0])->format('Y-m-d');
 
-        $tableRows = $xpath->query('//table/tbody/tr');
-        foreach ($tableRows as $row => $tr) {
-            foreach ($tr->childNodes as $td) {
-                $this->data[$row][] = $this->clearRow($td->nodeValue);
+            foreach ($xml->Currency as $xmlElement) {
+                $this->data[] = [
+                    'no' => (int)$xmlElement->attributes()[0],
+                    'code' => (string)$xmlElement->CharCode,
+                    'date' => $date,
+                    'driver' => static::DRIVER_NAME,
+                    'multiplier' => $this->stringToFloat((int)$xmlElement->Scale),
+                    'rate' => $this->stringToFloat($xmlElement->Rate),
+                ];
             }
-            $this->data[$row] = array_values(array_filter($this->data[$row]));
         }
-
-        $this->data = array_map(function ($item) {
-            [$multiplier, $code] = explode(' ', $item[1]);
-
-            return [
-                'no' => null,
-                'code' => $code,
-                'date' => $this->date->format('Y-m-d'),
-                'driver' => static::DRIVER_NAME,
-                'multiplier' => floatval($multiplier),
-                'rate' => floatval($item[2]),
-            ];
-        }, $this->data);
     }
 
-    /**
-     * @param DateTime $date
-     *
-     * @return string
-     */
-    private function sourceUrl(DateTime $date): string
+    public function fullName(): string
     {
-        return sprintf('%s', static::URI);
+        return '';
+    }
+
+    public function homeUrl(): string
+    {
+        return '';
+    }
+
+    public function infoAboutFrequency(): string
+    {
+        return '';
     }
 }

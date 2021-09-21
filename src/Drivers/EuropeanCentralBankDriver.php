@@ -87,4 +87,19 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
             $this->data[] = $data;
         }
     }
+
+    public function fullName(): string
+    {
+        return 'European Central Bank';
+    }
+
+    public function homeUrl(): string
+    {
+        return 'https://www.ecb.europa.eu/';
+    }
+
+    public function infoAboutFrequency(): string
+    {
+        return 'Weekday rates at 3:00 PM Central European Time (CET)';
+    }
 }

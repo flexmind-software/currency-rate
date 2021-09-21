@@ -33,7 +33,9 @@ abstract class BaseDriver
 
     protected function saveInDatabase()
     {
-        CurrencyRate::upsert($this->data, ['driver', 'code', 'date'], ['rate', 'multiplier']);
+        if ($this->data) {
+            CurrencyRate::upsert($this->data, ['driver', 'code', 'date'], ['rate', 'multiplier']);
+        }
     }
 
     /**

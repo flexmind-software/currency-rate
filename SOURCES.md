@@ -1,17 +1,17 @@
 ## Sources
 
-### Europe
+### Europe [18 / 26]
 - [x] [European Central Bank](https://ecb.europa.eu) (driver name 'european-central-bank')
-- [ ] [Albania / Banka e Shqiperise](https://www.bankofalbania.org/home/)
+- [ ] [Albania / Bankës së Shqipërisë](https://www.bankofalbania.org/home/)
 - [ ] [Armenia / Hayastani Hanrapetut’yan Kentronakan Bank](https://www.cba.am/en/sitepages/default.aspx)
-- [ ] [Azerbaijan / Azərbaycan Mərkəzi Bankı](https://www.cbar.az)
+- [x] [Azerbaijan / Azərbaycan Mərkəzi Bankı](https://www.cbar.az) (driver name 'azerbaijan')
 - [x] [Belarus / Natsional'nyy bank Respubliki Belarus'](http://www.nbrb.by/engl/) (driver name 'belarus')
 - [x] [Bosnia and Herzegovina / Centralna Banka Bosne I Hergegovine](https://www.cbbh.ba/?lang=en) (driver name 'bosnia-and-herzegovina')
 - [x] [Bulgaria / Bŭlgarska narodna banka](http://www.bnb.bg/?toLang=_EN) (driver name 'bulgaria')
-- [ ] [Croatia / Hrvatska Narodna Banka](https://www.hnb.hr/home)
+- [x] [Croatia / Hrvatska Narodna Banka](https://www.hnb.hr/home) (driver name 'croatia')
 - [x] [Czech Republic / Ceska Narodni Banka](https://www.cnb.cz/en/index.html) (driver name 'czech-republic')
 - [x] [Danmark / Danmarks Nationalbanks](http://www.nationalbanken.dk/en) (driver name 'denmark')
-- [ ] [Georgia / Sakartvelos Erovnuli Bank’i](http://www.nbg.gov.ge)
+- [x] [Georgia / Sakartvelos Erovnuli Bank’i](http://www.nbg.gov.ge)
 - [ ] [United Kingdom / Bank of England](https://www.bankofengland.co.uk/)
 - [x] [Hungary / Magyar Nemzeti Bank](https://www.mnb.hu/en/)
 - [ ] [Iceland / Seðlabanki Íslands)](https://cb.is)
@@ -20,22 +20,22 @@
 - [ ] [Moldavia / Banca Naţională a Moldovei](http://www.bnm.md/)
 - [x] [Norway / Norges Bank](https://www.norges-bank.no/en/) (driver name 'norway')
 - [x] [Poland / Narodowy Bank Polski](https://www.nbp.pl/) (driver name 'poland')
-- [ ] [Russia / Tsentral'nyy bank Rossiyskoy Federatsii](http://cbr.ru/)
+- [x] [Russia / Tsentral'nyy bank Rossiyskoy Federatsii](http://cbr.ru/) (driver name 'russia')
 - [x] [Romania / Banca Nationala a Romaniei](https://www.bnro.ro/Home.aspx) (driver name 'romania')
 - [ ] [Serbia / Narodna banka Srbije](https://www.nbs.rs/en/indeks/index.html)
-- [ ] [Switzerland / Banca naziunala svizra](http://www.snb.ch/)
+- [x] [Switzerland / Banca naziunala svizra](http://www.snb.ch/) (driver name 'switzerland')
 - [x] [Sweden / Sveriges Riksbank](https://www.riksbank.se/en-gb/) (driver name 'sweden')
-- [ ] [Turkey / Türkiye Cumhuriyet Merkez Bankası](http://www.tcmb.gov.tr/)
-- [ ] [Ukraine / Natsionalʹnyy bank Ukrayiny](http://www.bank.gov.ua/)
+- [x] [Turkey / Türkiye Cumhuriyet Merkez Bankası](http://www.tcmb.gov.tr/) (driver name 'turkey')
+- [x] [Ukraine / Natsionalʹnyy bank Ukrayiny](http://www.bank.gov.ua/) (driver name 'ukraine')
 
-### Asia
+### Asia [1 / 19]
 - [ ] [China / Zhōngguó Rénmín Yínháng](http://www.pbc.gov.cn/en/3688006/index.html)
 - [ ] [India](http://rbi.org.in/)
 - [ ] [Indonesia](http://www.bi.go.id/)
 - [ ] [Iran / Bank Markazi-ye Jomhuri-ye Eslāmi-ye Irān](http://www.cbi.ir/default_en.aspx)
 - [ ] [Iraq / Albank Almarkaziu Aleiraqiu](https://www.cbi.iq/)
 - [ ] [Japan / Nippon Ginkō](http://www.boj.or.jp/en/)
-- [ ] [Israel / בנק ישראל](https://www.boi.org.il/)
+- [x] [Israel / בנק ישראל](https://www.boi.org.il/) (driver name 'israel')
 - [ ] [Korea / Hanguk Eunhaeng](http://www.bok.or.kr/eng/)
 - [ ] [Lebanon / مصرف لبنان](http://www.bdl.gov.lb/)
 - [ ] [Myanmar / မြန်မာနိုင်ငံတော်ဗဟိုဘဏ်](http://www.cbm.gov.mm/)
@@ -49,7 +49,7 @@
 - [ ] [Vietnam / Ngân hàng Nhà nước Việt Nam](http://www.sbv.gov.vn/)
 - [ ] [Yemen / البنك الأهلي اليمني](www.nbyemen.com/iNav/index_ar.html)
 
-### Africa
+### Africa [0 / 54]
 https://en.wikipedia.org/wiki/List_of_banks_in_Africa
 - [ ] [Algeria / ]()
 - [ ] [Angola / ]()
@@ -106,7 +106,7 @@ https://en.wikipedia.org/wiki/List_of_banks_in_Africa
 - [ ] [Zambia / ]()
 - [ ] [Zimbabwe / ]()
 
-### North America
+### North America [1 / 15]
 - [x] [Canada / Banqueu du Canada](https://www.bankofcanada.ca/) (driver name 'canada')
 - [ ] [Antigua and Barbuda]()
 - [ ] [Bahamas]()
@@ -123,7 +123,7 @@ https://en.wikipedia.org/wiki/List_of_banks_in_Africa
 - [ ] [Saint Lucia]()
 - [ ] [Trinidad and Tobago]()
 
-### South America
+### South America [0 / 19]
 - [ ] [Argentina / Banco Central de la Republica Argentina](http://www.bcra.gob.ar/default.asp)
 - [ ] [Belize]()
 - [ ] [Bolivia]()
@@ -141,8 +141,8 @@ https://en.wikipedia.org/wiki/List_of_banks_in_Africa
 - [ ] [Uruguay]()
 - [ ] [Venezuela]()
 
-### Oceania
-- [ ] [Australia / Reserve Bank of Australia](https://www.rba.gov.au/)
+### Oceania [1 / 7]
+- [x] [Australia / Reserve Bank of Australia](https://www.rba.gov.au/)
 - [ ] [Fiji / Reserve Bank of Fiji](http://www.rbf.gov.fj/)
 - [ ] [New Zealand / Te Pūtea Matua](http://www.rbnz.govt.nz/index.html)
 - [ ] [Papua New Guinea](http://www.bankpng.gov.pg/)
