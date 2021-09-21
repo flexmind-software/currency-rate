@@ -7,12 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.11] - 2021-09-21
+
 ### Added
 - add support for Bank Of Azerbaijan / Azərbaycan Mərkəzi Bankı
 - add support for Bank Of Croatia / Hrvatska Narodna Banka
 - add support for Bank Of Ukraine / Natsionalʹnyy bank Ukrayiny
 - add support for Bank Of Turkey / Türkiye Cumhuriyet Merkez Bankası
 - add support for Bank Of Russia / Tsentral'nyy bank Rossiyskoy Federatsii
+- add support for Bank Of Georgia / Sakartvelos Erovnuli Bank’i
+
+### Changed
+- change data source for Bank Of Belarus / Natsional'nyy bank Respubliki Belarus'
 
 ## [0.0.10] - 2021-09-20
 
