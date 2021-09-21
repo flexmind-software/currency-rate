@@ -17,7 +17,7 @@
 - [ ] [Iceland / Seðlabanki Íslands)](https://cb.is)
 - [ ] [Liechtenstein / Liechtensteinische Landesbank](https://www.llb.li/en)
 - [ ] [Macedonia / Narodna Banka na Republika Severna Makedonija](http://www.nbrm.mk/)
-- [ ] [Moldavia / Banca Naţională a Moldovei](http://www.bnm.md/)
+- [x] [Moldavia / Banca Naţională a Moldovei](http://www.bnm.md/)
 - [x] [Norway / Norges Bank](https://www.norges-bank.no/en/) (driver name 'norway')
 - [x] [Poland / Narodowy Bank Polski](https://www.nbp.pl/) (driver name 'poland')
 - [x] [Russia / Tsentral'nyy bank Rossiyskoy Federatsii](http://cbr.ru/) (driver name 'russia')

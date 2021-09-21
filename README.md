@@ -21,6 +21,7 @@ php artisan migrate
 ```
 
 You can publish the config file with:
+
 ```bash
 php artisan vendor:publish --provider="FlexMindSoftware\CurrencyRate\CurrencyRateProvider" --tag="currency-rate-config"
 ```
@@ -46,6 +47,7 @@ Options:
   --queue[=QUEUE]    Queue name, if set "none" cmd run without add job to queue [default: "none"]
   --driver[=DRIVER]  Driver to download rate [default: "all"]
 ```
+
 ## Testing
 
 ```bash
@@ -53,6 +55,7 @@ composer test
 ```
 
 ## Sources
+
 <table>
     <thead>
     <tr>
@@ -115,6 +118,11 @@ composer test
             <td><a href="https://www.mnb.hu/en/" target="_blank">Magyar Nemzeti Bank</a></td>
             <td>hungary</td>
         </tr>
+        <tr>
+            <td>Moldavia</td>
+            <td><a href="http://www.bnm.md/" target="_blank">Banca Naţională a Moldovei</a></td>
+            <td>moldavia</td>
+        </tr>        
         <tr>
             <td>Norway</td>
             <td><a href="https://www.norges-bank.no/en/" target="_blank">Norges Bank</a></td>
@@ -182,7 +190,6 @@ composer test
         </tr>
         </tbody>
 </table>
-
 
 ## Changelog
 
