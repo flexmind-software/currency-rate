@@ -91,7 +91,7 @@ class GeorgiaDriver extends BaseDriver implements CurrencyInterface
     {
         return [
             'currencies' => $currency,
-            'date' => $date->format('Y-m-d')
+            'date' => $date->format('Y-m-d'),
         ];
     }
 
