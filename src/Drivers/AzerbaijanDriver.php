@@ -68,12 +68,12 @@ class AzerbaijanDriver extends BaseDriver implements CurrencyInterface
 
     public function fullName(): string
     {
-        return '';
+        return 'Azerbaijan';
     }
 
     public function homeUrl(): string
     {
-        return '';
+        return 'https://www.cbar.az';
     }
 
     public function infoAboutFrequency(): string

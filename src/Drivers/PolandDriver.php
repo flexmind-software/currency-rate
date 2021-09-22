@@ -109,12 +109,12 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
 
     public function fullName(): string
     {
-        return '';
+        return 'Narodowy Bank Polski';
     }
 
     public function homeUrl(): string
     {
-        return '';
+        return 'https://www.nbp.pl/';
     }
 
     public function infoAboutFrequency(): string

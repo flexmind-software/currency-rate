@@ -80,7 +80,7 @@ class MacedoniaDriver extends BaseDriver implements CurrencyInterface
 
     public function homeUrl(): string
     {
-        return 'http://www.nbrm.mk/';
+        return 'https://www.nbrm.mk/';
     }
 
     public function infoAboutFrequency(): string

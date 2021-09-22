@@ -115,12 +115,12 @@ class RomaniaDriver extends BaseDriver implements CurrencyInterface
 
     public function fullName(): string
     {
-        return '';
+        return 'Banca Nationala a Romaniei';
     }
 
     public function homeUrl(): string
     {
-        return '';
+        return 'https://www.bnro.ro/Home.aspx';
     }
 
     public function infoAboutFrequency(): string

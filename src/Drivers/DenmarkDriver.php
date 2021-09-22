@@ -108,12 +108,12 @@ class DenmarkDriver extends BaseDriver implements CurrencyInterface
 
     public function fullName(): string
     {
-        return '';
+        return 'Danmarks Nationalbanks';
     }
 
     public function homeUrl(): string
     {
-        return '';
+        return 'https://www.nationalbanken.dk';
     }
 
     public function infoAboutFrequency(): string

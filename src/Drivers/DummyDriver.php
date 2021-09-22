@@ -8,7 +8,7 @@ use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use Illuminate\Support\Facades\Http;
 
-class TemplateDriver extends BaseDriver implements CurrencyInterface
+class DummyDriver extends BaseDriver implements CurrencyInterface
 {
     use RateTrait;
 
@@ -26,11 +26,6 @@ class TemplateDriver extends BaseDriver implements CurrencyInterface
     public string $currency = Currency::CUR_EUR;
 
     /**
-     * @var string
-     */
-    private string $xml;
-
-    /**
      * @param DateTime $date
      *
      * @return void
@@ -39,24 +34,25 @@ class TemplateDriver extends BaseDriver implements CurrencyInterface
     {
         $respond = Http::get(static::URI, $this->queryString($date));
         if ($respond->ok()) {
-            $this->xml = $respond->body();
+            $this->html = $respond->body();
 
             $this->parseResponse();
 //            $this->saveInDatabase();
         }
     }
 
-    private function parseResponse()
-    {
-    }
-
     /**
      * @param DateTime $date
+     *
      * @return array
      */
     private function queryString(DateTime $date): array
     {
         return [];
+    }
+
+    private function parseResponse()
+    {
     }
 
     public function fullName(): string

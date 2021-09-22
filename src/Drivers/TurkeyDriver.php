@@ -83,12 +83,12 @@ class TurkeyDriver extends BaseDriver implements CurrencyInterface
 
     public function fullName(): string
     {
-        return '';
+        return 'Türkiye Cumhuriyet Merkez Bankası';
     }
 
     public function homeUrl(): string
     {
-        return '';
+        return 'https://www.tcmb.gov.tr/';
     }
 
     public function infoAboutFrequency(): string

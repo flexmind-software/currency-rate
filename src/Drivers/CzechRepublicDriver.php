@@ -155,12 +155,12 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
 
     public function fullName(): string
     {
-        return '';
+        return 'Ceska Narodni Banka';
     }
 
     public function homeUrl(): string
     {
-        return '';
+        return 'https://www.cnb.cz';
     }
 
     public function infoAboutFrequency(): string

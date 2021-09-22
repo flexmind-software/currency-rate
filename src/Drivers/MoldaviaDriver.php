@@ -89,7 +89,7 @@ class MoldaviaDriver extends BaseDriver implements CurrencyInterface
 
     public function homeUrl(): string
     {
-        return 'http://www.bnm.md/';
+        return 'https://www.bnm.md/';
     }
 
     public function infoAboutFrequency(): string
