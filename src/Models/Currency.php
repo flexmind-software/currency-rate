@@ -48,4 +48,6 @@ class Currency
     public const CUR_MKD = 'MKD'; // Macedonia
     public const CUR_ISK = 'ISK'; // Iceland
     public const CUR_ALL = 'ALL'; // Albania
+    public const CUR_SAR = 'SAR'; // Saudi Arabia
+    public const CUR_TWD = 'TWD'; // Taiwan
 }

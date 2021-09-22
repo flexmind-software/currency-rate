@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - add support for Serbia / Narodna banka Srbije
 - add support for Macedonia / Narodna Banka na Republika Severna Makedonija
 - add support for Iceland / Seðlabanki Íslands
+- add support for United Kingdom / Bank of England
 
 ## [0.0.11] - 2021-09-21
 

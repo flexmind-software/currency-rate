@@ -23,7 +23,7 @@ class IcelandDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_EUR;
+    public string $currency = Currency::CUR_ISK;
 
     /**
      * @var string

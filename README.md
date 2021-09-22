@@ -114,6 +114,11 @@ composer test
             <td>georgia</td>
         </tr>
         <tr>
+            <td>United Kingdom</td>
+            <td><a href="https://www.bankofengland.co.uk/" target="_blank">Bank of England</a></td>
+            <td>england</td>
+        </tr>
+        <tr>
             <td>Hungary</td>
             <td><a href="https://www.mnb.hu/en/" target="_blank">Magyar Nemzeti Bank</a></td>
             <td>hungary</td>
