@@ -6,7 +6,6 @@ use DateTime;
 use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
-use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use Illuminate\Support\Facades\Http;
 use SimpleXMLElement;
@@ -37,7 +36,7 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
     public function downloadRates(DateTime $date)
     {
         $this->retrieveData($date);
-        $this->saveInDatabase();
+        $this->saveInDatabase(true);
     }
 
     /**
@@ -108,11 +107,18 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
-    /**
-     *
-     */
-    protected function saveInDatabase()
+    public function fullName(): string
     {
-        CurrencyRate::upsert($this->data, ['no', 'driver', 'code', 'date'], ['rate', 'multiplier']);
+        return '';
+    }
+
+    public function homeUrl(): string
+    {
+        return '';
+    }
+
+    public function infoAboutFrequency(): string
+    {
+        return '';
     }
 }

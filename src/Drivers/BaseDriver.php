@@ -3,6 +3,8 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateTime;
+use DOMDocument;
+use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 
 abstract class BaseDriver
@@ -31,13 +33,23 @@ abstract class BaseDriver
         $this->lastDate = CurrencyRate::where('driver', static::DRIVER_NAME)->latest('date')->value('date');
     }
 
-    protected function saveInDatabase()
+    /**
+     * @param bool $checkNo
+     */
+    protected function saveInDatabase(bool $checkNo = false)
     {
-        CurrencyRate::upsert($this->data, ['driver', 'code', 'date'], ['rate', 'multiplier']);
+        if ($this->data) {
+            $columns = ['driver', 'code', 'date'];
+            if ($checkNo) {
+                $columns[] = 'no';
+            }
+            CurrencyRate::upsert($this->data, $columns, ['rate', 'multiplier']);
+        }
     }
 
     /**
      * @param string|null $string
+     *
      * @return string|null
      */
     protected function clearRow(?string $string): ?string
@@ -47,10 +59,29 @@ abstract class BaseDriver
 
     /**
      * @param string $string
+     *
      * @return float
      */
     protected function stringToFloat(string $string): float
     {
         return (float)str_replace(',', '.', $string);
+    }
+
+    /**
+     * @param string $html
+     *
+     * @return DOMXPath
+     */
+    protected function htmlParse(string $html): DOMXPath
+    {
+        libxml_use_internal_errors(true);
+
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->loadHTML($html);
+        $xpath = new DOMXpath($dom);
+
+        libxml_clear_errors();
+
+        return $xpath;
     }
 }

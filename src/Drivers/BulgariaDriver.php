@@ -95,4 +95,19 @@ class BulgariaDriver extends BaseDriver implements CurrencyInterface
             $this->data[] = $param;
         }
     }
+
+    public function fullName(): string
+    {
+        return '';
+    }
+
+    public function homeUrl(): string
+    {
+        return '';
+    }
+
+    public function infoAboutFrequency(): string
+    {
+        return '';
+    }
 }

@@ -23,7 +23,7 @@ class NorwayDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_DKK;
+    public string $currency = Currency::CUR_NOK;
     /**
      * @var array
      */
@@ -83,5 +83,20 @@ class NorwayDriver extends BaseDriver implements CurrencyInterface
                 ];
             }
         }
+    }
+
+    public function fullName(): string
+    {
+        return '';
+    }
+
+    public function homeUrl(): string
+    {
+        return '';
+    }
+
+    public function infoAboutFrequency(): string
+    {
+        return '';
     }
 }
