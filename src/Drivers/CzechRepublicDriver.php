@@ -109,7 +109,7 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
                 continue;
             }
             $date = DateTime::createFromFormat('d.m.Y', $rates[0]);
-            if (!$date) {
+            if (! $date) {
                 break;
             }
 
@@ -132,7 +132,7 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
         $toSave = [];
 
         $date = $this->date->format('Y-m-d');
-        if (!isset($this->data[$date])) {
+        if (! isset($this->data[$date])) {
             $dateList = array_keys($this->data);
             $date = last($dateList);
         }
