@@ -80,7 +80,7 @@ composer test
         </tr>
         <tr>
             <td>Belarus</td>
-            <td><a href="http://www.nbrb.by/engl/" target="_blank">Нацыянальны банк Рэспублікі Беларусь</a></td>
+            <td><a href="https://www.nbrb.by/engl/" target="_blank">Нацыянальны банк Рэспублікі Беларусь</a></td>
             <td>belarus</td>
         </tr>
         <tr>
@@ -90,7 +90,7 @@ composer test
         </tr>
         <tr>
             <td>Bulgaria</td>
-            <td><a href="http://www.bnb.bg/?toLang=_EN" target="_blank">Bŭlgarska narodna banka</a></td>
+            <td><a href="https://www.bnb.bg/?toLang=_EN" target="_blank">Bŭlgarska narodna banka</a></td>
             <td>bulgaria</td>
         </tr>
         <tr>
@@ -105,12 +105,12 @@ composer test
         </tr>
         <tr>
             <td>Danmark</td>
-            <td><a href="http://www.nationalbanken.dk" target="_blank">Danmarks Nationalbanks</a></td>
+            <td><a href="https://www.nationalbanken.dk" target="_blank">Danmarks Nationalbanks</a></td>
             <td>denmark</td>
         </tr>
         <tr>
             <td>Georgia</td>
-            <td><a href="http://www.nbg.gov.ge" target="_blank">Sakartvelos Erovnuli Bank’i</a></td>
+            <td><a href="https://www.nbg.gov.ge" target="_blank">Sakartvelos Erovnuli Bank’i</a></td>
             <td>georgia</td>
         </tr>
         <tr>
@@ -119,8 +119,13 @@ composer test
             <td>hungary</td>
         </tr>
         <tr>
+            <td>Macedonia</td>
+            <td><a href="https://www.nbrm.mk/" target="_blank">Narodna Banka na Republika Severna Makedonija</a></td>
+            <td>macedonia</td>
+        </tr>          
+        <tr>
             <td>Moldavia</td>
-            <td><a href="http://www.bnm.md/" target="_blank">Banca Naţională a Moldovei</a></td>
+            <td><a href="https://www.bnm.md/" target="_blank">Banca Naţională a Moldovei</a></td>
             <td>moldavia</td>
         </tr>        
         <tr>
@@ -135,7 +140,7 @@ composer test
         </tr>
         <tr>
             <td>Russia</td>
-            <td><a href="http://cbr.ru/" target="_blank">Tsentral'nyy bank Rossiyskoy Federatsii</a></td>
+            <td><a href="https://cbr.ru/" target="_blank">Tsentral'nyy bank Rossiyskoy Federatsii</a></td>
             <td>russia</td>
         </tr>
         <tr>
@@ -150,7 +155,7 @@ composer test
         </tr>
         <tr>
             <td>Switzerland</td>
-            <td><a href="http://www.snb.ch/" target="_blank">Banca naziunala svizra</a></td>
+            <td><a href="https://www.snb.ch/" target="_blank">Banca naziunala svizra</a></td>
             <td>switzerland</td>
         </tr>
         <tr>
@@ -160,12 +165,12 @@ composer test
         </tr>
         <tr>
             <td>Turkey</td>
-            <td><a href="http://www.tcmb.gov.tr/" target="_blank">Türkiye Cumhuriyet Merkez Bankası</a></td>
+            <td><a href="https://www.tcmb.gov.tr/" target="_blank">Türkiye Cumhuriyet Merkez Bankası</a></td>
             <td>turkey</td>
         </tr>
         <tr>
             <td>Ukraine</td>
-            <td><a href="http://www.bank.gov.ua/" target="_blank">Natsionalʹnyy bank Ukrayiny</a></td>
+            <td><a href="https://www.bank.gov.ua/" target="_blank">Natsionalʹnyy bank Ukrayiny</a></td>
             <td>ukraine</td>
         </tr>
         <tr>
@@ -193,7 +198,7 @@ composer test
             <td><a href="https://www.rba.gov.au/" target="_blank">Reserve Bank of Australia</a></td>
             <td>australia</td>
         </tr>
-        </tbody>
+    </tbody>
 </table>
 
 ## Changelog
@@ -207,7 +212,7 @@ Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
 ## Credits
 
 - [Krzysztof Bielecki](https://github.com/qwerkon)
-- [All Contributors](http://github.com/flexmind-software/currency-rate/contributors)
+- [All Contributors](https://github.com/flexmind-software/currency-rate/contributors)
 
 ## License
 
