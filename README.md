@@ -1,5 +1,7 @@
 # Currency Rate Downloader
 
+![Laravel Version Support](https://img.shields.io/badge/Laravel-8.x-orange?style=flat-square)
+![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/flexmind-software/currency-rate?label=PHP&style=flat-square)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/flexmind-software/currency-rate.svg?style=flat-square)](https://packagist.org/packages/flexmind-software/currency-rate)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/flexmind-software/currency-rate/run-tests?label=tests)](https://github.com/flexmind-software/currency-rate/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/flexmind-software/currency-rate/Check%20&%20fix%20styling?label=code%20style)](https://github.com/flexmind-software/currency-rate/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
