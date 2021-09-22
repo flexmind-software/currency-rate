@@ -30,7 +30,7 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    private string $html;
+    protected string $html;
 
     /**
      * @var string

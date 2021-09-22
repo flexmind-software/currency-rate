@@ -27,6 +27,16 @@ abstract class BaseDriver
      */
     protected ?DateTime $lastDate;
 
+    /**
+     * @var string
+     */
+    protected string $html;
+
+    /**
+     * @var array
+     */
+    protected array $json;
+
     public function __construct()
     {
         $this->config = config('currency-rate');
@@ -43,7 +53,10 @@ abstract class BaseDriver
             if ($checkNo) {
                 $columns[] = 'no';
             }
-            CurrencyRate::upsert($this->data, $columns, ['rate', 'multiplier']);
+            $chunks = array_chunk($this->data, 50);
+            foreach ($chunks as $chunk) {
+                CurrencyRate::upsert($chunk, $columns, ['rate', 'multiplier']);
+            }
         }
     }
 
@@ -68,16 +81,16 @@ abstract class BaseDriver
     }
 
     /**
-     * @param string $html
+     * @param string|null $html
      *
      * @return DOMXPath
      */
-    protected function htmlParse(string $html): DOMXPath
+    protected function htmlParse(?string $html = null): DOMXPath
     {
         libxml_use_internal_errors(true);
 
         $dom = new DOMDocument('1.0', 'UTF-8');
-        $dom->loadHTML($html);
+        $dom->loadHTML($html ?? $this->html);
         $xpath = new DOMXpath($dom);
 
         libxml_clear_errors();

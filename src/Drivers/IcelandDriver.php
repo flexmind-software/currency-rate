@@ -26,10 +26,6 @@ class IcelandDriver extends BaseDriver implements CurrencyInterface
     public string $currency = Currency::CUR_ISK;
 
     /**
-     * @var string
-     */
-    private string $body;
-    /**
      * @var array
      */
     private array $inputs;
@@ -45,7 +41,7 @@ class IcelandDriver extends BaseDriver implements CurrencyInterface
 
         $respond = Http::asForm()->post(static::URI, $this->queryString($date));
         if ($respond->ok()) {
-            $this->body = $respond->body();
+            $this->html = $respond->body();
             $this->parseResponse();
             $this->saveInDatabase();
         }
@@ -87,7 +83,7 @@ class IcelandDriver extends BaseDriver implements CurrencyInterface
 
     private function parseResponse()
     {
-        $xpath = $this->htmlParse($this->body);
+        $xpath = $this->htmlParse();
 
         $dateText = $xpath->query('//span[@id="ctl00_ctl00_Content_Content_ctl04_lblDisplayDate"]');
         $date = last(explode(': ', $dateText->item(0)->nodeValue));

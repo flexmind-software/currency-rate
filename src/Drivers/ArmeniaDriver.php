@@ -3,10 +3,9 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateTime;
-use DOMDocument;
-use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use Illuminate\Support\Facades\Http;
 
@@ -21,7 +20,7 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @const string
      */
-    public const URI = 'https://www.cba.am/en/sitepages/ExchangeArchive.aspx';
+    public const URI = 'https://api.cba.am/ExchangeRatesToCSV.ashx';
     /**
      * @const string
      */
@@ -30,10 +29,11 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
      * @var string
      */
     public string $currency = Currency::CUR_AMD;
+
     /**
      * @var string
      */
-    private string $html;
+    private string $csvPlain;
 
     /**
      * @param DateTime $date
@@ -42,49 +42,12 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
      */
     public function downloadRates(DateTime $date)
     {
-//        $response = Http::get(static::URI, $this->queryString($date));
-//        if ($response->ok()) {
-//            $this->html = $response->body();
-//            $this->parseResponse();
-//        }
-    }
-
-    /**
-     *
-     */
-    private function parseResponse()
-    {
-        $this->data = [];
-
-        libxml_use_internal_errors(true);
-
-        $dom = new DOMDocument('1.0', 'UTF-8');
-        $dom->loadHTML($this->html, LIBXML_NOERROR & LIBXML_NOWARNING);
-        $xpath = new DOMXpath($dom);
-
-        libxml_clear_errors();
-
-        $tableRows = $xpath->query('//*[@id="WebPartWPQ6"]');
-        $div = $tableRows->item(0);
-//        foreach ($tableRows as $row => $tr) {
-//            foreach ($tr->childNodes as $td) {
-//                $this->data[$row][] = $this->clearRow($td->nodeValue);
-//            }
-//            $this->data[$row] = array_values(array_filter($this->data[$row]));
-//        }
-//
-//        $this->data = array_map(function ($item) {
-//            [$multiplier, $code] = explode(' ', $item[1]);
-//
-//            return [
-//                'no' => null,
-//                'code' => $code,
-//                'date' => $this->date->format('Y-m-d'),
-//                'driver' => static::DRIVER_NAME,
-//                'multiplier' => floatval($multiplier),
-//                'rate' => floatval($item[2]),
-//            ];
-//        }, $this->data);
+        $response = Http::dump()->get(static::URI, $this->queryString($date));
+        if ($response->ok()) {
+            $this->csvPlain = $response->body();
+            $this->parseResponse();
+            $this->saveInDatabase();
+        }
     }
 
     /**
@@ -94,24 +57,62 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
      */
     private function queryString(DateTime $date): array
     {
+        $date = $this->lastDate ?? $date;
+
+        $dateTo = $date->format('Y-m-d');
+        $dateFrom = $date->sub(\DateInterval::createFromDateString('1 month'))->format('Y-m-d');
+
         return [
             'ISOCodes' => 'AED,ARS,AUD,BGN,BRL,BYN,CAD,CHF,CNY,CZK,DKK,EGP,EUR,GBP,GEL,HKD,HUF,ILS,INR,IRR,ISK,' .
                 'JPY,KGS,KRW,KWD,KZT,LBP,LTL,LVL,MDL,MXN,NOK,PLN,RON,RUB,SAR,SEK,SGD,SKK,SYP,TJS,TMT,TRY,UAH,' .
                 'USD,UZS,XDR',
-            'DateTo' => $date->format('d/m/Y'),
-            'DateFrom' => $date->format('01/01/Y'),
-//            'order' => 1,
+            'DateTo' => $dateTo,
+            'DateFrom' => $dateFrom
         ];
+    }
+
+    /**
+     *
+     */
+    private function parseResponse()
+    {
+        $this->data = [];
+
+        $lines = explode("\n", $this->csvPlain);
+        $lines = array_map(function ($item) {
+            return explode(',', $item);
+        }, $lines);
+        $head = head($lines);
+        $head[0] = null;
+
+        foreach ($lines as $l => $line) {
+            if ($l === 0) {
+                continue;
+            }
+
+            foreach ($line as $i => $value) {
+                if (isset($head[$i]) && ($code = $head[$i])) {
+                    $this->data[] = [
+                        'no' => null,
+                        'code' => $code,
+                        'date' => DateTime::createFromFormat('d/m/Y', $line[0])->format('Y-m-d'),
+                        'driver' => static::DRIVER_NAME,
+                        'multiplier' => $this->stringToFloat(1),
+                        'rate' => $this->stringToFloat($value),
+                    ];
+                }
+            }
+        }
     }
 
     public function fullName(): string
     {
-        return '';
+        return 'Hayastani Hanrapetut’yan Kentronakan Bank';
     }
 
     public function homeUrl(): string
     {
-        return '';
+        return 'https://www.cba.am/';
     }
 
     public function infoAboutFrequency(): string

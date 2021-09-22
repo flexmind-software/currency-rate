@@ -33,7 +33,7 @@ class RomaniaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var array
      */
-    private array $json;
+    protected array $json;
     /**
      * @var SimpleXMLElement
      */

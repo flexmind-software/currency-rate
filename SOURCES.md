@@ -1,9 +1,9 @@
 ## Sources
 
-### Europe [23 / 25]
+### Europe [24 / 25]
 - [x] [European Central Bank](https://ecb.europa.eu) (driver name 'european-central-bank')
 - [ ] [Albania / Bankës së Shqipërisë](https://www.bankofalbania.org/home/)
-- [ ] [Armenia / Hayastani Hanrapetut’yan Kentronakan Bank](https://www.cba.am/en/sitepages/default.aspx)
+- [x] [Armenia / Hayastani Hanrapetut’yan Kentronakan Bank](https://www.cba.am/en/sitepages/default.aspx) (driver name 'armenia')
 - [x] [Azerbaijan / Azərbaycan Mərkəzi Bankı](https://www.cbar.az) (driver name 'azerbaijan')
 - [x] [Belarus / Natsional'nyy bank Respubliki Belarus'](http://www.nbrb.by/engl/) (driver name 'belarus')
 - [x] [Bosnia and Herzegovina / Centralna Banka Bosne I Hergegovine](https://www.cbbh.ba/?lang=en) (driver name 'bosnia-and-herzegovina')
