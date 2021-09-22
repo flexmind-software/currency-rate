@@ -3,6 +3,8 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateTime;
+use DOMDocument;
+use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 
 abstract class BaseDriver
@@ -63,5 +65,23 @@ abstract class BaseDriver
     protected function stringToFloat(string $string): float
     {
         return (float)str_replace(',', '.', $string);
+    }
+
+    /**
+     * @param string $html
+     *
+     * @return DOMXPath
+     */
+    protected function htmlParse(string $html): DOMXPath
+    {
+        libxml_use_internal_errors(true);
+
+        $dom = new DOMDocument('1.0', 'UTF-8');
+        $dom->loadHTML($html);
+        $xpath = new DOMXpath($dom);
+
+        libxml_clear_errors();
+
+        return $xpath;
     }
 }

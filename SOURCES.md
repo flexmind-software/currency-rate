@@ -1,6 +1,6 @@
 ## Sources
 
-### Europe [21 / 25]
+### Europe [22 / 25]
 - [x] [European Central Bank](https://ecb.europa.eu) (driver name 'european-central-bank')
 - [ ] [Albania / Bankës së Shqipërisë](https://www.bankofalbania.org/home/)
 - [ ] [Armenia / Hayastani Hanrapetut’yan Kentronakan Bank](https://www.cba.am/en/sitepages/default.aspx)
@@ -14,7 +14,7 @@
 - [x] [Georgia / Sakartvelos Erovnuli Bank’i](http://www.nbg.gov.ge) (driver name 'georgia')
 - [ ] [United Kingdom / Bank of England](https://www.bankofengland.co.uk/)
 - [x] [Hungary / Magyar Nemzeti Bank](https://www.mnb.hu/en/) (driver name 'hungary')
-- [ ] [Iceland / Seðlabanki Íslands)](https://cb.is)
+- [x] [Iceland / Seðlabanki Íslands)](https://cb.is) (driver name 'iceland')
 - [x] [Macedonia / Narodna Banka na Republika Severna Makedonija](http://www.nbrm.mk/) (driver name 'macedonia')
 - [x] [Moldavia / Banca Naţională a Moldovei](http://www.bnm.md/) (driver name 'moldavia')
 - [x] [Norway / Norges Bank](https://www.norges-bank.no/en/) (driver name 'norway')

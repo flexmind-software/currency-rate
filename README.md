@@ -119,6 +119,11 @@ composer test
             <td>hungary</td>
         </tr>
         <tr>
+            <td>Iceland</td>
+            <td><a href="https://cb.is" target="_blank">Seðlabanki Íslands</a></td>
+            <td>iceland</td>
+        </tr>
+        <tr>
             <td>Macedonia</td>
             <td><a href="https://www.nbrm.mk/" target="_blank">Narodna Banka na Republika Severna Makedonija</a></td>
             <td>macedonia</td>
