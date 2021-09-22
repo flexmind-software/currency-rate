@@ -75,7 +75,7 @@ class AlbaniaDriver extends BaseDriver implements CurrencyInterface
             'sourcePage' => '',
             'targetPage' => '',
             'sessionVars' => 'lang=Lng2&ln=2&contentId=11288&uni=' . $dateToUni . '&lng=en&recPages=multi&kk_rs_sr_CP=1&kkOther_rs_sr_CP=1&kk_rs_sr_bid_ask_CP=1&menyra_shfaqjes=T&crd=0,7,2,0,0,11288&',
-            'phpVars' => 'event=kursi_kembimit.search_this(startDate=' . $startDate . ';endDate=' . $endDate . ';pubcat=99;menyra_shfaqjes=T)'
+            'phpVars' => 'event=kursi_kembimit.search_this(startDate=' . $startDate . ';endDate=' . $endDate . ';pubcat=99;menyra_shfaqjes=T)',
         ];
     }
 
