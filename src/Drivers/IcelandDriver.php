@@ -3,8 +3,6 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateTime;
-use DOMDocument;
-use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -96,13 +94,11 @@ class IcelandDriver extends BaseDriver implements CurrencyInterface
 
         $table = $xpath->query('//table[@class="Gengistafla"]');
         if ($table = $table->item(0)) {
-
-            $tableRow= [];
+            $tableRow = [];
             foreach ($table->childNodes as $row => $tr) {
                 foreach ($tr->childNodes as $td) {
                     $tableRow[$row][] = $this->clearRow($td->nodeValue);
                 }
-
             }
 
             $this->data = [];
@@ -117,7 +113,7 @@ class IcelandDriver extends BaseDriver implements CurrencyInterface
                     'date' => $date,
                     'driver' => static::DRIVER_NAME,
                     'multiplier' => $this->stringToFloat(1),
-                    'rate' => $this->stringToFloat($item[5])
+                    'rate' => $this->stringToFloat($item[5]),
                 ];
             }
         }

@@ -44,7 +44,7 @@ class MacedoniaDriver extends BaseDriver implements CurrencyInterface
         $xml = $client->GetExchangeRate(
             [
                 'StartDate' => $date->format('d.m.Y'),
-                'EndDate' => $date->sub(\DateInterval::createFromDateString('1 day'))->format('d.m.Y')
+                'EndDate' => $date->sub(\DateInterval::createFromDateString('1 day'))->format('d.m.Y'),
             ]
         );
 

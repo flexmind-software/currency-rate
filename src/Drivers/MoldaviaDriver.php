@@ -57,7 +57,7 @@ class MoldaviaDriver extends BaseDriver implements CurrencyInterface
     private function queryString(DateTime $date): array
     {
         return [
-            'date' => $date->format('d.m.Y')
+            'date' => $date->format('d.m.Y'),
         ];
     }
 

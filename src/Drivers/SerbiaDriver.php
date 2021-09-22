@@ -106,7 +106,6 @@ class SerbiaDriver extends BaseDriver implements CurrencyInterface
                     return $hidden->getAttribute('value');
                 }
             }
-
         }
 
         return null;
