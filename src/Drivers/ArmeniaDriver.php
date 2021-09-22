@@ -41,7 +41,7 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
      */
     public function downloadRates(DateTime $date)
     {
-        $response = Http::dump()->get(static::URI, $this->queryString($date));
+        $response = Http::get(static::URI, $this->queryString($date));
         if ($response->ok()) {
             $this->csvPlain = $response->body();
             $this->parseResponse();
