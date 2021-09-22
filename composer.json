@@ -1,13 +1,15 @@
 {
     "name": "flexmind-software/currency-rate",
-    "vesrion": "0.0.11",
+    "vesrion": "0.1.0",
     "description": "Library download currency rate and save in database, It's designed to be extended by any available data source.",
     "keywords": [
         "flexmind",
         "laravel",
         "pachages",
         "php",
-        "mysql", "postresql", "mongo",
+        "mysql",
+        "postresql",
+        "mongo",
         "currency-converter",
         "currency-exchange",
         "currency rate",
@@ -30,7 +32,8 @@
         "illuminate/support": "^8.37",
         "ext-simplexml": "*",
         "ext-json": "*",
-        "ext-libxml": "*"
+        "ext-libxml": "*",
+        "ext-soap": "*"
     },
     "require-dev": {
         "brianium/paratest": "^6.2",
