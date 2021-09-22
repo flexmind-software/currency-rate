@@ -101,12 +101,12 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
 
     public function fullName(): string
     {
-        return '';
+        return 'Banqueu du Canada';
     }
 
     public function homeUrl(): string
     {
-        return '';
+        return 'https://www.bankofcanada.ca/';
     }
 
     public function infoAboutFrequency(): string

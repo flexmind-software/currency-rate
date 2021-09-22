@@ -25,12 +25,12 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_EUR;
+    public string $currency = Currency::CUR_ILS;
 
     /**
      * @var string
      */
-    private string $html;
+    protected string $html;
 
     /**
      * @var string

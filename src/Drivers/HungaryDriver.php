@@ -31,7 +31,7 @@ class HungaryDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    private string $html;
+    protected string $html;
 
     /**
      * @param DateTime $date
@@ -115,12 +115,12 @@ class HungaryDriver extends BaseDriver implements CurrencyInterface
 
     public function fullName(): string
     {
-        return '';
+        return 'Magyar Nemzeti Bank';
     }
 
     public function homeUrl(): string
     {
-        return '';
+        return 'https://www.mnb.hu/';
     }
 
     public function infoAboutFrequency(): string

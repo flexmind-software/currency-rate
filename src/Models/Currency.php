@@ -44,4 +44,10 @@ class Currency
     public const CUR_RSD = 'RSD'; // Serbia
     public const CUR_UAH = 'UAH'; // Ukraine
     public const CUR_GEL = 'GEL'; // Georgia
+    public const CUR_MDL = 'MDL'; // Moldavia
+    public const CUR_MKD = 'MKD'; // Macedonia
+    public const CUR_ISK = 'ISK'; // Iceland
+    public const CUR_ALL = 'ALL'; // Albania
+    public const CUR_SAR = 'SAR'; // Saudi Arabia
+    public const CUR_TWD = 'TWD'; // Taiwan
 }

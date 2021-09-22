@@ -5,7 +5,6 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
-use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use Illuminate\Support\Facades\Http;
 
@@ -32,7 +31,7 @@ class BosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var array|mixed
      */
-    private array $jsonData;
+    protected array $jsonData;
 
     /**
      * @param DateTime $date
@@ -45,7 +44,7 @@ class BosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInterface
         if ($response->ok()) {
             $this->jsonData = $response->json();
             $this->parseResponse();
-            $this->saveInDatabase();
+            $this->saveInDatabase(true);
         }
     }
 
@@ -75,22 +74,14 @@ class BosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
-    /**
-     *
-     */
-    protected function saveInDatabase()
-    {
-        CurrencyRate::upsert($this->data, ['no', 'driver', 'code', 'date'], ['rate', 'multiplier']);
-    }
-
     public function fullName(): string
     {
-        return '';
+        return 'Centralna Banka Bosne I Hergegovine';
     }
 
     public function homeUrl(): string
     {
-        return '';
+        return 'https://www.cbbh.ba/';
     }
 
     public function infoAboutFrequency(): string

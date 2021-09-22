@@ -30,7 +30,7 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var array
      */
-    private array $json;
+    protected array $json;
 
     /**
      * @param DateTime $date
@@ -128,12 +128,12 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
 
     public function fullName(): string
     {
-        return '';
+        return 'Hrvatska Narodna Banka';
     }
 
     public function homeUrl(): string
     {
-        return '';
+        return 'https://www.hnb.hr/home';
     }
 
     public function infoAboutFrequency(): string

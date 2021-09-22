@@ -6,7 +6,6 @@ use DateTime;
 use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
-use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use Illuminate\Support\Facades\Http;
 use SimpleXMLElement;
@@ -37,7 +36,7 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
     public function downloadRates(DateTime $date)
     {
         $this->retrieveData($date);
-        $this->saveInDatabase();
+        $this->saveInDatabase(true);
     }
 
     /**
@@ -108,22 +107,14 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
-    /**
-     *
-     */
-    protected function saveInDatabase()
-    {
-        CurrencyRate::upsert($this->data, ['no', 'driver', 'code', 'date'], ['rate', 'multiplier']);
-    }
-
     public function fullName(): string
     {
-        return '';
+        return 'Narodowy Bank Polski';
     }
 
     public function homeUrl(): string
     {
-        return '';
+        return 'https://www.nbp.pl/';
     }
 
     public function infoAboutFrequency(): string

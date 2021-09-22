@@ -5,7 +5,6 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
-use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use Illuminate\Support\Facades\Http;
 
@@ -14,6 +13,7 @@ class TurkeyDriver extends BaseDriver implements CurrencyInterface
     use RateTrait;
 
     /** 201512/25122015.xml
+     *
      * @const string
      */
     public const URI = 'https://www.tcmb.gov.tr/kurlar/';
@@ -47,11 +47,12 @@ class TurkeyDriver extends BaseDriver implements CurrencyInterface
         } while (! $respond->ok());
 
         $this->parseResponse();
-        $this->saveInDatabase();
+        $this->saveInDatabase(true);
     }
 
     /**
      * @param DateTime $date
+     *
      * @return string
      */
     private function queryString(DateTime $date): string
@@ -80,19 +81,14 @@ class TurkeyDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
-    protected function saveInDatabase()
-    {
-        CurrencyRate::upsert($this->data, ['no', 'driver', 'code', 'date'], ['rate', 'multiplier']);
-    }
-
     public function fullName(): string
     {
-        return '';
+        return 'Türkiye Cumhuriyet Merkez Bankası';
     }
 
     public function homeUrl(): string
     {
-        return '';
+        return 'https://www.tcmb.gov.tr/';
     }
 
     public function infoAboutFrequency(): string

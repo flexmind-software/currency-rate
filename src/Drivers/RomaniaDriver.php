@@ -29,11 +29,11 @@ class RomaniaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_RSD;
+    public string $currency = Currency::CUR_RON;
     /**
      * @var array
      */
-    private array $json;
+    protected array $json;
     /**
      * @var SimpleXMLElement
      */
@@ -115,12 +115,12 @@ class RomaniaDriver extends BaseDriver implements CurrencyInterface
 
     public function fullName(): string
     {
-        return '';
+        return 'Banca Nationala a Romaniei';
     }
 
     public function homeUrl(): string
     {
-        return '';
+        return 'https://www.bnro.ro/Home.aspx';
     }
 
     public function infoAboutFrequency(): string

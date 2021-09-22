@@ -23,11 +23,11 @@ class NorwayDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_DKK;
+    public string $currency = Currency::CUR_NOK;
     /**
      * @var array
      */
-    private array $json;
+    protected array $json;
 
     /**
      * @param DateTime $date
@@ -87,12 +87,12 @@ class NorwayDriver extends BaseDriver implements CurrencyInterface
 
     public function fullName(): string
     {
-        return '';
+        return 'Norges Bank';
     }
 
     public function homeUrl(): string
     {
-        return '';
+        return 'https://www.norges-bank.no/';
     }
 
     public function infoAboutFrequency(): string

@@ -148,12 +148,12 @@ class SwedenDriver extends BaseDriver implements CurrencyInterface
 
     public function fullName(): string
     {
-        return '';
+        return 'Narodna banka Srbije';
     }
 
     public function homeUrl(): string
     {
-        return '';
+        return 'https://www.nbs.rs/';
     }
 
     public function infoAboutFrequency(): string

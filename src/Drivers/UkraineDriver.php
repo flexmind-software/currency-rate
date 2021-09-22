@@ -30,7 +30,7 @@ class UkraineDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    private string $html;
+    protected string $html;
 
     /**
      * @param DateTime $date
@@ -97,12 +97,12 @@ class UkraineDriver extends BaseDriver implements CurrencyInterface
 
     public function fullName(): string
     {
-        return '';
+        return 'Natsionalʹnyy bank Ukrayiny';
     }
 
     public function homeUrl(): string
     {
-        return '';
+        return 'https://www.bank.gov.ua/';
     }
 
     public function infoAboutFrequency(): string

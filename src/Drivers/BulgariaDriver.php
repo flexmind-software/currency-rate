@@ -98,12 +98,12 @@ class BulgariaDriver extends BaseDriver implements CurrencyInterface
 
     public function fullName(): string
     {
-        return '';
+        return 'Bŭlgarska narodna banka';
     }
 
     public function homeUrl(): string
     {
-        return '';
+        return 'https://www.bnb.bg';
     }
 
     public function infoAboutFrequency(): string
