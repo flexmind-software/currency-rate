@@ -37,7 +37,7 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
     public function downloadRates(DateTime $date)
     {
         $this->retrieveData($date);
-        $this->saveInDatabase();
+        $this->saveInDatabase(true);
     }
 
     /**
@@ -106,14 +106,6 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
                 $this->data[] = $param;
             }
         }
-    }
-
-    /**
-     *
-     */
-    protected function saveInDatabase()
-    {
-        CurrencyRate::upsert($this->data, ['no', 'driver', 'code', 'date'], ['rate', 'multiplier']);
     }
 
     public function fullName(): string

@@ -6,25 +6,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- add support for Bank Of Moldavia / Banca Naţională a Moldovei
+- add support for Moldavia / Banca Naţională a Moldovei
+- add support for Serbia / Narodna banka Srbije
 
 ## [0.0.11] - 2021-09-21
 
 ### Added
-- add support for Bank Of Azerbaijan / Azərbaycan Mərkəzi Bankı
-- add support for Bank Of Croatia / Hrvatska Narodna Banka
-- add support for Bank Of Ukraine / Natsionalʹnyy bank Ukrayiny
-- add support for Bank Of Turkey / Türkiye Cumhuriyet Merkez Bankası
-- add support for Bank Of Russia / Tsentral'nyy bank Rossiyskoy Federatsii
-- add support for Bank Of Georgia / Sakartvelos Erovnuli Bank’i
+- add support for Azerbaijan / Azərbaycan Mərkəzi Bankı
+- add support for Croatia / Hrvatska Narodna Banka
+- add support for Ukraine / Natsionalʹnyy bank Ukrayiny
+- add support for Turkey / Türkiye Cumhuriyet Merkez Bankası
+- add support for Russia / Tsentral'nyy bank Rossiyskoy Federatsii
+- add support for Georgia / Sakartvelos Erovnuli Bank’i
 
 ### Changed
-- change data source for Bank Of Belarus / Natsional'nyy bank Respubliki Belarus'
+- change data source for Belarus / Natsional'nyy bank Respubliki Belarus'
 
 ## [0.0.10] - 2021-09-20
 
 ### Added
-- add support for Bank Of Hungary
+- add support for Hungary
 
 ### Changed
 - from now all driver user Http object instead of file_get_content function
@@ -43,7 +44,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 - added possibility to process in queue
-- add support for Bank Of Bosnia And Herzegovina, Bank Of Belarus
+- add support for Bosnia And Herzegovina, Belarus
 
 ## [0.0.7] - 2021-09-15
 
@@ -56,7 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.0.6] - 2021-09-15
 
 ### Added
-- add support for Bank of Bulgaria, Bank of Canada, Bank of Czech Republic and European Central Bank
+- add support for Bulgaria, Canada, Czech Republic and European Central Bank
 
 ### Changed
 - rebuild driver manager for dynamic call drivers

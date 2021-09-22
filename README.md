@@ -140,8 +140,13 @@ composer test
         </tr>
         <tr>
             <td>Romania</td>
-            <td><a href="https://www.bnro.ro/Home.aspx" target="_blank">Banca Națională a României</a></td>
+            <td><a href="https://www.bnro.ro/" target="_blank">Banca Națională a României</a></td>
             <td>romania</td>
+        </tr>        
+        <tr>
+            <td>Serbia</td>
+            <td><a href="https://www.nbs.rs/" target="_blank">Narodna banka Srbije</a></td>
+            <td>serbia</td>
         </tr>
         <tr>
             <td>Switzerland</td>

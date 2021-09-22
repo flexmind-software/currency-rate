@@ -22,7 +22,7 @@
 - [x] [Poland / Narodowy Bank Polski](https://www.nbp.pl/) (driver name 'poland')
 - [x] [Russia / Tsentral'nyy bank Rossiyskoy Federatsii](http://cbr.ru/) (driver name 'russia')
 - [x] [Romania / Banca Nationala a Romaniei](https://www.bnro.ro/Home.aspx) (driver name 'romania')
-- [ ] [Serbia / Narodna banka Srbije](https://www.nbs.rs/en/indeks/index.html)
+- [x] [Serbia / Narodna banka Srbije](https://www.nbs.rs/en/indeks/index.html)
 - [x] [Switzerland / Banca naziunala svizra](http://www.snb.ch/) (driver name 'switzerland')
 - [x] [Sweden / Sveriges Riksbank](https://www.riksbank.se/en-gb/) (driver name 'sweden')
 - [x] [Turkey / Türkiye Cumhuriyet Merkez Bankası](http://www.tcmb.gov.tr/) (driver name 'turkey')

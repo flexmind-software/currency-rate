@@ -31,15 +31,23 @@ abstract class BaseDriver
         $this->lastDate = CurrencyRate::where('driver', static::DRIVER_NAME)->latest('date')->value('date');
     }
 
-    protected function saveInDatabase()
+    /**
+     * @param bool $checkNo
+     */
+    protected function saveInDatabase(bool $checkNo = false)
     {
         if ($this->data) {
-            CurrencyRate::upsert($this->data, ['driver', 'code', 'date'], ['rate', 'multiplier']);
+            $columns = ['driver', 'code', 'date'];
+            if ($checkNo) {
+                $columns[] = 'no';
+            }
+            CurrencyRate::upsert($this->data, $columns, ['rate', 'multiplier']);
         }
     }
 
     /**
      * @param string|null $string
+     *
      * @return string|null
      */
     protected function clearRow(?string $string): ?string
@@ -49,6 +57,7 @@ abstract class BaseDriver
 
     /**
      * @param string $string
+     *
      * @return float
      */
     protected function stringToFloat(string $string): float

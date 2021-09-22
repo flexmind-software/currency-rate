@@ -45,7 +45,7 @@ class BosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInterface
         if ($response->ok()) {
             $this->jsonData = $response->json();
             $this->parseResponse();
-            $this->saveInDatabase();
+            $this->saveInDatabase(true);
         }
     }
 
@@ -73,14 +73,6 @@ class BosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInterface
                 'rate' => $this->stringToFloat($item['Middle']),
             ];
         }
-    }
-
-    /**
-     *
-     */
-    protected function saveInDatabase()
-    {
-        CurrencyRate::upsert($this->data, ['no', 'driver', 'code', 'date'], ['rate', 'multiplier']);
     }
 
     public function fullName(): string
