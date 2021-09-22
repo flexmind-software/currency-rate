@@ -27,7 +27,7 @@ class NorwayDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var array
      */
-    private array $json;
+    protected array $json;
 
     /**
      * @param DateTime $date

@@ -74,6 +74,11 @@ composer test
             <td>european-central-bank</td>
         </tr>
         <tr>
+            <td>Armenia</td>
+            <td><a href="https://www.cba.am/en/sitepages/default.aspx" target="_blank">Hayastani Hanrapetut’yan Kentronakan Bank</a></td>
+            <td>armenia</td>
+        </tr>        
+        <tr>
             <td>Azerbaijan</td>
             <td><a href="https://www.cbar.az" target="_blank">Azərbaycan Mərkəzi Bankı</a></td>
             <td>azerbaijan</td>

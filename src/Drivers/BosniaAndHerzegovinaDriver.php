@@ -31,7 +31,7 @@ class BosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var array|mixed
      */
-    private array $jsonData;
+    protected array $jsonData;
 
     /**
      * @param DateTime $date

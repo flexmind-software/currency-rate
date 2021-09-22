@@ -30,7 +30,7 @@ class RussiaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    private string $html;
+    protected string $html;
 
     /**
      * @param DateTime $date
