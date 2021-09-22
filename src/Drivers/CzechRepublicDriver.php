@@ -5,7 +5,6 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
-use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use Illuminate\Support\Facades\Http;
 
@@ -63,6 +62,7 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
 
             $this->parseHeader();
             $this->parseRates();
+            $this->prepareData();
             $this->saveInDatabase();
         }
     }
@@ -109,7 +109,7 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
                 continue;
             }
             $date = DateTime::createFromFormat('d.m.Y', $rates[0]);
-            if (! $date) {
+            if (!$date) {
                 break;
             }
 
@@ -127,15 +127,12 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
-    /**
-     *
-     */
-    protected function saveInDatabase()
+    private function prepareData()
     {
         $toSave = [];
 
         $date = $this->date->format('Y-m-d');
-        if (! isset($this->data[$date])) {
+        if (!isset($this->data[$date])) {
             $dateList = array_keys($this->data);
             $date = last($dateList);
         }
@@ -153,7 +150,7 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
             $toSave[] = $item;
         }
 
-        CurrencyRate::upsert($toSave, ['driver', 'code', 'date'], ['rate', 'multiplier']);
+        $this->data = $toSave;
     }
 
     public function fullName(): string
