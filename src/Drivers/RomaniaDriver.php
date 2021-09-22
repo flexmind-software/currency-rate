@@ -29,7 +29,7 @@ class RomaniaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_RSD;
+    public string $currency = Currency::CUR_RON;
     /**
      * @var array
      */

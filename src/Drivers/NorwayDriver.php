@@ -23,7 +23,7 @@ class NorwayDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_DKK;
+    public string $currency = Currency::CUR_NOK;
     /**
      * @var array
      */

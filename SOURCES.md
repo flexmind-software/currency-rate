@@ -1,6 +1,6 @@
 ## Sources
 
-### Europe [18 / 26]
+### Europe [21 / 26]
 - [x] [European Central Bank](https://ecb.europa.eu) (driver name 'european-central-bank')
 - [ ] [Albania / Bankës së Shqipërisë](https://www.bankofalbania.org/home/)
 - [ ] [Armenia / Hayastani Hanrapetut’yan Kentronakan Bank](https://www.cba.am/en/sitepages/default.aspx)

@@ -23,7 +23,7 @@ class MacedoniaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_MDL;
+    public string $currency = Currency::CUR_MKD;
 
     /**
      * @var string

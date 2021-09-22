@@ -45,4 +45,5 @@ class Currency
     public const CUR_UAH = 'UAH'; // Ukraine
     public const CUR_GEL = 'GEL'; // Georgia
     public const CUR_MDL = 'MDL'; // Moldavia
+    public const CUR_MKD = 'MKD'; // Macedonia
 }

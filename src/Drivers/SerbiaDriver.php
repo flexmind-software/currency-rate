@@ -26,7 +26,7 @@ class SerbiaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_SEK;
+    public string $currency = Currency::CUR_RSD;
 
     /**
      * @var string
