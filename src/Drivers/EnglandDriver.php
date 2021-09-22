@@ -51,7 +51,6 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
             }
 
             $date = $date->sub(DateInterval::createFromDateString('1 day'));
-
         } while ($this->tables && $this->tables->count() == 1);
 
         if ($this->tables) {
@@ -72,7 +71,7 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
             'TM' => $date->format('M'),
             'TY' => $date->format('Y'),
             'into' => 'GBP',
-            'rateview' => 'D'
+            'rateview' => 'D',
         ];
     }
 
@@ -137,7 +136,7 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
             'Taiwan Dollar' => Currency::CUR_TWD,
             'Thai Baht' => Currency::CUR_THB,
             'Turkish Lira' => Currency::CUR_TRY,
-            'US Dollar' => Currency::CUR_USD
+            'US Dollar' => Currency::CUR_USD,
         ];
 
         return $map[$currencyName] ?? null;
