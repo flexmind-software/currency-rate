@@ -45,12 +45,11 @@ class BceaoDriver extends BaseDriver implements CurrencyInterface
             if ($respond->ok()) {
                 $this->html = '<head><meta charset="utf-8" /></head><body>' . $respond->body() . '</body>';
                 $this->xpath = $this->htmlParse();
-                if (!($exists = $this->xpath->query('//table')->count() > 0)) {
+                if (! ($exists = $this->xpath->query('//table')->count() > 0)) {
                     $date->sub(DateInterval::createFromDateString('1 day'));
                 }
             }
-
-        } while (!$exists);
+        } while (! $exists);
 
         $this->parseResponse();
         $this->saveInDatabase();
@@ -64,7 +63,7 @@ class BceaoDriver extends BaseDriver implements CurrencyInterface
     private function queryString(DateTime $date): array
     {
         return [
-            'dateJour' => $date->format('Y-m-d')
+            'dateJour' => $date->format('Y-m-d'),
         ];
     }
 
@@ -113,7 +112,7 @@ class BceaoDriver extends BaseDriver implements CurrencyInterface
         $currencyList = [
             'Couronne danoise' => Currency::CUR_DKK,
             'Couronne suédoise' => Currency::CUR_SEK,
-            'Couronne norvégienne' =>  Currency::CUR_NOK,
+            'Couronne norvégienne' => Currency::CUR_NOK,
             'Couronne thèque' => Currency::CUR_DKK,
             'Forint hongrois' => Currency::CUR_HUF,
             'Zloty polonais' => Currency::CUR_PLN,
