@@ -3,8 +3,6 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateTime;
-use DOMDocument;
-use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -89,13 +87,9 @@ class SerbiaDriver extends BaseDriver implements CurrencyInterface
         if ($respond->ok()) {
             $response = $respond->body();
             $this->cookies = $respond->cookies();
-            libxml_use_internal_errors(true);
 
-            $dom = new DOMDocument('1.0', 'UTF-8');
-            $dom->loadHTML($response);
-            $xpath = new DOMXpath($dom);
+            $xpath = $this->htmlParse($response);
 
-            libxml_clear_errors();
             $hiddenInput = $xpath->query('//input[@type="hidden"]');
 
             /**

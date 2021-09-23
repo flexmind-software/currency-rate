@@ -3,8 +3,6 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateTime;
-use DOMDocument;
-use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -55,13 +53,7 @@ class UkraineDriver extends BaseDriver implements CurrencyInterface
     {
         $this->data = [];
 
-        libxml_use_internal_errors(true);
-
-        $dom = new DOMDocument('1.0', 'UTF-8');
-        $dom->loadHTML($this->html);
-        $xpath = new DOMXpath($dom);
-
-        libxml_clear_errors();
+        $xpath = $this->htmlParse();
 
         $tableRows = $xpath->query('//table[@id="exchangeRates"]/tbody/tr');
         foreach ($tableRows as $row => $tr) {
