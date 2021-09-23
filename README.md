@@ -196,14 +196,56 @@ composer test
             <td>ukraine</td>
         </tr>
         <tr>
+            <td colspan="4">Africa</td>
+        </tr>
+        <tr>
+            <td>Benin</td>
+            <td><a href="https://www.bceao.int" target="_blank">Central Bank of West African States (BCEAO)</a></td>
+            <td>bceao</td>
+        </tr>
+        <tr>
+            <td>Burkina Faso</td>
+            <td><a href="https://www.bceao.int" target="_blank">Central Bank of West African States (BCEAO)</a></td>
+            <td>bceao</td>
+        </tr>
+        <tr>
+            <td>Guinea-Bissau</td>
+            <td><a href="https://www.bceao.int" target="_blank">Central Bank of West African States (BCEAO)</a></td>
+            <td>bceao</td>
+        </tr>
+        <tr>
+            <td>Ivory Coast</td>
+            <td><a href="https://www.bceao.int" target="_blank">Central Bank of West African States (BCEAO)</a></td>
+            <td>bceao</td>
+        </tr>
+        <tr>
+            <td>Mali</td>
+            <td><a href="https://www.bceao.int" target="_blank">Central Bank of West African States (BCEAO)</a></td>
+            <td>bceao</td>
+        </tr>
+        <tr>
+            <td>Niger</td>
+            <td><a href="https://www.bceao.int" target="_blank">Central Bank of West African States (BCEAO)</a></td>
+            <td>bceao</td>
+        </tr>
+        <tr>
+            <td>Senegal</td>
+            <td><a href="https://www.bceao.int" target="_blank">Central Bank of West African States (BCEAO)</a></td>
+            <td>bceao</td>
+        </tr>
+        <tr>
+            <td>Togo</td>
+            <td><a href="https://www.bceao.int" target="_blank">Central Bank of West African States (BCEAO)</a></td>
+            <td>bceao</td>
+        </tr>
+        <tr>
             <td colspan="4">Asia</td>
         </tr>
         <tr>
             <td>Israel</td>
-            <td><a href="https://www.bankofcanada.ca/" target="_blank">בנק ישראל</a></td>
+            <td><a href="https://www.boi.org.il/" target="_blank">בנק ישראל</a></td>
             <td>israel</td>
         </tr>
-        </tbody>
         <tr>
             <td colspan="4">North America</td>
         </tr>

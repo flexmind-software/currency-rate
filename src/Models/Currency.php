@@ -50,4 +50,8 @@ class Currency
     public const CUR_ALL = 'ALL'; // Albania
     public const CUR_SAR = 'SAR'; // Saudi Arabia
     public const CUR_TWD = 'TWD'; // Taiwan
+
+    // Benin, Burkina Faso, Guinea-Bissau, Ivory Coast, Mali, Niger, Senegal, Togo
+    public const CUR_XOF = 'XOF'; // CFA Franc BCEAO
+    public const CUR_KWD = 'KWD'; // Irak
 }
