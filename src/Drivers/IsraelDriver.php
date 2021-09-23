@@ -3,8 +3,6 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateTime;
-use DOMDocument;
-use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
