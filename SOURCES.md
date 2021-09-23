@@ -78,7 +78,7 @@
 - [ ] [Ghana / Bank of Ghana](http://www.bog.gov.gh/)
 - [ ] [Guinea / Central Bank of the Republic of Guinea](http://www.bcrg-guinee.org/)
 - [ ] [Guinea-Bissau / Central Bank of West African States (BCEAO)](http://www.bceao.int)
-- [ ] [Ivory Coast / Central Bank of West African States (BCEAO)](http://www.bceao.int/)
+- [ ] [Ivory Coast / Central Bank of West African States (BCEAO)](http://www.bceao.int)
 - [ ] [Kenya / Central Bank of Kenya](http://www.centralbank.go.ke/)
 - [ ] [Lesotho / Central Bank of Lesotho](http://www.centralbank.org.ls)
 - [ ] [Liberia / Central Bank of Liberia](http://www.cbl.org.lr/)
