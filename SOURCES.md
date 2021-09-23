@@ -2,33 +2,31 @@
 
 ### Europe
 
-- [x] [European Central Bank](https://ecb.europa.eu) (driver name 'european-central-bank')
+- [x] [European Central Bank](https://ecb.europa.eu)
 - [x] [Albania / Bankës së Shqipërisë](https://www.bankofalbania.org/home/)
-- [x] [Armenia / Hayastani Hanrapetut’yan Kentronakan Bank](https://www.cba.am/en/sitepages/default.aspx) (driver name '
-  armenia')
-- [x] [Azerbaijan / Azərbaycan Mərkəzi Bankı](https://www.cbar.az) (driver name 'azerbaijan')
-- [x] [Belarus / Natsional'nyy bank Respubliki Belarus'](https://www.nbrb.by/engl/) (driver name 'belarus')
-- [x] [Bosnia and Herzegovina / Centralna Banka Bosne I Hergegovine](https://www.cbbh.ba/?lang=en) (driver name '
-  bosnia-and-herzegovina')
-- [x] [Bulgaria / Bŭlgarska narodna banka](https://www.bnb.bg/?toLang=_EN) (driver name 'bulgaria')
-- [x] [Croatia / Hrvatska Narodna Banka](https://www.hnb.hr/home) (driver name 'croatia')
-- [x] [Czech Republic / Ceska Narodni Banka](https://www.cnb.cz/en/index.html) (driver name 'czech-republic')
-- [x] [Danmark / Danmarks Nationalbanks](https://www.nationalbanken.dk/en) (driver name 'denmark')
-- [x] [Georgia / Sakartvelos Erovnuli Bank’i](https://www.nbg.gov.ge) (driver name 'georgia')
-- [x] [United Kingdom / Bank of England](https://www.bankofengland.co.uk/) (driver name 'england')
-- [x] [Hungary / Magyar Nemzeti Bank](https://www.mnb.hu/en/) (driver name 'hungary')
-- [x] [Iceland / Seðlabanki Íslands)](https://cb.is) (driver name 'iceland')
-- [x] [Macedonia / Narodna Banka na Republika Severna Makedonija](https://www.nbrm.mk/) (driver name 'macedonia')
-- [x] [Moldavia / Banca Naţională a Moldovei](https://www.bnm.md/) (driver name 'moldavia')
-- [x] [Norway / Norges Bank](https://www.norges-bank.no/en/) (driver name 'norway')
-- [x] [Poland / Narodowy Bank Polski](https://www.nbp.pl/) (driver name 'poland')
-- [x] [Russia / Tsentral'nyy bank Rossiyskoy Federatsii](https://cbr.ru/) (driver name 'russia')
-- [x] [Romania / Banca Nationala a Romaniei](https://www.bnro.ro/Home.aspx) (driver name 'romania')
-- [x] [Serbia / Narodna banka Srbije](https://www.nbs.rs/en/indeks/index.html) (driver name 'serbia')
-- [x] [Switzerland / Banca naziunala svizra](https://www.snb.ch/) (driver name 'switzerland')
-- [x] [Sweden / Sveriges Riksbank](https://www.riksbank.se/en-gb/) (driver name 'sweden')
-- [x] [Turkey / Türkiye Cumhuriyet Merkez Bankası](https://www.tcmb.gov.tr/) (driver name 'turkey')
-- [x] [Ukraine / Natsionalʹnyy bank Ukrayiny](https://www.bank.gov.ua/) (driver name 'ukraine')
+- [x] [Armenia / Hayastani Hanrapetut’yan Kentronakan Bank](https://www.cba.am/en/sitepages/default.aspx)
+- [x] [Azerbaijan / Azərbaycan Mərkəzi Bankı](https://www.cbar.az)
+- [x] [Belarus / Natsional'nyy bank Respubliki Belarus'](https://www.nbrb.by/engl/)
+- [x] [Bosnia and Herzegovina / Centralna Banka Bosne I Hergegovine](https://www.cbbh.ba/?lang=en)
+- [x] [Bulgaria / Bŭlgarska narodna banka](https://www.bnb.bg/?toLang=_EN)
+- [x] [Croatia / Hrvatska Narodna Banka](https://www.hnb.hr/home)
+- [x] [Czech Republic / Ceska Narodni Banka](https://www.cnb.cz/en/index.html)
+- [x] [Danmark / Danmarks Nationalbanks](https://www.nationalbanken.dk/en)
+- [x] [Georgia / Sakartvelos Erovnuli Bank’i](https://www.nbg.gov.ge)
+- [x] [United Kingdom / Bank of England](https://www.bankofengland.co.uk/)
+- [x] [Hungary / Magyar Nemzeti Bank](https://www.mnb.hu/en/)
+- [x] [Iceland / Seðlabanki Íslands)](https://cb.is)
+- [x] [Macedonia / Narodna Banka na Republika Severna Makedonija](https://www.nbrm.mk/)
+- [x] [Moldavia / Banca Naţională a Moldovei](https://www.bnm.md/)
+- [x] [Norway / Norges Bank](https://www.norges-bank.no/en/)
+- [x] [Poland / Narodowy Bank Polski](https://www.nbp.pl/)
+- [x] [Russia / Tsentral'nyy bank Rossiyskoy Federatsii](https://cbr.ru/)
+- [x] [Romania / Banca Nationala a Romaniei](https://www.bnro.ro/Home.aspx)
+- [x] [Serbia / Narodna banka Srbije](https://www.nbs.rs/en/indeks/index.html)
+- [x] [Switzerland / Banca naziunala svizra](https://www.snb.ch/)
+- [x] [Sweden / Sveriges Riksbank](https://www.riksbank.se/en-gb/)
+- [x] [Turkey / Türkiye Cumhuriyet Merkez Bankası](https://www.tcmb.gov.tr/)
+- [x] [Ukraine / Natsionalʹnyy bank Ukrayiny](https://www.bank.gov.ua/)
 
 ### Asia
 
@@ -37,7 +35,7 @@
 - [ ] [Indonesia](https://www.bi.go.id/)
 - [ ] [Iran / Bank Markazi-ye Jomhuri-ye Eslāmi-ye Irān](https://www.cbi.ir/default_en.aspx)
 - [ ] [Iraq / Albank Almarkaziu Aleiraqiu](https://www.cbi.iq/)
-- [x] [Israel / בנק ישראל](https://www.boi.org.il/) (driver name 'israel')
+- [x] [Israel / בנק ישראל](https://www.boi.org.il/)
 - [ ] [Japan / Nippon Ginkō](https://www.boj.or.jp/en/)
 - [ ] [Jordan / Central Bank of Jordan](http://www.cbj.gov.jo/)
 - [ ] [Kazakhstan / National Bank of Kazakhstan](http://www.nationalbank.kz)
@@ -109,7 +107,7 @@
 
 ### North America
 
-- [x] [Canada / Banqueu du Canada](https://www.bankofcanada.ca/) (driver name 'canada')
+- [x] [Canada / Banqueu du Canada](https://www.bankofcanada.ca/)
 - [ ] [Bahamas / Central Bank of The Bahamas](http://www.centralbankbahamas.com/)
 - [ ] [Barbados / Central Bank of Barbados](http://www.centralbank.org.bb/)
 - [ ] [Cuba / Central Bank of Cuba](http://www.bc.gob.cu/english/home.asp)
@@ -142,7 +140,7 @@
 
 ### Oceania
 
-- [x] [Australia / Reserve Bank of Australia](https://www.rba.gov.au/) (driver name 'australia')
+- [x] [Australia / Reserve Bank of Australia](https://www.rba.gov.au/)
 - [ ] [Fiji / Reserve Bank of Fiji](https://www.rbf.gov.fj/)
 - [ ] [New Zealand / Te Pūtea Matua](https://www.rbnz.govt.nz/index.html)
 - [ ] [Papua New Guinea](https://www.bankpng.gov.pg/)
