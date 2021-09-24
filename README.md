@@ -204,6 +204,11 @@ composer test
             <td>bceao</td>
         </tr>
         <tr>
+            <td>Botswana</td>
+            <td><a href="https://www.bankofbotswana.bw" target="_blank">Bank of Botswana</a></td>
+            <td>botswana</td>
+        </tr>
+        <tr>
             <td>Burkina Faso</td>
             <td><a href="https://www.bceao.int" target="_blank">Central Bank of West African States (BCEAO)</a></td>
             <td>bceao</td>
