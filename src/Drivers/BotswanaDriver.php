@@ -56,10 +56,10 @@ class BotswanaDriver extends BaseDriver implements CurrencyInterface
         return [
             'field_exchange_date_value' => [
                 'min' => $date->format('m/d/Y'),
-                'max' => $date->format('m/d/Y')
+                'max' => $date->format('m/d/Y'),
                 ],
             'page' => '',
-            '_format' => 'csv'
+            '_format' => 'csv',
         ];
     }
 
