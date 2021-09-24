@@ -49,7 +49,7 @@ class ChinaDriver extends BaseDriver implements CurrencyInterface
     {
         return [
             "t" => $date->getTimestamp(),
-            '_' => now()->getTimestamp()
+            '_' => now()->getTimestamp(),
         ];
     }
 
@@ -59,7 +59,6 @@ class ChinaDriver extends BaseDriver implements CurrencyInterface
 
         $this->data = [];
         foreach ($this->json['records'] as $record) {
-
             $units = (int)$record['vrtEName'] == 0 ? 1 : (int)$record['vrtEName'];
 
             $this->data[] = [
