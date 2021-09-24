@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 - add support for Central Bank of West African States (BCEAO)
+- add support for China / CFETS - China Foreign Exchange Trade System
 
 ## [0.1.1] - 2021-09-23
 

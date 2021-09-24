@@ -6,6 +6,7 @@ use DateTime;
 use FlexMindSoftware\CurrencyRate\Jobs\QueueDownload;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Log;
 
 /**
  * php artisan flexmind:currency-rate --driver=
@@ -22,7 +23,7 @@ class CurrencyRateCommand extends Command
     public function handle()
     {
         $currencyDate = $this->argument('date');
-        $timestamp = ! blank($currencyDate) ? strtotime($currencyDate) : time();
+        $timestamp = !blank($currencyDate) ? strtotime($currencyDate) : time();
 
         $queue = $this->option('queue');
 
@@ -38,7 +39,11 @@ class CurrencyRateCommand extends Command
         $date = new DateTime("@$timestamp");
         foreach ($drivers as $driver) {
             if ($queue == 'none') {
-                \CurrencyRate::driver($driver)->downloadRates($date);
+                try {
+                    \CurrencyRate::driver($driver)->downloadRates($date);
+                } catch (\Throwable $exception) {
+                    Log::error('Can\t grap data from [' . $driver . ']', $exception->getTrace());
+                }
             } else {
                 QueueDownload::dispatch($driver, $date)->onQueue($queue);
             }

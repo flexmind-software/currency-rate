@@ -35,7 +35,7 @@
 - [ ] [Bhutan /]()
 - [ ] [Brunei /]()
 - [ ] [Cambodia /]()
-- [ ] [China / Zhōngguó Rénmín Yínháng](https://www.pbc.gov.cn/en/3688006/index.html)
+- [ ] [China / CFETS - China Foreign Exchange Trade System](http://www.chinamoney.com.cn/english/bmkcpr/)
 - [ ] [India](https://rbi.org.in/)
 - [ ] [Indonesia](https://www.bi.go.id/)
 - [ ] [Iran / Bank Markazi-ye Jomhuri-ye Eslāmi-ye Irān](https://www.cbi.ir/default_en.aspx)

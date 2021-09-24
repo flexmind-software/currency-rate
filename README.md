@@ -247,6 +247,11 @@ composer test
             <td colspan="4">Asia</td>
         </tr>
         <tr>
+            <td>China</td>
+            <td><a href="http://www.chinamoney.com.cn/english/bmkcpr/" target="_blank">CFETS - China Foreign Exchange Trade System</a></td>
+            <td>china</td>
+        </tr>        
+        <tr>
             <td>Israel</td>
             <td><a href="https://www.boi.org.il/" target="_blank">בנק ישראל</a></td>
             <td>israel</td>
