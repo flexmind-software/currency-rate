@@ -252,6 +252,11 @@ composer test
             <td>china</td>
         </tr>        
         <tr>
+            <td>Iran</td>
+            <td><a href="https://www.cbi.ir/" target="_blank">Bank Markazi-ye Jomhuri-ye Eslāmi-ye Irān</a></td>
+            <td>iran</td>
+        </tr>
+        <tr>
             <td>Israel</td>
             <td><a href="https://www.boi.org.il/" target="_blank">בנק ישראל</a></td>
             <td>israel</td>

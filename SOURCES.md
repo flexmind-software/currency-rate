@@ -38,7 +38,7 @@
 - [x] [China / CFETS - China Foreign Exchange Trade System](http://www.chinamoney.com.cn/english/bmkcpr/)
 - [ ] [India](https://rbi.org.in/)
 - [ ] [Indonesia](https://www.bi.go.id/)
-- [ ] [Iran / Bank Markazi-ye Jomhuri-ye Eslāmi-ye Irān](https://www.cbi.ir/default_en.aspx)
+- [x] [Iran / Bank Markazi-ye Jomhuri-ye Eslāmi-ye Irān](https://www.cbi.ir/default_en.aspx)
 - [ ] [Iraq / Albank Almarkaziu Aleiraqiu](https://www.cbi.iq/)
 - [x] [Israel / בנק ישראל](https://www.boi.org.il/)
 - [ ] [Japan / Nippon Ginkō](https://www.boj.or.jp/en/)

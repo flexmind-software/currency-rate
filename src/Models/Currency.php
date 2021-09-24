@@ -309,4 +309,5 @@ class Currency
     public const CUR_XOF = 'XOF'; // CFA Franc BCEAO
     public const CUR_KWD = 'KWD'; // Irak
     public const CUR_BWP = 'BWP'; // Botswana
+    public const CUR_IRR = 'IRR'; // Botswana
 }
