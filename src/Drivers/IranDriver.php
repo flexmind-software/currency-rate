@@ -196,7 +196,7 @@ class IranDriver extends BaseDriver implements CurrencyInterface
             'ctl00$ucBody$ucContent$ctl00$ucForm$rptCurrency$ctl57$chkCurrency' => 'on',
             'ctl00$ucBody$ucContent$ctl00$ucForm$rptCurrency$ctl57$hdnCurrencyID' => 218,
             'ctl00$ucBody$ucContent$ctl00$ucForm$rptCurrency$ctl58$chkCurrencyAlt' => 'on',
-            'ctl00$ucBody$ucContent$ctl00$ucForm$rptCurrency$ctl58$hdnCurrencyIDAlt' => 229
+            'ctl00$ucBody$ucContent$ctl00$ucForm$rptCurrency$ctl58$hdnCurrencyIDAlt' => 229,
         ];
     }
 
