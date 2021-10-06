@@ -48,7 +48,7 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
     {
         $response = Http::get(static::URI . 'dir.txt');
         if ($response->ok()) {
-            $listOfCurses = $response->body();
+            $exchangeRateList = $response->body();
 
             $timestamp = $date->getTimestamp();
 
@@ -65,14 +65,15 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
 
             $date = date('ymd', $timestamp);
 
-            if (preg_match_all('/(a)([0-9]{3})z' . $date . '/', $listOfCurses, $matches)) {
-                if (! blank($matches[0])) {
-                    foreach ($matches[0] as $nbpNo) {
-                        $response = Http::get(static::URI . $nbpNo . '.xml');
-                        if ($response->ok()) {
-                            $xml = $response->body();
-                            $this->parseData($xml);
-                        }
+            if (
+                preg_match_all('/(a)([0-9]{3})z' . $date . '/', $exchangeRateList, $matches) &&
+                !blank($matches[0])
+            ) {
+                foreach ($matches[0] as $nbpNo) {
+                    $response = Http::get(static::URI . $nbpNo . '.xml');
+                    if ($response->ok()) {
+                        $xml = $response->body();
+                        $this->parseData($xml);
                     }
                 }
             }
