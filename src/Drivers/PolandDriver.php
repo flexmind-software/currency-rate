@@ -67,7 +67,7 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
 
             if (
                 preg_match_all('/(a)([0-9]{3})z' . $date . '/', $exchangeRateList, $matches) &&
-                !blank($matches[0])
+                ! blank($matches[0])
             ) {
                 foreach ($matches[0] as $nbpNo) {
                     $response = Http::get(static::URI . $nbpNo . '.xml');
