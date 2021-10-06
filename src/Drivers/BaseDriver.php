@@ -36,6 +36,10 @@ abstract class BaseDriver
      * @var array
      */
     protected array $json;
+    /**
+     * @var DOMDocument
+     */
+    protected DOMDocument $dom;
 
     public function __construct()
     {
@@ -89,9 +93,9 @@ abstract class BaseDriver
     {
         libxml_use_internal_errors(true);
 
-        $dom = new DOMDocument('1.0', 'UTF-8');
-        $dom->loadHTML($html ?? $this->html);
-        $xpath = new DOMXpath($dom);
+        $this->dom = new DOMDocument('1.0', 'UTF-8');
+        $this->dom->loadHTML($html ?? $this->html);
+        $xpath = new DOMXpath($this->dom);
 
         libxml_clear_errors();
 

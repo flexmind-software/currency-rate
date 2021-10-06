@@ -1,2 +1,2 @@
 providers:
-  - FlexMindSoftware\CurrencyRate\SkeletonServiceProvider
+  - FlexMindSoftware\CurrencyRate\CurrencyRateServiceProvider

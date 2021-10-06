@@ -6,6 +6,8 @@ use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
+use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Cookie\SetCookie;
 use Illuminate\Support\Facades\Http;
 
 class IranDriver extends BaseDriver implements CurrencyInterface
@@ -27,11 +29,15 @@ class IranDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var array
      */
-    private array $inputs;
+    private array $inputs = [];
     /**
      * @var string
      */
     private string $xml;
+    /**
+     * @var CookieJar
+     */
+    private CookieJar $cookies;
 
     /**
      * @param DateTime $date
@@ -41,25 +47,32 @@ class IranDriver extends BaseDriver implements CurrencyInterface
     public function downloadRates(DateTime $date)
     {
         $this->getParamArray();
+        $this->queryString($date);
 
-        $respond = Http::asForm()->post(static::URI, $this->queryString($date));
+        $cookiesList = $this->cookies;
+
+        $respond = Http::asMultipart()
+            ->withOptions(['cookies' => $cookiesList])
+            ->post(static::URI, $this->inputs);
+
         if ($respond->ok()) {
-            $this->xml = $respond->body();
-            $this->parseResponse();
+            echo $respond->body();
+//            $this->xml = $respond->body();
+//            $this->parseResponse();
 //            $this->saveInDatabase();
         }
     }
 
     private function getParamArray()
     {
-        $respond = Http::get(static::URI);
+        $respond = Http::asForm()->post(static::URI, $this->queryString(new DateTime()));
+        $response = $respond->body();
         if ($respond->ok()) {
-            $response = $respond->body();
-
-            $xpath = $this->htmlParse($response);
-            $hiddenInput = $xpath->query('//*[@id="aspnetForm"]/*/input');
-
             $this->inputs = [];
+            $this->cookies = $respond->cookies();
+            $xpath = $this->htmlParse($response);
+            $hiddenInput = $xpath->query('//input|//textarea|//select');
+
             /**
              * @var \DOMElement $hidden
              */
@@ -76,16 +89,18 @@ class IranDriver extends BaseDriver implements CurrencyInterface
      */
     private function queryString(DateTime $date): array
     {
-        return [
+        $params = [
+            '__EVENTTARGET'  => '',
+            '__EVENTARGUMENT' => '',
             'ctl00$ucBody$ucContent$ctl00$ucForm$Output' => 'rdbXML',
             'ctl00$ucBody$ucContent$ctl00$ucForm$chkSummary' => 'on',
             'ctl00$ucBody$ucContent$ctl00$ucForm$ddlWeeks' => 0,
             'ctl00$ucBody$ucContent$ctl00$ucForm$ddlStartMonth' => $date->format('n'),
             'ctl00$ucBody$ucContent$ctl00$ucForm$ddlStartDay' => $date->format('j'),
             'ctl00$ucBody$ucContent$ctl00$ucForm$ddlStartYear' => $date->format('Y'),
-            'ctl00$ucBody$ucContent$ctl00$ucForm$ddlEndMonth' => $date->format('n'),
-            'ctl00$ucBody$ucContent$ctl00$ucForm$ddlEndDay' => $date->format('j'),
-            'ctl00$ucBody$ucContent$ctl00$ucForm$ddlEndYear' => $date->format('Y'),
+            'ctl00$ucBody$ucContent$ctl00$ucForm$ddlEndMonth' => '', // $date->format('n'),
+            'ctl00$ucBody$ucContent$ctl00$ucForm$ddlEndDay' => '', // $date->format('j'),
+            'ctl00$ucBody$ucContent$ctl00$ucForm$ddlEndYear' => '', // $date->format('Y'),
             'ctl00$ucBody$ucContent$ctl00$ucForm$btnShowRateByDate' => 'Show Rates',
             'ctl00$ucBody$ucContent$ctl00$ucForm$rptCurrency$ctl00$chkSelectAll' => 'on',
             'ctl00$ucBody$ucContent$ctl00$ucForm$rptCurrency$ctl01$chkCurrency' => 'on',
@@ -198,10 +213,19 @@ class IranDriver extends BaseDriver implements CurrencyInterface
             'ctl00$ucBody$ucContent$ctl00$ucForm$rptCurrency$ctl58$chkCurrencyAlt' => 'on',
             'ctl00$ucBody$ucContent$ctl00$ucForm$rptCurrency$ctl58$hdnCurrencyIDAlt' => 229,
         ];
+
+        foreach ($params as $key => $param) {
+            $this->inputs[$key] = $param;
+        }
+
+        return $params;
     }
 
     private function parseResponse()
     {
+        echo $this->xml;
+
+        die();
         $xmlElement = simplexml_load_string($this->xml, "SimpleXMLElement", LIBXML_NOCDATA);
         dd($xmlElement);
     }
