@@ -44,7 +44,6 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
         if ($response->ok()) {
             $this->csvPlain = $response->body();
             $this->parseResponse();
-
         }
 
         return $this;

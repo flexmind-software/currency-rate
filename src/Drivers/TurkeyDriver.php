@@ -43,7 +43,7 @@ class TurkeyDriver extends BaseDriver implements CurrencyInterface
                 $this->xml = $respond->body();
             }
             $this->date = $this->date->sub(DateInterval::createFromDateString('1 day'));
-        } while (!$respond->ok());
+        } while (! $respond->ok());
 
         $this->parseResponse();
 

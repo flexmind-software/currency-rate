@@ -39,6 +39,7 @@ class NorwayDriver extends BaseDriver implements CurrencyInterface
             $this->json = $response->json();
             $this->parseBody();
         }
+
         return $this;
     }
 

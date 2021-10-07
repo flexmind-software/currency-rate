@@ -51,6 +51,7 @@ abstract class BaseDriver
     public function setLastDataTime(DateTime $date): self
     {
         $this->lastDate = $date;
+
         return $this;
     }
 
@@ -62,6 +63,7 @@ abstract class BaseDriver
     public function setDataTime(DateTime $date): self
     {
         $this->date = $date;
+
         return $this;
     }
 
@@ -128,8 +130,8 @@ abstract class BaseDriver
      */
     protected function findByDate(string $label, string $dateFormat = 'Y-m-d')
     {
-        if (!$this->date) {
-            !$this->data ?: $this->data = reset($this->data);
+        if (! $this->date) {
+            ! $this->data ?: $this->data = reset($this->data);
         }
 
         $formatDate = $this->date->format($dateFormat);

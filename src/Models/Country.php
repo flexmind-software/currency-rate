@@ -2026,11 +2026,11 @@ class Country
      */
     public static function getAllCountryList(string $value = 'name', string $key = 'iso2'): array
     {
-        if (!in_array($value, ['iso3', 'name', 'capital', 'currency', 'phone'])) {
+        if (! in_array($value, ['iso3', 'name', 'capital', 'currency', 'phone'])) {
             throw new Exception('Value is not a valid field name');
         }
 
-        if (!in_array($key, ['iso2', 'iso3', 'name', 'capital', 'currency', 'phone'])) {
+        if (! in_array($key, ['iso2', 'iso3', 'name', 'capital', 'currency', 'phone'])) {
             throw new Exception('Key is not a valid field name');
         }
 
@@ -2040,7 +2040,7 @@ class Country
             if ($key == 'iso2') {
                 $countryList[$iso2] = $country[$value];
             } elseif ($key == 'currency') {
-                if (!isset($countryList[$country[$key]])) {
+                if (! isset($countryList[$country[$key]])) {
                     $countryList[$country[$key]] = [];
                 }
                 $countryList[$country[$key]][] = $country[$value];

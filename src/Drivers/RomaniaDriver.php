@@ -82,7 +82,7 @@ class RomaniaDriver extends BaseDriver implements CurrencyInterface
                     'multiplier' => (int)$rate->attributes()->multiplier,
                 ];
 
-                $params['multiplier'] = !$params['multiplier'] ? 1 : $params['multiplier'];
+                $params['multiplier'] = ! $params['multiplier'] ? 1 : $params['multiplier'];
 
                 $this->data[$date][] = $params;
             }
@@ -95,8 +95,8 @@ class RomaniaDriver extends BaseDriver implements CurrencyInterface
      */
     protected function findByDate(string $label, string $dateFormat = 'Y-m-d')
     {
-        if (!$this->date) {
-            !$this->data ?: $this->data = reset($this->data);
+        if (! $this->date) {
+            ! $this->data ?: $this->data = reset($this->data);
         }
 
         $date = $this->date->format($dateFormat);

@@ -26,7 +26,7 @@ class CurrencyRateCommand extends Command
     public function handle()
     {
         $currencyDate = $this->argument('date');
-        $timestamp = !blank($currencyDate) ? strtotime($currencyDate) : time();
+        $timestamp = ! blank($currencyDate) ? strtotime($currencyDate) : time();
 
         $queue = $this->option('queue');
         $driver = $this->option('driver');
@@ -52,7 +52,6 @@ class CurrencyRateCommand extends Command
                     if ($data && $connection) {
                         $this->saveInDatabase($data);
                     }
-
                 } catch (Throwable $exception) {
                     Log::error(
                         'Can\t grab data from [' . $driver . ']: ' . $exception->getMessage(),

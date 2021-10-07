@@ -42,11 +42,11 @@ class BceaoDriver extends BaseDriver implements CurrencyInterface
             if ($respond->ok()) {
                 $this->html = '<head><meta charset="utf-8" /></head><body>' . $respond->body() . '</body>';
                 $this->xpath = $this->htmlParse();
-                if (!($exists = $this->xpath->query('//table')->count() > 0)) {
+                if (! ($exists = $this->xpath->query('//table')->count() > 0)) {
                     $this->date->sub(DateInterval::createFromDateString('1 day'));
                 }
             }
-        } while (!$exists);
+        } while (! $exists);
 
         $this->parseResponse();
 
