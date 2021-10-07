@@ -2,7 +2,6 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -38,26 +37,23 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
     private array $countryList = [];
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $this->date = $date;
-
         $respond = Http::get('https://www.boi.org.il/currency.xml');
         if ($respond->ok()) {
             $this->xml = $respond->body();
             $this->makeCountryMap();
         }
 
-        $respond = Http::get(static::URI, $this->queryString($date));
+        $respond = Http::get(static::URI, $this->queryString());
         if ($respond->ok()) {
             $this->html = $respond->body();
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     private function makeCountryMap()
@@ -72,11 +68,9 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
         return [
             'wp' => 'ExchangeRates',
@@ -107,7 +101,7 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
         });
 
         $this->data = array_map(function ($item) {
-            return  [
+            return [
                 'no' => null,
                 'code' => $this->mapCountryToIso($item[2]),
                 'date' => $this->date->format('Y-m-d'),

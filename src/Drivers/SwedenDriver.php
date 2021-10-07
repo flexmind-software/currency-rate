@@ -2,7 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateInterval;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -35,31 +35,27 @@ class SwedenDriver extends BaseDriver implements CurrencyInterface
     private string $response;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $response = Http::get(static::URI, $this->getQueryString($date));
-        if ($response->ok()) {
-            $this->response = $response->body();
-
+        $respond = Http::get(static::URI, $this->getQueryString());
+        if ($respond->ok()) {
+            $this->response = $respond->body();
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function getQueryString(DateTime $date): array
+    private function getQueryString(): array
     {
         return [
-            'to' => $date->format('d/m/y'),
-            'from' => $date->sub(\DateInterval::createFromDateString('1 day'))->format('d/m/y'),
+            'to' => $this->date->format('d/m/y'),
+            'from' => $this->date->sub(DateInterval::createFromDateString('1 day'))->format('d/m/y'),
             'c' => 'cAverage',
             'f' => 'Day',
             's' => 'Dot',

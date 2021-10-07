@@ -38,14 +38,12 @@ class AlbaniaDriver extends BaseDriver implements CurrencyInterface
     private DOMXPath $xpath;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
         do {
-            $respond = Http::asForm()->post(static::URI, $this->formParam($date));
+            $respond = Http::asForm()->post(static::URI, $this->formParam($this->date));
             if ($respond->ok()) {
                 $this->html = $respond->body();
                 $this->xpath = $this->htmlParse();
@@ -55,8 +53,9 @@ class AlbaniaDriver extends BaseDriver implements CurrencyInterface
 
         if ($this->tables) {
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**

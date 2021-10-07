@@ -31,19 +31,17 @@ class AzerbaijanDriver extends BaseDriver implements CurrencyInterface
     private string $xml;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI, ['date_req' => $date->format('d.m.Y')]);
+        $respond = Http::get(static::URI, ['date_req' => $this->date->format('d.m.Y')]);
         if ($respond->ok()) {
             $this->xml = $respond->body();
-
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     private function parseResponse()

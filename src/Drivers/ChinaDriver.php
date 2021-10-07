@@ -2,7 +2,6 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -26,29 +25,26 @@ class ChinaDriver extends BaseDriver implements CurrencyInterface
     public string $currency = Currency::CUR_CNY;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI, $this->queryString($date));
+        $respond = Http::get(static::URI, $this->queryString());
         if ($respond->ok()) {
             $this->json = $respond->json();
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
         return [
-            "t" => $date->getTimestamp(),
+            "t" => $this->date->getTimestamp(),
             '_' => now()->getTimestamp(),
         ];
     }

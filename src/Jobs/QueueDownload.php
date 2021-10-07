@@ -2,6 +2,8 @@
 
 namespace FlexMindSoftware\CurrencyRate\Jobs;
 
+use DateTime;
+use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
@@ -30,18 +32,24 @@ class QueueDownload implements ShouldQueue, ShouldBeUnique, ShouldBeUniqueUntilP
      */
     protected string $driverName;
     /**
-     * @var \DateTime
+     * @var DateTime
      */
-    protected \DateTime $dateTime;
+    protected DateTime $dateTime;
+    /**
+     * @var string
+     */
+    protected string $databaseConnection;
 
     /**
      * @param string $driverName
-     * @param \DateTime $dateTime
+     * @param DateTime $dateTime
+     * @param string $connection
      */
-    public function __construct(string $driverName, \DateTime $dateTime)
+    public function __construct(string $driverName, DateTime $dateTime, string $connection)
     {
         $this->driverName = $driverName;
         $this->dateTime = $dateTime;
+        $this->databaseConnection = $connection;
     }
 
     /**
@@ -56,6 +64,13 @@ class QueueDownload implements ShouldQueue, ShouldBeUnique, ShouldBeUniqueUntilP
 
     public function handle()
     {
-        \CurrencyRate::driver($this->driverName)->downloadRates($this->dateTime);
+        $data = \CurrencyRate::driver($this->driverName)
+            ->setDataTime($this->dateTime)
+            ->grabExchangeRates()
+            ->retrieveData();
+
+        if ($data && $this->databaseConnection) {
+            CurrencyRate::saveIn($data, $this->databaseConnection);
+        }
     }
 }

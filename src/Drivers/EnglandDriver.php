@@ -37,39 +37,36 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
     private $tables = false;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
         do {
-            $respond = Http::get(static::URI, $this->queryString($date));
+            $respond = Http::get(static::URI, $this->queryString());
             if ($respond->ok()) {
                 $xpath = $this->htmlParse($respond->body());
                 $this->tables = $xpath->query('//table');
             }
 
-            $date = $date->sub(DateInterval::createFromDateString('1 day'));
+            $date = $this->date->sub(DateInterval::createFromDateString('1 day'));
         } while ($this->tables && $this->tables->count() == 1);
 
         if ($this->tables) {
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
         return [
-            'TD' => $date->format('j'),
-            'TM' => $date->format('M'),
-            'TY' => $date->format('Y'),
+            'TD' => $this->date->format('j'),
+            'TM' => $this->date->format('M'),
+            'TY' => $this->date->format('Y'),
             'into' => 'GBP',
             'rateview' => 'D',
         ];

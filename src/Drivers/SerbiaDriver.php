@@ -3,11 +3,13 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateTime;
+use DOMElement;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use GuzzleHttp\Cookie\CookieJar;
 use Illuminate\Support\Facades\Http;
+use RuntimeException;
 
 class SerbiaDriver extends BaseDriver implements CurrencyInterface
 {
@@ -37,13 +39,11 @@ class SerbiaDriver extends BaseDriver implements CurrencyInterface
     private CookieJar $cookies;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $params = $this->postParam($date);
+        $params = $this->postParam();
         $cookie = $this->cookies->getCookieByName('JSESSIONID');
         $respond = Http::asForm()
             ->withCookies([$cookie->getName() => $cookie->getValue()], $cookie->getDomain())
@@ -53,20 +53,20 @@ class SerbiaDriver extends BaseDriver implements CurrencyInterface
             $this->parseResponse();
             $this->saveInDatabase(true);
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function postParam(DateTime $date): array
+    private function postParam(): array
     {
         return [
             'index' => 'index',
             'index:brKursneListe' => '',
-            'index:yearInner' => $date->format('Y'),
-            'index:inputCalendar1' => $date->format('d/m/Y'),
+            'index:yearInner' => $this->date->format('Y'),
+            'index:inputCalendar1' => $this->date->format('d/m/Y'),
             'index:vrstaInner' => 1,
             'index:prikazInner' => 1, // CSV
             'index:buttonShow' => '',
@@ -79,7 +79,7 @@ class SerbiaDriver extends BaseDriver implements CurrencyInterface
      *
      * @return string CSRF token.
      *
-     * @throws \RuntimeException When API is changed.
+     * @throws RuntimeException When API is changed.
      */
     private function getFormCsrfToken(): ?string
     {
@@ -93,7 +93,7 @@ class SerbiaDriver extends BaseDriver implements CurrencyInterface
             $hiddenInput = $xpath->query('//input[@type="hidden"]');
 
             /**
-             * @var \DOMElement $hidden
+             * @var DOMElement $hidden
              */
             foreach ($hiddenInput as $hidden) {
                 if ($hidden->getAttribute('name') === 'javax.faces.ViewState') {

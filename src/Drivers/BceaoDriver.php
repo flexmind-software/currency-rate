@@ -3,7 +3,6 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateInterval;
-use DateTime;
 use DOMElement;
 use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
@@ -33,49 +32,46 @@ class BceaoDriver extends BaseDriver implements CurrencyInterface
     private DOMXPath $xpath;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
         $exists = false;
         do {
-            $respond = Http::get(static::URI, $this->queryString($date));
+            $respond = Http::get(static::URI, $this->queryString());
             if ($respond->ok()) {
                 $this->html = '<head><meta charset="utf-8" /></head><body>' . $respond->body() . '</body>';
                 $this->xpath = $this->htmlParse();
-                if (! ($exists = $this->xpath->query('//table')->count() > 0)) {
-                    $date->sub(DateInterval::createFromDateString('1 day'));
+                if (!($exists = $this->xpath->query('//table')->count() > 0)) {
+                    $this->date->sub(DateInterval::createFromDateString('1 day'));
                 }
             }
-        } while (! $exists);
+        } while (!$exists);
 
         $this->parseResponse();
-        $this->saveInDatabase();
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
         return [
-            'dateJour' => $date->format('Y-m-d'),
+            'dateJour' => $this->date->format('Y-m-d'),
         ];
     }
 
     private function parseResponse()
     {
-        $xpath = $this->htmlParse();
+        $xPath = $this->htmlParse();
 
-        $data = $this->clearRow($xpath->query('//h2')->item(0)->nodeValue);
+        $data = $this->clearRow($xPath->query('//h2')->item(0)->nodeValue);
         preg_match('#(\d+)\s([a-z]+)\s([0-9]{4})#im', $data, $matches);
         $date = date('Y-m-d', strtotime($matches[0]));
 
-        $rows = $xpath->query('//table/tbody/tr');
+        $rows = $xPath->query('//table/tbody/tr');
 
         $data = [];
         /** @var DOMElement $row */

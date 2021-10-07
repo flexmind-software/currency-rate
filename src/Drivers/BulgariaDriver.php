@@ -29,15 +29,11 @@ class BulgariaDriver extends BaseDriver implements CurrencyInterface
     public string $currency = Currency::CUR_BGN;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $this->date = $date;
-
-        $response = Http::get(static::URI, $this->queryString($date));
+        $response = Http::get(static::URI, $this->queryString());
 
         if ($response->ok()) {
             $fileContent = $response->body();
@@ -53,16 +49,15 @@ class BulgariaDriver extends BaseDriver implements CurrencyInterface
             });
 
             $this->parseRates($rateList);
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
         return [
             'download' => 'csv',

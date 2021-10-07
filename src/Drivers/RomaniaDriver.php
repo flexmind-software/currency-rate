@@ -2,7 +2,6 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -40,32 +39,29 @@ class RomaniaDriver extends BaseDriver implements CurrencyInterface
     private SimpleXMLElement $xml;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $response = Http::get($this->sourceUrl($date));
-        if ($response->ok()) {
-            $xml = $response->body();
+        $respond = Http::get($this->sourceUrl());
+        if ($respond->ok()) {
+            $xml = $respond->body();
             $this->xml = simplexml_load_string($xml);
             $this->parseDate();
-            $this->findByDate($date);
-            $this->saveInDatabase();
+            $this->findByDate("");
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return string
      */
-    private function sourceUrl(DateTime $date): string
+    private function sourceUrl(): string
     {
         return sprintf(
             '%s',
-            sprintf(static::URI, $date->format('Y')),
+            sprintf(static::URI, $this->date->format('Y')),
         );
     }
 
@@ -86,7 +82,7 @@ class RomaniaDriver extends BaseDriver implements CurrencyInterface
                     'multiplier' => (int)$rate->attributes()->multiplier,
                 ];
 
-                $params['multiplier'] = ! $params['multiplier'] ? 1 : $params['multiplier'];
+                $params['multiplier'] = !$params['multiplier'] ? 1 : $params['multiplier'];
 
                 $this->data[$date][] = $params;
             }
@@ -96,16 +92,14 @@ class RomaniaDriver extends BaseDriver implements CurrencyInterface
     /**
      * Extract rate data by date
      * If the date does not exist we force set latest data
-     *
-     * @param DateTime|null $date
      */
-    private function findByDate(?DateTime $date = null)
+    protected function findByDate(string $label, string $dateFormat = 'Y-m-d')
     {
-        if (! $date) {
-            ! $this->data ?: $this->data = reset($this->data);
+        if (!$this->date) {
+            !$this->data ?: $this->data = reset($this->data);
         }
 
-        $date = $date->format('Y-m-d');
+        $date = $this->date->format($dateFormat);
         if (isset($this->data[$date])) {
             $this->data = $this->data[$date];
         } else {

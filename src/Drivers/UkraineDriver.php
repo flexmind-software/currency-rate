@@ -2,7 +2,6 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -31,19 +30,28 @@ class UkraineDriver extends BaseDriver implements CurrencyInterface
     protected string $html;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $this->date = $date;
-        $respond = Http::get(static::URI, $this->queryString($date));
+        $respond = Http::get(static::URI, $this->queryString());
         if ($respond->ok()) {
             $this->html = $respond->body();
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    private function queryString(): array
+    {
+        return [
+            'date' => $this->date->format('Y-m-d'),
+            'period' => 'daily',
+        ];
     }
 
     /**
@@ -73,18 +81,6 @@ class UkraineDriver extends BaseDriver implements CurrencyInterface
                 'rate' => $this->stringToFloat($item[4]),
             ];
         }, $this->data);
-    }
-
-    /**
-     * @param DateTime $date
-     * @return array
-     */
-    private function queryString(DateTime $date): array
-    {
-        return [
-            'date' => $date->format('Y-m-d'),
-            'period' => 'daily',
-        ];
     }
 
     public function fullName(): string

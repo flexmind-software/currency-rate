@@ -2,7 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateInterval;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -30,30 +30,28 @@ class NorwayDriver extends BaseDriver implements CurrencyInterface
     protected array $json;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $response = Http::get(static::URI, $this->getQueryString($date));
+        $response = Http::get(static::URI, $this->getQueryString());
         if ($response->ok()) {
             $this->json = $response->json();
             $this->parseBody();
-            $this->saveInDatabase();
         }
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function getQueryString(DateTime $date): array
+    private function getQueryString(): array
     {
         return [
-            'endPeriod' => $date->format('Y-m-d'),
-            'startPeriod' => $date->sub(\DateInterval::createFromDateString('1 day'))->format('Y-m-d'),
+            'endPeriod' => $this->date->format('Y-m-d'),
+            'startPeriod' => $this->date
+                ->sub(DateInterval::createFromDateString('1 day'))
+                ->format('Y-m-d'),
             'format' => 'sdmx-json',
             'locale' => 'en',
         ];

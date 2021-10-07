@@ -33,31 +33,27 @@ class MoldaviaDriver extends BaseDriver implements CurrencyInterface
     private string $xml;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      * @throws Exception
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI, $this->queryString($date));
+        $respond = Http::get(static::URI, $this->queryString());
         if ($respond->ok()) {
             $this->xml = $respond->body();
-
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
         return [
-            'date' => $date->format('d.m.Y'),
+            'date' => $this->date->format('d.m.Y'),
         ];
     }
 

@@ -2,16 +2,31 @@
 
 namespace FlexMindSoftware\CurrencyRate\Models;
 
+use DateTime;
+
 trait RateTrait
 {
+    public function rate(string $currencyFrom, string $currencyTo, DateTime $date)
+    {
+        [$from, $to] = $this->retrieveDataToCalculation($currencyFrom, $currencyTo, $date);
+        if ($from && $to) {
+            $from = $currencyFrom == $this->currency ? 1 : $from->calculate_rate;
+            $to = $currencyTo == $this->currency ? 1 : $to->calculate_rate;
+
+            return $to ? $from / $to : 0;
+        }
+
+        return 0;
+    }
+
     /**
      * @param string $currencyFrom
      * @param string $currencyTo
-     * @param \DateTime $date
+     * @param DateTime $date
      *
      * @return array
      */
-    public function retrieveDataToCalculation(string $currencyFrom, string $currencyTo, \DateTime $date): array
+    public function retrieveDataToCalculation(string $currencyFrom, string $currencyTo, DateTime $date): array
     {
         $row = CurrencyRate::where(
             [
@@ -29,18 +44,5 @@ trait RateTrait
         $to = $row->where('code', '=', $currencyTo)->first();
 
         return [$from, $to];
-    }
-
-    public function rate(string $currencyFrom, string $currencyTo, \DateTime $date)
-    {
-        [$from, $to] = $this->retrieveDataToCalculation($currencyFrom, $currencyTo, $date);
-        if ($from && $to) {
-            $from = $currencyFrom == $this->currency ? 1 : $from->calculate_rate;
-            $to = $currencyTo == $this->currency ? 1 : $to->calculate_rate;
-
-            return $to ? $from / $to : 0;
-        }
-
-        return 0;
     }
 }

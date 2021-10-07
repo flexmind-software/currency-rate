@@ -2,6 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
+use DateInterval;
 use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
@@ -32,32 +33,29 @@ class TurkeyDriver extends BaseDriver implements CurrencyInterface
     private string $xml;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
         do {
-            $respond = Http::get(static::URI . $this->queryString($date));
+            $respond = Http::get(static::URI . $this->queryString());
             if ($respond->ok()) {
                 $this->xml = $respond->body();
             }
-            $this->date = $date->sub(\DateInterval::createFromDateString('1 day'));
-        } while (! $respond->ok());
+            $this->date = $this->date->sub(DateInterval::createFromDateString('1 day'));
+        } while (!$respond->ok());
 
         $this->parseResponse();
-        $this->saveInDatabase(true);
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return string
      */
-    private function queryString(DateTime $date): string
+    private function queryString(): string
     {
-        return $date->format('Ym/dmY') . '.xml';
+        return $this->date->format('Ym/dmY') . '.xml';
     }
 
     private function parseResponse()

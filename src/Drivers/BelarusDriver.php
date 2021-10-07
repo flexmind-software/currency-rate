@@ -35,32 +35,27 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
     private string $xml;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $this->date = $date;
-
-        $response = Http::get(static::URI, $this->queryString($date));
+        $response = Http::get(static::URI, $this->queryString());
 
         if ($response->ok()) {
             $this->xml = $response->body();
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
         return [
-            'ondate' => $date->format('m/d/Y'),
+            'ondate' => $this->date->format('m/d/Y'),
         ];
     }
 

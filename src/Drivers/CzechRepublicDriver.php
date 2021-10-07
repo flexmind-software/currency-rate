@@ -36,19 +36,16 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
      */
     private array $headers;
     /**
-     * @var array|false[]|\string[][]
+     * @var array|false[]|string[][]
      */
     private array $rateList;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $this->date = $date;
-        $sourceUrl = $this->sourceUrl($date);
+        $sourceUrl = $this->sourceUrl();
 
         $response = Http::get($sourceUrl);
         if ($response->ok()) {
@@ -63,21 +60,20 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
             $this->parseHeader();
             $this->parseRates();
             $this->prepareData();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return string
      */
-    private function sourceUrl(DateTime $date): string
+    private function sourceUrl(): string
     {
         return sprintf(
             '%s?%s',
             static::URI,
-            sprintf(static::QUERY_STRING, $date->format('Y'))
+            sprintf(static::QUERY_STRING, $this->date->format('Y'))
         );
     }
 
@@ -109,7 +105,7 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
                 continue;
             }
             $date = DateTime::createFromFormat('d.m.Y', $rates[0]);
-            if (! $date) {
+            if (!$date) {
                 break;
             }
 
@@ -132,7 +128,7 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
         $toSave = [];
 
         $date = $this->date->format('Y-m-d');
-        if (! isset($this->data[$date])) {
+        if (!isset($this->data[$date])) {
             $dateList = array_keys($this->data);
             $date = last($dateList);
         }

@@ -2,6 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Models;
 
+use Exception;
 use Illuminate\Support\Arr;
 
 class Country
@@ -2021,16 +2022,16 @@ class Country
      * @param string $key The field you want as the key for return array
      *
      * @return array $countryList    Array containing the list of countries
-     * @throws \Exception            if the key or value field are not valid
+     * @throws Exception            if the key or value field are not valid
      */
     public static function getAllCountryList(string $value = 'name', string $key = 'iso2'): array
     {
-        if (! in_array($value, ['iso3', 'name', 'capital', 'currency', 'phone'])) {
-            throw new \Exception('Value is not a valid field name');
+        if (!in_array($value, ['iso3', 'name', 'capital', 'currency', 'phone'])) {
+            throw new Exception('Value is not a valid field name');
         }
 
-        if (! in_array($key, ['iso2', 'iso3', 'name', 'capital', 'currency', 'phone'])) {
-            throw new \Exception('Key is not a valid field name');
+        if (!in_array($key, ['iso2', 'iso3', 'name', 'capital', 'currency', 'phone'])) {
+            throw new Exception('Key is not a valid field name');
         }
 
         $countryList = [];
@@ -2039,7 +2040,7 @@ class Country
             if ($key == 'iso2') {
                 $countryList[$iso2] = $country[$value];
             } elseif ($key == 'currency') {
-                if (! isset($countryList[$country[$key]])) {
+                if (!isset($countryList[$country[$key]])) {
                     $countryList[$country[$key]] = [];
                 }
                 $countryList[$country[$key]][] = $country[$value];

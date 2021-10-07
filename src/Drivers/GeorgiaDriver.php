@@ -38,13 +38,10 @@ class GeorgiaDriver extends BaseDriver implements CurrencyInterface
     private array $currencyList;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $this->date = $date;
         $respond = Http::get(static::URI . 'en/json');
         if ($respond->ok()) {
             $this->json = $respond->json();
@@ -55,14 +52,14 @@ class GeorgiaDriver extends BaseDriver implements CurrencyInterface
             $jsonDate->setTimestamp(strtotime(head($this->json)['date']));
 
             $this->data = [];
-            if ($jsonDate->diff($date)->days != 0) {
+            if ($jsonDate->diff($this->date)->days != 0) {
                 $this->parseHistoricalDataResponse();
             } else {
                 $this->parseCurrentDataResponse();
             }
-
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     private function getCurrencyList()
@@ -82,7 +79,7 @@ class GeorgiaDriver extends BaseDriver implements CurrencyInterface
     }
 
     /**
-     * @param DateTime $date
+     *
      * @param string $currency
      *
      * @return array

@@ -2,7 +2,6 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
@@ -28,29 +27,16 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
     public string $currency = Currency::CUR_PLN;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      * @throws Exception
      */
-    public function downloadRates(DateTime $date)
-    {
-        $this->retrieveData($date);
-        $this->saveInDatabase(true);
-    }
-
-    /**
-     * @param DateTime $date
-     *
-     * @throws Exception
-     */
-    private function retrieveData(DateTime $date)
+    public function grabExchangeRates(): self
     {
         $response = Http::get(static::URI . 'dir.txt');
         if ($response->ok()) {
             $exchangeRateList = $response->body();
 
-            $timestamp = $date->getTimestamp();
+            $timestamp = $this->date->getTimestamp();
 
             /**
              * Tabela A kursów średnich walut obcych publikowana (aktualizowana) jest na stronie internetowej NBP w
@@ -78,6 +64,8 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
                 }
             }
         }
+
+        return $this;
     }
 
     /**

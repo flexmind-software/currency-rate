@@ -31,30 +31,27 @@ class RussiaDriver extends BaseDriver implements CurrencyInterface
     protected string $html;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI, $this->queryString($date));
+        $respond = Http::get(static::URI, $this->queryString());
         if ($respond->ok()) {
             $this->html = $respond->body();
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
         return [
             'UniDbQuery.Posted' => 'True',
-            'UniDbQuery.To' => $date->format('d/m/Y'),
+            'UniDbQuery.To' => $this->date->format('d/m/Y'),
         ];
     }
 
@@ -79,13 +76,13 @@ class RussiaDriver extends BaseDriver implements CurrencyInterface
 
         $h3 = $xpath->query('//h2[@class="h3"]')->item(0)->nodeValue;
         preg_match('/(.*)([0-9]{2}\/[0-9]{2}\/[0-9]{4})(.+)/im', $h3, $match);
-        $date = DateTime::createFromFormat('d/m/Y', $match[2])->format('Y-m-d');
+        $exchangeDate = DateTime::createFromFormat('d/m/Y', $match[2])->format('Y-m-d');
 
-        $this->data = array_map(function ($item) use ($date) {
+        $this->data = array_map(function ($item) use ($exchangeDate) {
             return [
                 'no' => null,
                 'code' => $item[1],
-                'date' => $date ,
+                'date' => $exchangeDate,
                 'driver' => static::DRIVER_NAME,
                 'multiplier' => $this->stringToFloat($item[2]),
                 'rate' => $this->stringToFloat($item[4]),

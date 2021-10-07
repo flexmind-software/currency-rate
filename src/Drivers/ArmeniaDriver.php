@@ -2,6 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
+use DateInterval;
 use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
@@ -35,22 +36,22 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
     private string $csvPlain;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $response = Http::get(static::URI, $this->queryString($date));
+        $response = Http::get(static::URI, $this->queryString($this->date));
         if ($response->ok()) {
             $this->csvPlain = $response->body();
             $this->parseResponse();
-            $this->saveInDatabase();
+
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
+     *
      *
      * @return array
      */
@@ -59,7 +60,7 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
         $date = $this->lastDate ?? $date;
 
         $dateTo = $date->format('Y-m-d');
-        $dateFrom = $date->sub(\DateInterval::createFromDateString('1 month'))->format('Y-m-d');
+        $dateFrom = $date->sub(DateInterval::createFromDateString('1 month'))->format('Y-m-d');
 
         return [
             'ISOCodes' => 'AED,ARS,AUD,BGN,BRL,BYN,CAD,CHF,CNY,CZK,DKK,EGP,EUR,GBP,GEL,HKD,HUF,ILS,INR,IRR,ISK,' .

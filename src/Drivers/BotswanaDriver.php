@@ -31,33 +31,29 @@ class BotswanaDriver extends BaseDriver implements CurrencyInterface
     private string $csv;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI, $this->queryString($date));
+        $respond = Http::get(static::URI, $this->queryString());
         if ($respond->ok()) {
             $this->csv = $respond->body();
-
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
         return [
             'field_exchange_date_value' => [
-                'min' => $date->format('m/d/Y'),
-                'max' => $date->format('m/d/Y'),
-                ],
+                'min' => $this->date->format('m/d/Y'),
+                'max' => $this->date->format('m/d/Y'),
+            ],
             'page' => '',
             '_format' => 'csv',
         ];

@@ -2,7 +2,6 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -33,14 +32,11 @@ class DenmarkDriver extends BaseDriver implements CurrencyInterface
     public string $currency = Currency::CUR_DKK;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $this->date = $date;
-        $response = Http::get($this->sourceUrl($date));
+        $response = Http::get($this->sourceUrl());
         if ($response->ok()) {
             $xml = $response->body();
 
@@ -48,17 +44,16 @@ class DenmarkDriver extends BaseDriver implements CurrencyInterface
             $json = json_decode(json_encode($xml), true);
 
             $this->parseDate($json);
-            $this->findByDate($date);
-            $this->saveInDatabase();
+            $this->findByDate('time');
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return string
      */
-    private function sourceUrl(DateTime $date): string
+    private function sourceUrl(): string
     {
         return sprintf('%s?%s', static::URI, static::QUERY_STRING);
     }
@@ -70,39 +65,16 @@ class DenmarkDriver extends BaseDriver implements CurrencyInterface
     {
         foreach ($jsonData['Cube'] ?? [] as $children) {
             foreach ($children as $k => $child) {
-                if (! empty($child['@data']['time'])) {
+                if (!empty($child['@data']['time'])) {
                     $this->data[$k]['time'] = $child['@data']['time'];
 
                     foreach ($child['Cube'] ?? [] as $node) {
-                        if (! empty($node['@data'])) {
+                        if (!empty($node['@data'])) {
                             $this->data[$k]['rates'][$node['@data']['currency']] = $node['@data']['rate'];
                         }
                     }
                 }
             }
-        }
-    }
-
-    /**
-     * Extract rate data by date
-     * If the date does not exist we force set latest data
-     *
-     * @param DateTime|null $date
-     */
-    private function findByDate(?DateTime $date = null)
-    {
-        if (! $date) {
-            ! $this->data ?: $this->data = reset($this->data);
-        }
-
-        $date = $date->format('Y-m-d');
-
-        foreach ($this->data ?? [] as $data) {
-            if (empty($data['time']) || $data['time'] !== $date) {
-                continue;
-            }
-
-            $this->data = $data;
         }
     }
 

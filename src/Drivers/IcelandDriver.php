@@ -2,7 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DOMElement;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -31,20 +31,19 @@ class IcelandDriver extends BaseDriver implements CurrencyInterface
     private array $inputs;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
         $this->getParamArray();
 
-        $respond = Http::asForm()->post(static::URI, $this->queryString($date));
+        $respond = Http::asForm()->post(static::URI, $this->queryString());
         if ($respond->ok()) {
             $this->html = $respond->body();
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     private function getParamArray()
@@ -58,7 +57,7 @@ class IcelandDriver extends BaseDriver implements CurrencyInterface
 
             $this->inputs = [];
             /**
-             * @var \DOMElement $hidden
+             * @var DOMElement $hidden
              */
             foreach ($hiddenInput as $hidden) {
                 $this->inputs[$hidden->getAttribute('name')] = $hidden->getAttribute('value');
@@ -67,15 +66,13 @@ class IcelandDriver extends BaseDriver implements CurrencyInterface
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
-        $this->inputs['ctl00$ctl00$Content$Content$ctl04$ddlDays'] = $date->format('j');
-        $this->inputs['ctl00$ctl00$Content$Content$ctl04$ddlMonths'] = $date->format('n');
-        $this->inputs['ctl00$ctl00$Content$Content$ctl04$ddlYears'] = $date->format('Y');
+        $this->inputs['ctl00$ctl00$Content$Content$ctl04$ddlDays'] = $this->date->format('j');
+        $this->inputs['ctl00$ctl00$Content$Content$ctl04$ddlMonths'] = $this->date->format('n');
+        $this->inputs['ctl00$ctl00$Content$Content$ctl04$ddlYears'] = $this->date->format('Y');
         $this->inputs['ctl00$ctl00$Content$Content$ctl04$btnGetGengi'] = 'Search';
 
         return $this->inputs;

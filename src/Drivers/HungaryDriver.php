@@ -2,7 +2,6 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use DOMDocument;
 use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
@@ -34,32 +33,29 @@ class HungaryDriver extends BaseDriver implements CurrencyInterface
     protected string $html;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $response = Http::get(static::URI, $this->queryString($date));
+        $response = Http::get(static::URI, $this->queryString());
         if ($response->ok()) {
             $this->html = $response->body();
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
         return [
             'deviza' => 'rbCurrencyAll',
             'devizaSelected' => 'ZAR',
-            'datetill' => $date->format('d/m/Y'),
-            'datefrom' => ($this->lastDate ?? $date)->format('01/01/Y'),
+            'datetill' => $this->date->format('d/m/Y'),
+            'datefrom' => ($this->lastDate ?? $this->date)->format('01/01/Y'),
             'order' => 1,
         ];
     }

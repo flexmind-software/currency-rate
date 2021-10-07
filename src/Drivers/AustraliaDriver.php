@@ -2,7 +2,6 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -31,19 +30,17 @@ class AustraliaDriver extends BaseDriver implements CurrencyInterface
     private string $xml;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
         $respond = Http::get(static::URI);
         if ($respond->ok()) {
             $this->xml = $respond->body();
-
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     private function parseResponse()
@@ -53,7 +50,7 @@ class AustraliaDriver extends BaseDriver implements CurrencyInterface
 
         $currencyList = [];
         foreach ($xml->item as $item) {
-            $spaced = explode(' ', (string) $item->title);
+            $spaced = explode(' ', (string)$item->title);
 
             $target = $spaced[2];
             switch ($target) {

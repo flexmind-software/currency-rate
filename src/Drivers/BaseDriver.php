@@ -44,15 +44,39 @@ abstract class BaseDriver
     }
 
     /**
-     * @param bool $checkNo
+     * @param DateTime $date
+     *
+     * @return $this
      */
-    protected function saveInDatabase(bool $checkNo = false)
+    public function setLastDataTime(DateTime $date): self
+    {
+        $this->lastDate = $date;
+        return $this;
+    }
+
+    /**
+     * @param DateTime $date
+     *
+     * @return $this
+     */
+    public function setDataTime(DateTime $date): self
+    {
+        $this->date = $date;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function retrieveData(): array
+    {
+        return $this->data;
+    }
+
+    protected function saveInDatabase()
     {
         if ($this->data) {
-            $columns = ['driver', 'code', 'date'];
-            if ($checkNo) {
-                $columns[] = 'no';
-            }
+            $columns = ['driver', 'code', 'date', 'no'];
             $chunks = array_chunk($this->data, 50);
             foreach ($chunks as $chunk) {
                 CurrencyRate::upsert($chunk, $columns, ['rate', 'multiplier']);
@@ -96,5 +120,26 @@ abstract class BaseDriver
         libxml_clear_errors();
 
         return $xpath;
+    }
+
+    /**
+     * Extract rate data by date
+     * If the date does not exist we force set latest data
+     */
+    protected function findByDate(string $label, string $dateFormat = 'Y-m-d')
+    {
+        if (!$this->date) {
+            !$this->data ?: $this->data = reset($this->data);
+        }
+
+        $formatDate = $this->date->format($dateFormat);
+
+        foreach ($this->data ?? [] as $data) {
+            if (empty($data[$label]) || $data[$label] !== $formatDate) {
+                continue;
+            }
+
+            $this->data = $data;
+        }
     }
 }

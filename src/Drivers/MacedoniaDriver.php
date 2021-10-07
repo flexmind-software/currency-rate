@@ -2,7 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateInterval;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -31,29 +31,29 @@ class MacedoniaDriver extends BaseDriver implements CurrencyInterface
     private string $xml;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $client = new SoapClient(
-            static::URI
-        );
-
-        $xml = $client->GetExchangeRate(
-            [
-                'StartDate' => $date->format('d.m.Y'),
-                'EndDate' => $date->sub(\DateInterval::createFromDateString('1 day'))->format('d.m.Y'),
-            ]
-        );
-
+        $client = new SoapClient(static::URI);
+        $xml = $client->GetExchangeRate($this->soapParams());
         if (property_exists($xml, 'GetExchangeRateResult')) {
             $this->xml = $xml->GetExchangeRateResult;
-
             $this->parseResponse();
-            $this->saveInDatabase(true);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    private function soapParams(): array
+    {
+        return [
+            'StartDate' => $this->date->format('d.m.Y'),
+            'EndDate' => $this->date->sub(DateInterval::createFromDateString('1 day'))->format('d.m.Y'),
+        ];
     }
 
     private function parseResponse()

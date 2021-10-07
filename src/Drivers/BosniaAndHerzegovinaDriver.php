@@ -2,7 +2,6 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -34,29 +33,26 @@ class BosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInterface
     protected array $jsonData;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $response = Http::asJson()->get(static::URI, $this->getQueryString($date));
+        $response = Http::asJson()->get(static::URI, $this->getQueryString());
         if ($response->ok()) {
             $this->jsonData = $response->json();
             $this->parseResponse();
-            $this->saveInDatabase(true);
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function getQueryString(DateTime $date): array
+    private function getQueryString(): array
     {
         return [
-            'date' => $date->format("m/d/Y 00:00:00"),
+            'date' => $this->date->format("m/d/Y 00:00:00"),
         ];
     }
 

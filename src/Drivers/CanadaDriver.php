@@ -3,7 +3,6 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateInterval;
-use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -34,23 +33,20 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
     private $jsonFile;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $this->date = $date;
-
         $this->getObservation();
         $this->parseRates();
-        $this->saveInDatabase();
+
+        return $this;
     }
 
     private function getObservation()
     {
         do {
-            $url = $this->sourceUrl($this->date);
+            $url = $this->sourceUrl();
             $response = Http::get($url);
             if ($response->ok()) {
                 $this->jsonFile = $response->json();
@@ -62,16 +58,14 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return string
      */
-    private function sourceUrl(DateTime $date): string
+    private function sourceUrl(): string
     {
         return sprintf(
             '%s?start_date=%s',
             static::URI,
-            $date->format('Y-m-d')
+            $this->date->format('Y-m-d')
         );
     }
 

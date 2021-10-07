@@ -2,6 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Manager;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
@@ -15,7 +16,7 @@ class CurrencyRateManager extends Manager
      *
      * @return mixed
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function driver($driver = null)
     {
@@ -39,7 +40,7 @@ class CurrencyRateManager extends Manager
      *
      * @return mixed
      *
-     * @throws \InvalidArgumentException
+     * @throws BindingResolutionException
      */
     protected function createDriver($driver)
     {
