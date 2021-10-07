@@ -7,7 +7,6 @@ use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use GuzzleHttp\Cookie\CookieJar;
-use GuzzleHttp\Cookie\SetCookie;
 use Illuminate\Support\Facades\Http;
 
 class IranDriver extends BaseDriver implements CurrencyInterface
@@ -90,7 +89,7 @@ class IranDriver extends BaseDriver implements CurrencyInterface
     private function queryString(DateTime $date): array
     {
         $params = [
-            '__EVENTTARGET'  => '',
+            '__EVENTTARGET' => '',
             '__EVENTARGUMENT' => '',
             'ctl00$ucBody$ucContent$ctl00$ucForm$Output' => 'rdbXML',
             'ctl00$ucBody$ucContent$ctl00$ucForm$chkSummary' => 'on',
