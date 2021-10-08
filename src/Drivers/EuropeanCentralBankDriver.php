@@ -74,6 +74,6 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
 
     public function infoAboutFrequency(): string
     {
-        return 'Weekday rates at 3:00 PM Central European Time (CET)';
+        return __('currency-rate::description.european-central-bank.frequency');
     }
 }

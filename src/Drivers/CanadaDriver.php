@@ -105,6 +105,6 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
 
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.canada.frequency');
     }
 }

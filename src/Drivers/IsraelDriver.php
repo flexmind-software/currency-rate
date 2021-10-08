@@ -129,6 +129,6 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
 
     public function infoAboutFrequency(): string
     {
-        return 'Daily';
+        return __('currency-rate::description.israel.frequency');
     }
 }

@@ -87,6 +87,6 @@ class AustraliaDriver extends BaseDriver implements CurrencyInterface
 
     public function infoAboutFrequency(): string
     {
-        return 'Weekdays around 4.00 PM Eastern Australian Time';
+        return __('currency-rate::description.australia.frequency');
     }
 }

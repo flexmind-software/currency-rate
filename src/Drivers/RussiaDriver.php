@@ -102,6 +102,6 @@ class RussiaDriver extends BaseDriver implements CurrencyInterface
 
     public function infoAboutFrequency(): string
     {
-        return 'Daily';
+        return __('currency-rate::description.russia.frequency');
     }
 }

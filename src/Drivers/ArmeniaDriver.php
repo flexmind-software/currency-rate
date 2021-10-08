@@ -116,6 +116,6 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
 
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.armenia.frequency');
     }
 }

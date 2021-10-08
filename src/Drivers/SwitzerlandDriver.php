@@ -80,6 +80,6 @@ class SwitzerlandDriver extends BaseDriver implements CurrencyInterface
 
     public function infoAboutFrequency(): string
     {
-        return 'Weekday rates at 11:00 AM Central European Time (CET)';
+        return __('currency-rate::description.switzerland.frequency');
     }
 }

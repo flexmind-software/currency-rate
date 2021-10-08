@@ -37,14 +37,6 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
             $exchangeRateList = $response->body();
 
             $timestamp = $this->date->getTimestamp();
-
-            /**
-             * Tabela A kursów średnich walut obcych publikowana (aktualizowana) jest na stronie internetowej NBP w
-             * dni robocze, pomiędzy godziną 11:45 a 12:15,
-             * Tabela B kursów średnich walut obcych publikowana (aktualizowana) jest na stronie internetowej NBP w
-             * środy, pomiędzy godziną 11:45 a 12:15,
-             */
-            // pobieramy z poprzedniego dnia
             if (intval(date('Hi', $timestamp)) < 1215) {
                 $timestamp -= 86400;
             }
@@ -108,6 +100,6 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
 
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.poland.frequency');
     }
 }

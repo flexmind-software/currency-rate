@@ -148,9 +148,6 @@ class SerbiaDriver extends BaseDriver implements CurrencyInterface
 
     public function infoAboutFrequency(): string
     {
-        return 'Queries may be submitted for the period after 15 May 2002. As of 8 August 2006 exchange rate ' .
-            'list shall be applicable from 8 a.m. on the selected day until 8 a.m. on the next day (as provided ' .
-            'by the Conditions and Manner of Operation of the Foreign Exchange Market). Exchange rate list as of ' .
-            'the preceding business day shall be applicable on weekends and holidays.';
+        return __('currency-rate::description.serbia.frequency');
     }
 }
