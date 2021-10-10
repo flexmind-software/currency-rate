@@ -34,7 +34,7 @@ class FijiDriver extends BaseDriver implements CurrencyInterface
         "A$" => Currency::CUR_AUD,
         "NZ$" => Currency::CUR_NZD,
         "US$" => Currency::CUR_USD,
-        "EURO" => Currency::CUR_EUR
+        "EURO" => Currency::CUR_EUR,
     ];
 
     /**
@@ -78,7 +78,7 @@ class FijiDriver extends BaseDriver implements CurrencyInterface
 
             $items = array_values(
                 array_filter($items, function ($item) {
-                    return !blank($item[1]);
+                    return ! blank($item[1]);
                 })
             );
 
@@ -89,7 +89,7 @@ class FijiDriver extends BaseDriver implements CurrencyInterface
 
             array_map(function ($items) use ($headers) {
                 foreach ($items as $i => $rate) {
-                    if (!blank($headers[$i])) {
+                    if (! blank($headers[$i])) {
                         $this->data[] = [
                             'no' => null,
                             'code' => $headers[$i],
