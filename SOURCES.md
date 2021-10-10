@@ -156,7 +156,7 @@
 ### Oceania
 
 - [x] [Australia / Reserve Bank of Australia](https://www.rba.gov.au/)
-- [ ] [Fiji / Reserve Bank of Fiji](https://www.rbf.gov.fj/)
+- [x] [Fiji / Reserve Bank of Fiji](https://www.rbf.gov.fj/)
 - [ ] [New Zealand / Te Pūtea Matua](https://www.rbnz.govt.nz/index.html)
 - [ ] [Papua New Guinea](https://www.bankpng.gov.pg/)
 - [ ] [Samoa / Faletupe Tutotonu o Samoa](https://www.cbs.gov.ws/)
