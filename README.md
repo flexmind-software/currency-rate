@@ -271,6 +271,11 @@ composer test
             <td>Australia</td>
             <td><a href="https://www.rba.gov.au/" target="_blank">Reserve Bank of Australia</a></td>
             <td>australia</td>
+        </tr>       
+        <tr>
+            <td>Fiji</td>
+            <td><a href="https://www.rbf.gov.fj/" target="_blank">Reserve Bank of Fiji</a></td>
+            <td>fiji</td>
         </tr>
     </tbody>
 </table>

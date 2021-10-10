@@ -46,6 +46,14 @@ return [
     'european-central-bank' => [
         'frequency' => 'Weekday at 3:00 PM Central European Time (CET)',
     ],
+    'fiji' => [
+        'frequency' => 'Fiji has a fixed exchange rate system where the Fiji Dollar (FJD) is pegged to a weighted ' .
+            'basket of currencies comprising the Australian Dollar (AUD), New Zealand Dollar (NZD), ' .
+            'United States Dollar (USD), Japanese Yen (JPY) and Euro (EUR). The rate published for the ' .
+            'FJD-USD is the official exchange rate which is set at 8.30am each business day by the Reserve Bank. ' .
+            'This rate is then used to calculate the rates of the AUD, NZD, JPY, EUR and other ' .
+            'currencies against the FJD.',
+    ],
     'georgia' => [
         'frequency' => '',
     ],
