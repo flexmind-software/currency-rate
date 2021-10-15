@@ -7,6 +7,7 @@ use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class BotswanaDriver extends BaseDriver implements CurrencyInterface
 {
@@ -35,10 +36,14 @@ class BotswanaDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI, $this->queryString());
-        if ($respond->ok()) {
-            $this->csv = $respond->body();
-            $this->parseResponse();
+        try {
+            $respond = Http::get(static::URI, $this->queryString());
+            if ($respond->ok()) {
+                $this->csv = $respond->body();
+                $this->parseResponse();
+            }
+        } catch (\Throwable $e) {
+            Log::debug('Can\'t connect to serwer', $e->getTrace());
         }
 
         return $this;
