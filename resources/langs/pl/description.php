@@ -46,6 +46,14 @@ return [
     'european-central-bank' => [
         'frequency' => 'Dzień powszedni o 15:00 czasu środkowoeuropejskiego (CET)',
     ],
+    'fiji' => [
+        'frequency' => 'Fidżi ma system stałego kursu wymiany, w którym dolar fidżyjski (FJD) jest powiązany z ważonym ' .
+            'koszykiem walut obejmującym dolara australijskiego (AUD), dolara nowozelandzkiego (NZD), ' .
+            'dolara amerykańskiego (USD), jena japońskiego (JPY) i euro (EUR). Kurs publikowany dla ' .
+            'FJD-USD jest oficjalnym kursem wymiany ustalanym o 8:30 każdego dnia roboczego przez Bank Rezerw. ' .
+            'Kurs ten jest następnie wykorzystywany do obliczania kursów AUD, NZD, JPY, EUR i innych ' .
+            'walut w stosunku do FJD.',
+    ],
     'georgia' => [
         'frequency' => '',
     ],
