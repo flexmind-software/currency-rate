@@ -41,43 +41,43 @@ class CurrencyRateCommand extends Command
         $drivers = Arr::wrap($driver);
         $drivers = array_filter($drivers);
         $date = new DateTime("@$timestamp");
-        foreach ($drivers as $driver) {
-            if ($queue == 'none') {
-                try {
-                    $data = \CurrencyRate::driver($driver)
-                        ->setDataTime($date)
-                        ->grabExchangeRates()
-                        ->retrieveData();
 
-                    if ($data && $connection) {
-                        $this->saveInDatabase($data);
-                    }
-                } catch (Throwable $exception) {
-                    Log::error(
-                        'Can\t grab data from [' . $driver . ']: ' . $exception->getMessage(),
-                        $exception->getTrace()
-                    );
-                }
+        foreach ($drivers as $driver) {
+            if ($queue === 'none') {
+                $this->processDriver($driver, $date, $connection);
             } else {
-                QueueDownload::dispatch($driver, $date, $connection)->onQueue($queue);
+                $this->queueDriver($driver, $date, $connection, $queue);
             }
         }
     }
 
+    private function processDriver(string $driver, DateTime $date, ?string $connection): void
+    {
+        try {
+            $data = \CurrencyRate::driver($driver)
+                ->setDataTime($date)
+                ->grabExchangeRates()
+                ->retrieveData();
+
+            if ($data && $connection) {
+                $this->saveInDatabase($data, $connection);
+            }
+        } catch (Throwable $exception) {
+            Log::error(
+                'Can\t grab data from [' . $driver . ']: ' . $exception->getMessage(),
+                $exception->getTrace()
+            );
+        }
+    }
+
+    private function queueDriver(string $driver, DateTime $date, ?string $connection, string $queue): void
+    {
+        QueueDownload::dispatch($driver, $date, $connection)->onQueue($queue);
+    }
+
     private function getAllDrivers(): array
     {
-        $drivers = glob(__DIR__ . '/../Drivers/*Driver.php');
-        $drivers = array_filter($drivers, function ($item) {
-            return strpos($item, 'BaseDriver') === false;
-        });
-
-        $drivers = array_map(function ($item) {
-            $baseName = basename($item, '.php');
-            $className = 'FlexMindSoftware\\CurrencyRate\\Drivers\\' . $baseName;
-
-            return $className::DRIVER_NAME;
-        }, $drivers);
-
+        $drivers = config('currency-rate.drivers', []);
         sort($drivers);
 
         return $drivers;
@@ -85,11 +85,11 @@ class CurrencyRateCommand extends Command
 
     /**
      * @param array $data
+     * @param string|null $connection
      */
-    private function saveInDatabase(array $data)
+    private function saveInDatabase(array $data, ?string $connection): void
     {
         if ($data) {
-            $connection = $this->option('connection');
             CurrencyRate::saveIn($data, $connection);
         }
     }

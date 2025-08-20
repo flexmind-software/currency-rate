@@ -32,10 +32,48 @@ This is the contents of the published config file:
 
 ```php
 return [
-    'driver' => env('FLEXMIND_CURRENCY_RATE_DRIVER', 'poland'),
+    'driver' => env('FLEXMIND_CURRENCY_RATE_DRIVER', 'european-central-bank'),
+    'drivers' => [
+        'albania',
+        'armenia',
+        'australia',
+        'azerbaijan',
+        'bceao',
+        'belarus',
+        'bosnia-and-herzegovina',
+        'botswana',
+        'bulgaria',
+        'canada',
+        'china',
+        'croatia',
+        'czech-republic',
+        'denmark',
+        'england',
+        'european-central-bank',
+        'fiji',
+        'georgia',
+        'hungary',
+        'iceland',
+        'israel',
+        'macedonia',
+        'moldavia',
+        'norway',
+        'poland',
+        'romania',
+        'russia',
+        'serbia',
+        'sweden',
+        'switzerland',
+        'turkey',
+        'ukraine',
+    ],
     'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates')
 ];
 ```
+
+The `drivers` array defines which currency rate providers are available when running
+the command with `--driver=all`. Add or remove entries from this list to customise
+the drivers used in your application.
 
 ## Usage
 
