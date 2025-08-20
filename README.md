@@ -73,7 +73,44 @@ return [
 
 The `drivers` array defines which currency rate providers are available when running
 the command with `--driver=all`. Add or remove entries from this list to customise
-the drivers used in your application.
+the drivers used in your application. See [config/currency-rate.php](config/currency-rate.php) for additional configuration options.
+
+### Available Drivers
+
+| Country / Source | Driver |
+|------------------|--------|
+| Albania | `albania` |
+| Armenia | `armenia` |
+| Australia | `australia` |
+| Azerbaijan | `azerbaijan` |
+| BCEAO | `bceao` |
+| Belarus | `belarus` |
+| Bosnia and Herzegovina | `bosnia-and-herzegovina` |
+| Botswana | `botswana` |
+| Bulgaria | `bulgaria` |
+| Canada | `canada` |
+| China | `china` |
+| Croatia | `croatia` |
+| Czech Republic | `czech-republic` |
+| Denmark | `denmark` |
+| England | `england` |
+| European Central Bank | `european-central-bank` |
+| Fiji | `fiji` |
+| Georgia | `georgia` |
+| Hungary | `hungary` |
+| Iceland | `iceland` |
+| Israel | `israel` |
+| Macedonia | `macedonia` |
+| Moldavia | `moldavia` |
+| Norway | `norway` |
+| Poland | `poland` |
+| Romania | `romania` |
+| Russia | `russia` |
+| Serbia | `serbia` |
+| Sweden | `sweden` |
+| Switzerland | `switzerland` |
+| Turkey | `turkey` |
+| Ukraine | `ukraine` |
 
 ## Usage
 
@@ -86,6 +123,38 @@ Arguments:
 Options:
   --queue[=QUEUE]    Queue name, if set "none" cmd run without add job to queue [default: "none"]
   --driver[=DRIVER]  Driver to download rate [default: "all"]
+```
+
+### Examples
+
+Run for today's rates using all configured drivers:
+
+```bash
+php artisan flexmind:currency-rate
+```
+
+Fetch rates for a specific date:
+
+```bash
+php artisan flexmind:currency-rate 2023-09-15
+```
+
+Use a specific driver:
+
+```bash
+php artisan flexmind:currency-rate --driver=canada
+```
+
+Dispatch the job to a queue:
+
+```bash
+php artisan flexmind:currency-rate --queue=default
+```
+
+Execute immediately without queueing:
+
+```bash
+php artisan flexmind:currency-rate --queue=none
 ```
 
 ## Testing
