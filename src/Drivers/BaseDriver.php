@@ -7,6 +7,8 @@ use DOMDocument;
 use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\DriverMetadata;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 abstract class BaseDriver implements DriverMetadata
 {
@@ -108,8 +110,15 @@ abstract class BaseDriver implements DriverMetadata
         if ($this->data) {
             $columns = ['driver', 'code', 'date', 'no'];
             $chunks = array_chunk($this->data, 50);
+
             foreach ($chunks as $chunk) {
-                CurrencyRate::upsert($chunk, $columns, ['rate', 'multiplier']);
+                try {
+                    DB::transaction(function () use ($chunk, $columns) {
+                        CurrencyRate::upsert($chunk, $columns, ['rate', 'multiplier']);
+                    });
+                } catch (\Throwable $e) {
+                    Log::error('CurrencyRate upsert failed', ['exception' => $e]);
+                }
             }
         }
     }
