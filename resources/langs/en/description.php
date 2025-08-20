@@ -2,46 +2,49 @@
 
 return [
     'albania' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'armenia' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'australia' => [
         'frequency' => 'Weekdays around 4:00 PM Eastern Australian Time',
     ],
+    'azerbaijan' => [
+        'frequency' => 'Daily on business days',
+    ],
     'bceao' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'belarus' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'bosnia-and-herzegovina' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'botswana' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'bulgaria' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'canada' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'china' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'croatia' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'czech-republic' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'denmark' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'england' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'european-central-bank' => [
         'frequency' => 'Weekday at 3:00 PM Central European Time (CET)',
@@ -55,25 +58,25 @@ return [
             'currencies against the FJD.',
     ],
     'georgia' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'hungary' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'iceland' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'israel' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'macedonia' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'moldavia' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'norway' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'poland' => [
         'frequency' => 'Table A of the average foreign currency exchange rates is published (updated) on the ' .
@@ -84,25 +87,25 @@ return [
             'between 7:45 a.m. and 8:15 a.m.',
     ],
     'romania' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'russia' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'serbia' => [
         'frequency' => 'Weekday at 8:00 CET. On weekends and public holidays, a list of exchange rates ' .
             'for the last working day',
     ],
     'sweden' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'switzerland' => [
         'frequency' => 'Weekday at 11:00 AM Central European Time (CET)',
     ],
     'turkey' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
     'ukraine' => [
-        'frequency' => '',
+        'frequency' => 'Daily on business days',
     ],
 ];

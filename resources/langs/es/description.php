@@ -2,46 +2,49 @@
 
 return [
     'albania' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'armenia' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'australia' => [
         'frequency' => 'Días laborables alrededor de las 16:00 hora del este de Australia',
     ],
+    'azerbaijan' => [
+        'frequency' => 'Diariamente en días laborables',
+    ],
     'bceao' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'belarus' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'bosnia-and-herzegovina' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'botswana' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'bulgaria' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'canada' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'china' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'croatia' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'czech-republic' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'denmark' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'england' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'european-central-bank' => [
         'frequency' => 'Día laborable a las 15:00 hora de Europa Central (CET)',
@@ -55,25 +58,25 @@ return [
             'monedas frente al FJD.',
     ],
     'georgia' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'hungary' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'iceland' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'israel' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'macedonia' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'moldavia' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'norway' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'poland' => [
         'frequency' => 'La Tabla A de los tipos de cambio medios de divisas se publica (actualiza) en el sitio web del NBP ' .
@@ -84,25 +87,25 @@ return [
             '7:45 a.m. y las 8:15 a.m.',
     ],
     'romania' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'russia' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'serbia' => [
         'frequency' => 'Día laborable a las 8:00 CET. En fines de semana y días festivos, una lista de tipos de cambio ' .
             'del último día laborable',
     ],
     'sweden' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'switzerland' => [
         'frequency' => 'Día laborable a las 11:00 AM hora de Europa Central (CET)',
     ],
     'turkey' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
     'ukraine' => [
-        'frequency' => '',
+        'frequency' => 'Diariamente en días laborables',
     ],
 ];
