@@ -3,11 +3,11 @@
 namespace FlexMindSoftware\CurrencyRate\Tests;
 
 use FlexMindSoftware\CurrencyRate\Drivers\HttpFetcher;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Http;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use GuzzleHttp\Psr7\Response;
 
 class HttpFetcherTest extends TestCase
 {
