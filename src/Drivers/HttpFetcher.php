@@ -2,27 +2,52 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Psr\Http\Client\ClientInterface;
 use SimpleXMLElement;
 
 trait HttpFetcher
 {
+    protected ?ClientInterface $httpClient = null;
+
+    public function __construct(?ClientInterface $httpClient = null)
+    {
+        $this->httpClient = $httpClient;
+    }
+
     protected function fetch(string $url, array $query = []): ?string
     {
         ksort($query);
-        $key = 'currency-rate:' . $url . '?' . http_build_query($query);
+        $key = 'currency-rate:' . $url . (empty($query) ? '' : '?' . http_build_query($query));
 
         if (Cache::has($key)) {
             return Cache::get($key);
         }
 
-        $response = Http::get($url, $query);
+        $body = null;
 
-        if ($response->ok()) {
-            Cache::put($key, $response->body(), config('currency-rate.cache-ttl'));
+        if ($this->httpClient) {
+            // Ścieżka PSR-18
+            $uri = $url . (empty($query) ? '' : '?' . http_build_query($query));
+            $request = new Request('GET', $uri);
+            $response = $this->httpClient->sendRequest($request);
 
-            return $response->body();
+            if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
+                $body = (string) $response->getBody();
+            }
+        } else {
+            // Domyślnie Laravel HTTP client
+            $response = Http::get($url, $query);
+            if ($response->ok()) {
+                $body = $response->body();
+            }
+        }
+
+        if ($body !== null) {
+            Cache::put($key, $body, config('currency-rate.cache-ttl'));
+            return $body;
         }
 
         return null;
