@@ -7,9 +7,9 @@ use DOMDocument;
 use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\DriverMetadata;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
-use Psr\Http\Client\ClientInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Psr\Http\Client\ClientInterface;
 
 abstract class BaseDriver implements DriverMetadata
 {

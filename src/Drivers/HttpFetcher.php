@@ -47,6 +47,7 @@ trait HttpFetcher
 
         if ($body !== null) {
             Cache::put($key, $body, config('currency-rate.cache-ttl'));
+
             return $body;
         }
 
