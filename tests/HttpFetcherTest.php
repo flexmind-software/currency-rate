@@ -62,4 +62,20 @@ class HttpFetcherTest extends TestCase
         $this->assertEquals(['a', 'b'], $parsed[0]);
         $this->assertEquals(['1', '2'], $parsed[1]);
     }
+
+    /** @test */
+    public function parse_csv_handles_quoted_delimiters_and_escapes()
+    {
+        $fetcher = $this->fetcher();
+
+        $csv = <<<'CSV'
+"a;b";"c""d"
+"e;f";"g""h"
+CSV;
+
+        $parsed = $fetcher->callParseCsv($csv, ';');
+
+        $this->assertEquals(['a;b', 'c"d'], $parsed[0]);
+        $this->assertEquals(['e;f', 'g"h'], $parsed[1]);
+    }
 }
