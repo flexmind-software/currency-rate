@@ -5,11 +5,22 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 use DateTime;
 use DOMDocument;
 use DOMXPath;
+use FlexMindSoftware\CurrencyRate\Contracts\DriverMetadata;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 
-abstract class BaseDriver
+abstract class BaseDriver implements DriverMetadata
 {
     use HttpFetcher;
+
+    /**
+     * @const string
+     */
+    public const DRIVER_NAME = '';
+
+    /**
+     * @const string
+     */
+    public const URI = '';
     /**
      * @var DateTime
      */
@@ -74,6 +85,22 @@ abstract class BaseDriver
     public function retrieveData(): array
     {
         return $this->data;
+    }
+
+    /**
+     * Return driver unique name.
+     */
+    public function driverName(): string
+    {
+        return static::DRIVER_NAME;
+    }
+
+    /**
+     * Return driver base URI.
+     */
+    public function uri(): string
+    {
+        return static::URI;
     }
 
     protected function saveInDatabase()
