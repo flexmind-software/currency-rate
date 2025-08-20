@@ -2,7 +2,6 @@
 
 namespace FlexMindSoftware\CurrencyRate\Tests;
 
-use DateTime;
 use FlexMindSoftware\CurrencyRate\CurrencyRateFacade as CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Jobs\QueueDownload;
 use FlexMindSoftware\CurrencyRate\Tests\Stubs\FakeDriver;

@@ -11,9 +11,21 @@ class HttpFetcherTest extends TestCase
     {
         return new class () {
             use HttpFetcher;
-            public function callFetch($url, $query = []) { return $this->fetch($url, $query); }
-            public function callParseXml($xml) { return $this->parseXml($xml); }
-            public function callParseCsv($csv, $delimiter = ';') { return $this->parseCsv($csv, $delimiter); }
+
+            public function callFetch($url, $query = [])
+            {
+                return $this->fetch($url, $query);
+            }
+
+            public function callParseXml($xml)
+            {
+                return $this->parseXml($xml);
+            }
+
+            public function callParseCsv($csv, $delimiter = ';')
+            {
+                return $this->parseCsv($csv, $delimiter);
+            }
         };
     }
 
