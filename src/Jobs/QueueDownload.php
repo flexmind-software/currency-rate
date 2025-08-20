@@ -5,6 +5,7 @@ namespace FlexMindSoftware\CurrencyRate\Jobs;
 use DateTime;
 use FlexMindSoftware\CurrencyRate\CurrencyRateFacade as CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate as CurrencyRateModel;
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
@@ -21,6 +22,7 @@ class QueueDownload implements ShouldQueue, ShouldBeUnique, ShouldBeUniqueUntilP
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+    use Batchable;
 
     /**
      * The number of seconds after which the job's unique lock will be released.
