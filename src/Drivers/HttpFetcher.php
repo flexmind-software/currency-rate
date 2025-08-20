@@ -2,6 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use SimpleXMLElement;
 
@@ -9,9 +10,22 @@ trait HttpFetcher
 {
     protected function fetch(string $url, array $query = []): ?string
     {
+        ksort($query);
+        $key = 'currency-rate:' . $url . '?' . http_build_query($query);
+
+        if (Cache::has($key)) {
+            return Cache::get($key);
+        }
+
         $response = Http::get($url, $query);
 
-        return $response->ok() ? $response->body() : null;
+        if ($response->ok()) {
+            Cache::put($key, $response->body(), config('currency-rate.cache-ttl'));
+
+            return $response->body();
+        }
+
+        return null;
     }
 
     protected function parseXml(
