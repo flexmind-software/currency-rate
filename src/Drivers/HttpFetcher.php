@@ -25,11 +25,20 @@ trait HttpFetcher
 
     protected function parseCsv(string $csv, string $delimiter = ';'): array
     {
-        $lines = preg_split('/\r\n|\n|\r/', trim($csv));
+        $file = new \SplFileObject('php://temp', 'r+');
+        $file->fwrite($csv);
+        $file->rewind();
+        $file->setCsvControl($delimiter);
+        $file->setFlags(\SplFileObject::READ_CSV | \SplFileObject::SKIP_EMPTY);
 
-        return array_map(
-            fn ($line) => str_getcsv($line, $delimiter),
-            array_filter($lines)
-        );
+        $rows = [];
+        foreach ($file as $row) {
+            if ($row === [null] || $row === false) {
+                continue;
+            }
+            $rows[] = $row;
+        }
+
+        return $rows;
     }
 }
