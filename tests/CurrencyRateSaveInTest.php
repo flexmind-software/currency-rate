@@ -47,7 +47,8 @@ class CurrencyRateSaveInTest extends TestCase
         $this->assertDatabaseHas('currency_rates', ['code' => 'PLN']);
 
         Event::assertDispatched(CurrencyRateSaved::class, function ($event) use ($data) {
-            $expected = array_map(fn($d) => $d->toArray(), $data);
+            $expected = array_map(fn ($d) => $d->toArray(), $data);
+
             return $event->rates === $expected;
         });
     }
