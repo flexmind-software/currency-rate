@@ -43,19 +43,22 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
     }
 
     /**
-     * @param SimpleXMLElement $jsonData
+     * Traverse SimpleXMLElement for date and currency data.
      */
-    private function parseDate(SimpleXMLElement $jsonData)
+    private function parseDate(SimpleXMLElement $cubes): void
     {
-        $jsonData = json_decode(json_encode($jsonData), true);
-        foreach ($jsonData['Cube'] ?? [] as $children) {
-            foreach ($children as $node) {
-                $this->data[$node['currency']]['date'] = $jsonData['@attributes']['time'];
-                $this->data[$node['currency']]['rate'] = floatval($node['rate']);
-                $this->data[$node['currency']]['multiplier'] = 1;
-                $this->data[$node['currency']]['no'] = null;
-                $this->data[$node['currency']]['driver'] = static::DRIVER_NAME;
-                $this->data[$node['currency']]['code'] = $node['currency'];
+        foreach ($cubes as $cube) {
+            $date = (string) $cube['time'];
+
+            foreach ($cube->Cube as $node) {
+                $currency = (string) $node['currency'];
+
+                $this->data[$currency]['date'] = $date;
+                $this->data[$currency]['rate'] = (float) $node['rate'];
+                $this->data[$currency]['multiplier'] = 1;
+                $this->data[$currency]['no'] = null;
+                $this->data[$currency]['driver'] = static::DRIVER_NAME;
+                $this->data[$currency]['code'] = $currency;
             }
         }
     }

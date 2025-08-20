@@ -42,10 +42,9 @@ class AustraliaDriver extends BaseDriver implements CurrencyInterface
         return $this;
     }
 
-    private function parseResponse()
+    private function parseResponse(): void
     {
         $xml = $this->parseXml($this->xml);
-        $json = json_decode(json_encode($xml), true);
 
         $currencyList = [];
         foreach ($xml->item as $item) {

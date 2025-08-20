@@ -5,6 +5,7 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
+use SimpleXMLElement;
 
 /**
  *
@@ -38,9 +39,8 @@ class DenmarkDriver extends BaseDriver implements CurrencyInterface
         $response = $this->fetch($this->sourceUrl());
         if ($response) {
             $xml = $this->parseXml($response);
-            $json = json_decode(json_encode($xml), true);
 
-            $this->parseDate($json);
+            $this->parseDate($xml);
             $this->findByDate('time');
         }
 
@@ -56,22 +56,23 @@ class DenmarkDriver extends BaseDriver implements CurrencyInterface
     }
 
     /**
-     * @param array $jsonData
+     * Extract date and rates from SimpleXMLElement
      */
-    private function parseDate(array $jsonData)
+    private function parseDate(SimpleXMLElement $xml): void
     {
-        foreach ($jsonData['Cube'] ?? [] as $children) {
-            foreach ($children as $k => $child) {
-                if (! empty($child['@data']['time'])) {
-                    $this->data[$k]['time'] = $child['@data']['time'];
+        foreach ($xml->Cube->Cube as $cube) {
+            $time = (string) $cube['time'];
+            $entry = ['time' => $time, 'rates' => []];
 
-                    foreach ($child['Cube'] ?? [] as $node) {
-                        if (! empty($node['@data'])) {
-                            $this->data[$k]['rates'][$node['@data']['currency']] = $node['@data']['rate'];
-                        }
-                    }
+            foreach ($cube->Cube as $node) {
+                $currency = (string) $node['currency'];
+                $rate = (string) $node['rate'];
+                if ($currency !== '' && $rate !== '') {
+                    $entry['rates'][$currency] = $rate;
                 }
             }
+
+            $this->data[] = $entry;
         }
     }
 

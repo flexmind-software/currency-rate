@@ -43,23 +43,20 @@ class AzerbaijanDriver extends BaseDriver implements CurrencyInterface
         return $this;
     }
 
-    private function parseResponse()
+    private function parseResponse(): void
     {
         $xmlElement = $this->parseXml($this->xml);
-        $json = json_decode(json_encode($xmlElement), true);
-        $date = DateTime::createFromFormat('d.m.Y', $json['@attributes']['Date'])->format('Y-m-d');
+        $date = DateTime::createFromFormat('d.m.Y', (string) $xmlElement['Date'])->format('Y-m-d');
 
-        foreach ($json['Valute'] ?? [] as $item) {
-            $line = [
+        foreach ($xmlElement->Valute as $item) {
+            $this->data[] = [
                 'no' => null,
-                'code' => $item['CharCode'],
+                'code' => (string) $item->CharCode,
                 'date' => $date,
                 'driver' => static::DRIVER_NAME,
-                'multiplier' => floatval($item['Nominal']),
-                'rate' => $this->stringToFloat($item['Value']),
+                'multiplier' => (float) $item->Nominal,
+                'rate' => $this->stringToFloat((string) $item->Value),
             ];
-
-            $this->data[] = $line;
         }
     }
 
