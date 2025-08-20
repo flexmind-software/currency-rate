@@ -5,6 +5,7 @@ namespace FlexMindSoftware\CurrencyRate\Tests;
 use DateTime;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
+use Illuminate\Support\Facades\DB;
 
 class RateTraitTest extends TestCase
 {
@@ -62,6 +63,29 @@ class RateTraitTest extends TestCase
         $rate = $driver->rate(CurrencyCode::USD->value, CurrencyCode::PLN->value, new DateTime('2021-01-01'));
 
         $this->assertEquals(1.2 / 4.5, $rate);
+    }
+
+    /** @test */
+    public function it_caches_results_within_request()
+    {
+        $reflection = new \ReflectionClass(TestDriver::class);
+        $property = $reflection->getProperty('rateCache');
+        $property->setAccessible(true);
+        $property->setValue(null, []);
+
+        $queries = 0;
+        DB::listen(function ($query) use (&$queries) {
+            if (str_contains($query->sql, 'currency_rates')) {
+                $queries++;
+            }
+        });
+
+        $driver = new TestDriver();
+
+        $driver->rate(CurrencyCode::USD, CurrencyCode::PLN, new DateTime('2021-01-01'));
+        $driver->rate(CurrencyCode::USD, CurrencyCode::PLN, new DateTime('2021-01-01'));
+
+        $this->assertSame(1, $queries);
     }
 }
 
