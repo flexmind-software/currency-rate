@@ -61,24 +61,21 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
      *
      * @throws Exception
      */
-    private function parseData(string $xml)
+    private function parseData(string $xml): void
     {
         $currencies = $this->parseXml($xml);
-        $currencies = json_decode(json_encode($currencies), true);
 
-        $param = [];
-        $param['no'] = $currencies['numer_tabeli'];
-        $param['driver'] = static::DRIVER_NAME;
-        $param['date'] = $currencies['data_publikacji'];
+        $param = [
+            'no' => (string) $currencies->numer_tabeli,
+            'driver' => static::DRIVER_NAME,
+            'date' => (string) $currencies->data_publikacji,
+        ];
 
-        foreach ($currencies['pozycja'] as $position) {
-            if (isset($position['kod_waluty']) &&
-                isset($position['kurs_sredni']) &&
-                isset($position['przelicznik'])
-            ) {
-                $param['code'] = strtoupper($position['kod_waluty']);
-                $param['rate'] = $this->stringToFloat($position['kurs_sredni']);
-                $param['multiplier'] = $this->stringToFloat($position['przelicznik']);
+        foreach ($currencies->pozycja as $position) {
+            if (isset($position->kod_waluty, $position->kurs_sredni, $position->przelicznik)) {
+                $param['code'] = strtoupper((string) $position->kod_waluty);
+                $param['rate'] = $this->stringToFloat((string) $position->kurs_sredni);
+                $param['multiplier'] = $this->stringToFloat((string) $position->przelicznik);
                 $this->data[] = $param;
             }
         }

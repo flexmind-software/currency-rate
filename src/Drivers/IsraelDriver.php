@@ -55,14 +55,15 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
         return $this;
     }
 
-    private function makeCountryMap()
+    private function makeCountryMap(): void
     {
         $xmlElement = $this->parseXml($this->xml);
-        $json = json_decode(json_encode($xmlElement), true);
 
         $this->countryList = [];
-        foreach ($json['CURRENCY'] ?? [] as $item) {
-            $this->countryList[$item['COUNTRY']] = $item['CURRENCYCODE'];
+        foreach ($xmlElement->CURRENCY as $item) {
+            $country = (string) $item->COUNTRY;
+            $code = (string) $item->CURRENCYCODE;
+            $this->countryList[$country] = $code;
         }
     }
 
