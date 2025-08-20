@@ -29,9 +29,9 @@ trait HttpFetcher
         }
 
         // --- RETRY CONFIG
-        $retry  = (array) config('currency-rate.retry', []);
-        $tries  = max(1, (int) ($retry['count'] ?? 1));
-        $sleep  = max(0, (int) ($retry['sleep'] ?? 1000)); // ms
+        $retry = (array) config('currency-rate.retry', []);
+        $tries = max(1, (int) ($retry['count'] ?? 1));
+        $sleep = max(0, (int) ($retry['sleep'] ?? 1000)); // ms
         $factor = max(1, (int) ($retry['factor'] ?? 2));
 
         $attempt = 0;
@@ -62,6 +62,7 @@ trait HttpFetcher
 
                 if ($body !== null) {
                     Cache::put($key, $body, config('currency-rate.cache-ttl'));
+
                     return $body;
                 }
 
