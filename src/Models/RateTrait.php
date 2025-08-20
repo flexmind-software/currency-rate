@@ -8,11 +8,12 @@ trait RateTrait
 {
     public function rate(string $currencyFrom, string $currencyTo, DateTime $date)
     {
-        [$from, $to] = $this->retrieveDataToCalculation($currencyFrom, $currencyTo, $date);
-        if ($from && $to) {
-            $from = $currencyFrom == $this->currency ? 1 : $from->calculate_rate;
-            $to = $currencyTo == $this->currency ? 1 : $to->calculate_rate;
+        $rates = $this->retrieveDataToCalculation($currencyFrom, $currencyTo, $date);
 
+        $from = $currencyFrom == $this->currency ? 1 : ($rates['from'] ?? null);
+        $to = $currencyTo == $this->currency ? 1 : ($rates['to'] ?? null);
+
+        if ($from && $to) {
             return $to ? $from / $to : 0;
         }
 
@@ -28,21 +29,15 @@ trait RateTrait
      */
     public function retrieveDataToCalculation(string $currencyFrom, string $currencyTo, DateTime $date): array
     {
-        $row = CurrencyRate::where(
-            [
-                'driver' => static::DRIVER_NAME,
-                'date' => $date->format('Y-m-d'),
-            ]
-        )->where(function ($builder) use ($currencyFrom, $currencyTo) {
-            $builder->whereIn('code', [$currencyFrom, $currencyTo]);
-        })
-            ->select(['code', 'rate', 'multiplier'])
-            ->get();
+        $row = CurrencyRate::where('driver', static::DRIVER_NAME)
+            ->whereDate('date', $date->format('Y-m-d'))
+            ->whereIn('code', [$currencyFrom, $currencyTo])
+            ->get()
+            ->pluck('calculate_rate', 'code');
 
-
-        $from = $row->where('code', '=', $currencyFrom)->first();
-        $to = $row->where('code', '=', $currencyTo)->first();
-
-        return [$from, $to];
+        return [
+            'from' => $row->get($currencyFrom),
+            'to' => $row->get($currencyTo),
+        ];
     }
 }
