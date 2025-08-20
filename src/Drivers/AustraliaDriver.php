@@ -2,11 +2,9 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class AustraliaDriver extends BaseDriver implements CurrencyInterface
 {
@@ -21,9 +19,9 @@ class AustraliaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'australia';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_AUD;
+    public CurrencyCode $currency = CurrencyCode::AUD;
 
     /**
      * @var string
@@ -31,29 +29,26 @@ class AustraliaDriver extends BaseDriver implements CurrencyInterface
     private string $xml;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI);
-        if ($respond->ok()) {
-            $this->xml = $respond->body();
-
+        $respond = $this->fetch(static::URI);
+        if ($respond) {
+            $this->xml = $respond;
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
-    private function parseResponse()
+    private function parseResponse(): void
     {
-        $xml = simplexml_load_string($this->xml, "SimpleXMLElement", LIBXML_NOCDATA);
-        $json = json_decode(json_encode($xml), true);
+        $xml = $this->parseXml($this->xml);
 
         $currencyList = [];
         foreach ($xml->item as $item) {
-            $spaced = explode(' ', (string) $item->title);
+            $spaced = explode(' ', (string)$item->title);
 
             $target = $spaced[2];
             switch ($target) {
@@ -78,18 +73,27 @@ class AustraliaDriver extends BaseDriver implements CurrencyInterface
         $this->data = $currencyList;
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Reserve Bank of Australia';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.rba.gov.au/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return 'Weekdays around 4.00 PM Eastern Australian Time';
+        return __('currency-rate::description.australia.frequency');
     }
 }

@@ -2,11 +2,10 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
+use SimpleXMLElement;
 
 /**
  *
@@ -28,96 +27,76 @@ class DenmarkDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'denmark';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_DKK;
+    public CurrencyCode $currency = CurrencyCode::DKK;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $this->date = $date;
-        $response = Http::get($this->sourceUrl($date));
-        if ($response->ok()) {
-            $xml = $response->body();
+        $response = $this->fetch($this->sourceUrl());
+        if ($response) {
+            $xml = $this->parseXml($response);
 
-            $xml = simplexml_load_string($xml, "SimpleXMLElement", LIBXML_NOCDATA);
-            $json = json_decode(json_encode($xml), true);
-
-            $this->parseDate($json);
-            $this->findByDate($date);
-            $this->saveInDatabase();
+            $this->parseDate($xml);
+            $this->findByDate('time');
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return string
      */
-    private function sourceUrl(DateTime $date): string
+    private function sourceUrl(): string
     {
         return sprintf('%s?%s', static::URI, static::QUERY_STRING);
     }
 
     /**
-     * @param array $jsonData
+     * Extract date and rates from SimpleXMLElement
      */
-    private function parseDate(array $jsonData)
+    private function parseDate(SimpleXMLElement $xml): void
     {
-        foreach ($jsonData['Cube'] ?? [] as $children) {
-            foreach ($children as $k => $child) {
-                if (! empty($child['@data']['time'])) {
-                    $this->data[$k]['time'] = $child['@data']['time'];
+        foreach ($xml->Cube->Cube as $cube) {
+            $time = (string) $cube['time'];
+            $entry = ['time' => $time, 'rates' => []];
 
-                    foreach ($child['Cube'] ?? [] as $node) {
-                        if (! empty($node['@data'])) {
-                            $this->data[$k]['rates'][$node['@data']['currency']] = $node['@data']['rate'];
-                        }
-                    }
+            foreach ($cube->Cube as $node) {
+                $currency = (string) $node['currency'];
+                $rate = (string) $node['rate'];
+                if ($currency !== '' && $rate !== '') {
+                    $entry['rates'][$currency] = $rate;
                 }
             }
+
+            $this->data[] = $entry;
         }
     }
 
     /**
-     * Extract rate data by date
-     * If the date does not exist we force set latest data
-     *
-     * @param DateTime|null $date
+     * @return string
      */
-    private function findByDate(?DateTime $date = null)
-    {
-        if (! $date) {
-            ! $this->data ?: $this->data = reset($this->data);
-        }
-
-        $date = $date->format('Y-m-d');
-
-        foreach ($this->data ?? [] as $data) {
-            if (empty($data['time']) || $data['time'] !== $date) {
-                continue;
-            }
-
-            $this->data = $data;
-        }
-    }
-
     public function fullName(): string
     {
         return 'Danmarks Nationalbanks';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.nationalbanken.dk';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.denmark.frequency');
     }
 }

@@ -2,11 +2,11 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateInterval;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class TurkeyDriver extends BaseDriver implements CurrencyInterface
 {
@@ -22,9 +22,9 @@ class TurkeyDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'turkey';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_TRY;
+    public CurrencyCode $currency = CurrencyCode::TRY;
 
     /**
      * @var string
@@ -32,39 +32,36 @@ class TurkeyDriver extends BaseDriver implements CurrencyInterface
     private string $xml;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
         do {
-            $respond = Http::get(static::URI . $this->queryString($date));
-            if ($respond->ok()) {
-                $this->xml = $respond->body();
+            $respond = $this->fetch(static::URI . $this->queryString());
+            if ($respond) {
+                $this->xml = $respond;
             }
-            $this->date = $date->sub(\DateInterval::createFromDateString('1 day'));
-        } while (! $respond->ok());
+            $this->date = $this->date->sub(DateInterval::createFromDateString('1 day'));
+        } while (! $respond);
 
         $this->parseResponse();
-        $this->saveInDatabase(true);
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return string
      */
-    private function queryString(DateTime $date): string
+    private function queryString(): string
     {
-        return $date->format('Ym/dmY') . '.xml';
+        return $this->date->format('Ym/dmY') . '.xml';
     }
 
     private function parseResponse()
     {
-        $simpleXMLElement = simplexml_load_string($this->xml);
+        $simpleXMLElement = $this->parseXml($this->xml);
         $no = $simpleXMLElement->attributes()->Bulten_No;
-        $date = DateTime::createFromFormat('m/d/Y', (string)$simpleXMLElement->attributes()->Date)->format('Y-m-d');
+        $date = DateTimeImmutable::createFromFormat('m/d/Y', (string)$simpleXMLElement->attributes()->Date)->format('Y-m-d');
 
         $this->data = [];
         foreach ($simpleXMLElement->Currency as $element) {
@@ -81,18 +78,27 @@ class TurkeyDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Türkiye Cumhuriyet Merkez Bankası';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.tcmb.gov.tr/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.turkey.frequency');
     }
 }

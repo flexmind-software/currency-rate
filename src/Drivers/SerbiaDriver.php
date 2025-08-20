@@ -2,12 +2,14 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
+use DOMElement;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use GuzzleHttp\Cookie\CookieJar;
 use Illuminate\Support\Facades\Http;
+use RuntimeException;
 
 class SerbiaDriver extends BaseDriver implements CurrencyInterface
 {
@@ -22,9 +24,9 @@ class SerbiaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'serbia';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_RSD;
+    public CurrencyCode $currency = CurrencyCode::RSD;
 
     /**
      * @var string
@@ -37,13 +39,11 @@ class SerbiaDriver extends BaseDriver implements CurrencyInterface
     private CookieJar $cookies;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $params = $this->postParam($date);
+        $params = $this->postParam();
         $cookie = $this->cookies->getCookieByName('JSESSIONID');
         $respond = Http::asForm()
             ->withCookies([$cookie->getName() => $cookie->getValue()], $cookie->getDomain())
@@ -53,20 +53,20 @@ class SerbiaDriver extends BaseDriver implements CurrencyInterface
             $this->parseResponse();
             $this->saveInDatabase(true);
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function postParam(DateTime $date): array
+    private function postParam(): array
     {
         return [
             'index' => 'index',
             'index:brKursneListe' => '',
-            'index:yearInner' => $date->format('Y'),
-            'index:inputCalendar1' => $date->format('d/m/Y'),
+            'index:yearInner' => $this->date->format('Y'),
+            'index:inputCalendar1' => $this->date->format('d/m/Y'),
             'index:vrstaInner' => 1,
             'index:prikazInner' => 1, // CSV
             'index:buttonShow' => '',
@@ -79,7 +79,7 @@ class SerbiaDriver extends BaseDriver implements CurrencyInterface
      *
      * @return string CSRF token.
      *
-     * @throws \RuntimeException When API is changed.
+     * @throws RuntimeException When API is changed.
      */
     private function getFormCsrfToken(): ?string
     {
@@ -93,7 +93,7 @@ class SerbiaDriver extends BaseDriver implements CurrencyInterface
             $hiddenInput = $xpath->query('//input[@type="hidden"]');
 
             /**
-             * @var \DOMElement $hidden
+             * @var DOMElement $hidden
              */
             foreach ($hiddenInput as $hidden) {
                 if ($hidden->getAttribute('name') === 'javax.faces.ViewState') {
@@ -128,7 +128,7 @@ class SerbiaDriver extends BaseDriver implements CurrencyInterface
             $this->data[] = [
                 'no' => $value[0],
                 'code' => $value[4],
-                'date' => DateTime::createFromFormat('d.m.Y', $value[1])->format('Y-m-d'),
+                'date' => DateTimeImmutable::createFromFormat('d.m.Y', $value[1])->format('Y-m-d'),
                 'driver' => static::DRIVER_NAME,
                 'multiplier' => $this->stringToFloat($value[5]),
                 'rate' => $rate,
@@ -136,21 +136,27 @@ class SerbiaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Narodna banka Srbije';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.nbs.rs/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return 'Queries may be submitted for the period after 15 May 2002. As of 8 August 2006 exchange rate ' .
-            'list shall be applicable from 8 a.m. on the selected day until 8 a.m. on the next day (as provided ' .
-            'by the Conditions and Manner of Operation of the Foreign Exchange Market). Exchange rate list as of ' .
-            'the preceding business day shall be applicable on weekends and holidays.';
+        return __('currency-rate::description.serbia.frequency');
     }
 }

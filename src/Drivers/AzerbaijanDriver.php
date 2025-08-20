@@ -2,11 +2,10 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class AzerbaijanDriver extends BaseDriver implements CurrencyInterface
 {
@@ -21,9 +20,9 @@ class AzerbaijanDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'azerbaijan';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_AZN;
+    public CurrencyCode $currency = CurrencyCode::AZN;
 
     /**
      * @var string
@@ -31,53 +30,57 @@ class AzerbaijanDriver extends BaseDriver implements CurrencyInterface
     private string $xml;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI, ['date_req' => $date->format('d.m.Y')]);
-        if ($respond->ok()) {
-            $this->xml = $respond->body();
-
+        $respond = $this->fetch(static::URI, ['date_req' => $this->date->format('d.m.Y')]);
+        if ($respond) {
+            $this->xml = $respond;
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
-    private function parseResponse()
+    private function parseResponse(): void
     {
-        $xmlElement = simplexml_load_string($this->xml, "SimpleXMLElement", LIBXML_NOCDATA);
-        $json = json_decode(json_encode($xmlElement), true);
-        $date = DateTime::createFromFormat('d.m.Y', $json['@attributes']['Date'])->format('Y-m-d');
+        $xmlElement = $this->parseXml($this->xml);
+        $date = DateTimeImmutable::createFromFormat('d.m.Y', (string) $xmlElement['Date'])->format('Y-m-d');
 
-        foreach ($json['Valute'] ?? [] as $item) {
-            $line = [
+        foreach ($xmlElement->Valute as $item) {
+            $this->data[] = [
                 'no' => null,
-                'code' => $item['CharCode'],
+                'code' => (string) $item->CharCode,
                 'date' => $date,
                 'driver' => static::DRIVER_NAME,
-                'multiplier' => floatval($item['Nominal']),
-                'rate' => $this->stringToFloat($item['Value']),
+                'multiplier' => (float) $item->Nominal,
+                'rate' => $this->stringToFloat((string) $item->Value),
             ];
-
-            $this->data[] = $line;
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Azerbaijan';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.cbar.az';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.azerbaijan.frequency');
     }
 }

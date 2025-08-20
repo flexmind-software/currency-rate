@@ -1,0 +1,8 @@
+parameters:
+    level: 8
+    paths:
+        - src
+    excludePaths:
+        - src/Drivers/*
+        - src/Models/*
+    tmpDir: build/phpstan

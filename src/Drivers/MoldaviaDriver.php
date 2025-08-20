@@ -2,13 +2,11 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
-use SimpleXMLElement;
 
 class MoldaviaDriver extends BaseDriver implements CurrencyInterface
 {
@@ -23,9 +21,9 @@ class MoldaviaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'moldavia';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_MDL;
+    public CurrencyCode $currency = CurrencyCode::MDL;
 
     /**
      * @var string
@@ -33,31 +31,27 @@ class MoldaviaDriver extends BaseDriver implements CurrencyInterface
     private string $xml;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      * @throws Exception
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI, $this->queryString($date));
-        if ($respond->ok()) {
-            $this->xml = $respond->body();
-
+        $respond = $this->fetch(static::URI, $this->queryString());
+        if ($respond) {
+            $this->xml = $respond;
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
         return [
-            'date' => $date->format('d.m.Y'),
+            'date' => $this->date->format('d.m.Y'),
         ];
     }
 
@@ -66,8 +60,8 @@ class MoldaviaDriver extends BaseDriver implements CurrencyInterface
      */
     private function parseResponse()
     {
-        $xml = new SimpleXMLElement($this->xml);
-        $date = Datetime::createFromFormat('d.m.Y', $xml->attributes()->Date)->format('d.m.Y');
+        $xml = $this->parseXml($this->xml);
+        $date = DateTimeImmutable::createFromFormat('d.m.Y', $xml->attributes()->Date)->format('d.m.Y');
 
         $this->data = [];
         foreach ($xml->Valute as $xmlElement) {
@@ -82,18 +76,27 @@ class MoldaviaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Banca Naţională a Moldovei';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bnm.md/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.moldavia.frequency');
     }
 }

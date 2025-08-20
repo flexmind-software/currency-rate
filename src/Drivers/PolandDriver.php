@@ -2,13 +2,10 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
-use SimpleXMLElement;
 
 class PolandDriver extends BaseDriver implements CurrencyInterface
 {
@@ -23,60 +20,40 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'poland';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_PLN;
+    public CurrencyCode $currency = CurrencyCode::PLN;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      * @throws Exception
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $this->retrieveData($date);
-        $this->saveInDatabase(true);
-    }
+        $exchangeRateList = $this->fetch(static::URI . 'dir.txt');
+        if ($exchangeRateList) {
 
-    /**
-     * @param DateTime $date
-     *
-     * @throws Exception
-     */
-    private function retrieveData(DateTime $date)
-    {
-        $response = Http::get(static::URI . 'dir.txt');
-        if ($response->ok()) {
-            $listOfCurses = $response->body();
-
-            $timestamp = $date->getTimestamp();
-
-            /**
-             * Tabela A kursów średnich walut obcych publikowana (aktualizowana) jest na stronie internetowej NBP w
-             * dni robocze, pomiędzy godziną 11:45 a 12:15,
-             * Tabela B kursów średnich walut obcych publikowana (aktualizowana) jest na stronie internetowej NBP w
-             * środy, pomiędzy godziną 11:45 a 12:15,
-             */
-            // pobieramy z poprzedniego dnia
+            $timestamp = $this->date->getTimestamp();
             if (intval(date('Hi', $timestamp)) < 1215) {
                 $timestamp -= 86400;
             }
 
             $date = date('ymd', $timestamp);
 
-            if (preg_match_all('/(a)([0-9]{3})z' . $date . '/', $listOfCurses, $matches)) {
-                if (! blank($matches[0])) {
-                    foreach ($matches[0] as $nbpNo) {
-                        $response = Http::get(static::URI . $nbpNo . '.xml');
-                        if ($response->ok()) {
-                            $xml = $response->body();
-                            $this->parseData($xml);
-                        }
+            if (
+                preg_match_all('/(a)([0-9]{3})z' . $date . '/', $exchangeRateList, $matches) &&
+                ! blank($matches[0])
+            ) {
+                foreach ($matches[0] as $nbpNo) {
+                    $xml = $this->fetch(static::URI . $nbpNo . '.xml');
+                    if ($xml) {
+                        $this->parseData($xml);
                     }
                 }
             }
         }
+
+        return $this;
     }
 
     /**
@@ -84,41 +61,47 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
      *
      * @throws Exception
      */
-    private function parseData(string $xml)
+    private function parseData(string $xml): void
     {
-        $currencies = new SimpleXMLElement($xml);
-        $currencies = json_decode(json_encode($currencies), true);
+        $currencies = $this->parseXml($xml);
 
-        $param = [];
-        $param['no'] = $currencies['numer_tabeli'];
-        $param['driver'] = static::DRIVER_NAME;
-        $param['date'] = $currencies['data_publikacji'];
+        $param = [
+            'no' => (string) $currencies->numer_tabeli,
+            'driver' => static::DRIVER_NAME,
+            'date' => (string) $currencies->data_publikacji,
+        ];
 
-        foreach ($currencies['pozycja'] as $position) {
-            if (isset($position['kod_waluty']) &&
-                isset($position['kurs_sredni']) &&
-                isset($position['przelicznik'])
-            ) {
-                $param['code'] = strtoupper($position['kod_waluty']);
-                $param['rate'] = $this->stringToFloat($position['kurs_sredni']);
-                $param['multiplier'] = $this->stringToFloat($position['przelicznik']);
+        foreach ($currencies->pozycja as $position) {
+            if (isset($position->kod_waluty, $position->kurs_sredni, $position->przelicznik)) {
+                $param['code'] = strtoupper((string) $position->kod_waluty);
+                $param['rate'] = $this->stringToFloat((string) $position->kurs_sredni);
+                $param['multiplier'] = $this->stringToFloat((string) $position->przelicznik);
                 $this->data[] = $param;
             }
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Narodowy Bank Polski';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.nbp.pl/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.poland.frequency');
     }
 }

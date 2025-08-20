@@ -2,11 +2,10 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -26,41 +25,36 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'belarus';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_BYN;
+    public CurrencyCode $currency = CurrencyCode::BYN;
     /**
      * @var string
      */
     private string $xml;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $this->date = $date;
+        $response = $this->fetch(static::URI, $this->queryString());
 
-        $response = Http::get(static::URI, $this->queryString($date));
-
-        if ($response->ok()) {
-            $this->xml = $response->body();
+        if ($response) {
+            $this->xml = $response;
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
         return [
-            'ondate' => $date->format('m/d/Y'),
+            'ondate' => $this->date->format('m/d/Y'),
         ];
     }
 
@@ -69,10 +63,10 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
      */
     private function parseResponse()
     {
-        $xml = simplexml_load_string($this->xml);
+        $xml = $this->parseXml($this->xml);
 
         if (count($xml->Currency)) {
-            $date = DateTime::createFromFormat('m/d/Y', $xml->attributes()[0])->format('Y-m-d');
+            $date = DateTimeImmutable::createFromFormat('m/d/Y', $xml->attributes()[0])->format('Y-m-d');
 
             foreach ($xml->Currency as $xmlElement) {
                 $this->data[] = [
@@ -87,18 +81,27 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Natsional\'nyy bank Respubliki Belarus\'';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.nbrb.by/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.belarus.frequency');
     }
 }

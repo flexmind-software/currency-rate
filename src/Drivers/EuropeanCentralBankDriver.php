@@ -2,12 +2,10 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 use SimpleXMLElement;
 
 class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
@@ -23,83 +21,69 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'european-central-bank';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_EUR;
+    public CurrencyCode $currency = CurrencyCode::EUR;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      * @throws Exception
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $this->date = $date;
-
-        $respond = Http::get(static::URI);
-        if ($respond->ok()) {
-            $string = $respond->body();
-            $xml = new SimpleXMLElement($string);
+        $string = $this->fetch(static::URI);
+        if ($string) {
+            $xml = $this->parseXml($string);
 
             $this->parseDate($xml->Cube->Cube);
-            $this->findByDate($date);
-            $this->saveInDatabase();
+            $this->findByDate('date');
         }
+
+        return $this;
     }
 
     /**
-     * @param SimpleXMLElement $jsonData
+     * Traverse SimpleXMLElement for date and currency data.
      */
-    private function parseDate(SimpleXMLElement $jsonData)
+    private function parseDate(SimpleXMLElement $cubes): void
     {
-        $jsonData = json_decode(json_encode($jsonData), true);
-        foreach ($jsonData['Cube'] ?? [] as $k => $children) {
-            foreach ($children as $node) {
-                $this->data[$node['currency']]['date'] = $jsonData['@attributes']['time'];
-                $this->data[$node['currency']]['rate'] = floatval($node['rate']);
-                $this->data[$node['currency']]['multiplier'] = 1;
-                $this->data[$node['currency']]['no'] = null;
-                $this->data[$node['currency']]['driver'] = static::DRIVER_NAME;
-                $this->data[$node['currency']]['code'] = $node['currency'];
+        foreach ($cubes as $cube) {
+            $date = (string) $cube['time'];
+
+            foreach ($cube->Cube as $node) {
+                $currency = (string) $node['currency'];
+
+                $this->data[$currency]['date'] = $date;
+                $this->data[$currency]['rate'] = (float) $node['rate'];
+                $this->data[$currency]['multiplier'] = 1;
+                $this->data[$currency]['no'] = null;
+                $this->data[$currency]['driver'] = static::DRIVER_NAME;
+                $this->data[$currency]['code'] = $currency;
             }
         }
     }
 
     /**
-     * Extract rate data by date
-     * If the date does not exist we force set latest data
-     *
-     * @param DateTime|null $date
+     * @return string
      */
-    private function findByDate(?DateTime $date = null)
-    {
-        if (! $date) {
-            ! $this->data ?: $this->data = reset($this->data);
-        }
-
-        $date = $date->format('Y-m-d');
-
-        foreach ($this->data ?? [] as $data) {
-            if (empty($data['date']) || $data['date'] !== $date) {
-                continue;
-            }
-            $this->data[] = $data;
-        }
-    }
-
     public function fullName(): string
     {
         return 'European Central Bank';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.ecb.europa.eu/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return 'Weekday rates at 3:00 PM Central European Time (CET)';
+        return __('currency-rate::description.european-central-bank.frequency');
     }
 }

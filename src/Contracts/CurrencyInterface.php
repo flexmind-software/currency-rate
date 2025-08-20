@@ -2,23 +2,23 @@
 
 namespace FlexMindSoftware\CurrencyRate\Contracts;
 
+use DateTimeImmutable;
+
 interface CurrencyInterface
 {
     /**
-     * @param \DateTime $date
-     *
-     * @return mixed|void
+     * @return self
      */
-    public function downloadRates(\DateTime $date);
+    public function grabExchangeRates(): self;
 
     /**
      * @param string $currencyFrom
      * @param string $currencyTo
-     * @param \DateTime $date
+     * @param DateTimeImmutable $date
      *
      * @return float|int
      */
-    public function rate(string $currencyFrom, string $currencyTo, \DateTime $date);
+    public function rate(string $currencyFrom, string $currencyTo, DateTimeImmutable $date);
 
     /**
      * @return string

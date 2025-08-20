@@ -2,11 +2,10 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -24,45 +23,34 @@ class BulgariaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'bulgaria';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_BGN;
+    public CurrencyCode $currency = CurrencyCode::BGN;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $this->date = $date;
+        $fileContent = $this->fetch(static::URI, $this->queryString());
 
-        $response = Http::get(static::URI, $this->queryString($date));
-
-        if ($response->ok()) {
-            $fileContent = $response->body();
-
-            $explode = explode("\n", $fileContent);
-
-            $rateList = array_map(function ($item) {
-                return explode(',', $item);
-            }, $explode);
+        if ($fileContent) {
+            $rateList = $this->parseCsv($fileContent, ',');
 
             $rateList = array_filter($rateList, function ($item) {
                 return count($item) === 6;
             });
 
             $this->parseRates($rateList);
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
         return [
             'download' => 'csv',
@@ -82,7 +70,7 @@ class BulgariaDriver extends BaseDriver implements CurrencyInterface
                 continue;
             }
 
-            $date = DateTime::createFromFormat('d.m.Y', $rates[0])->format('Y-m-d');
+            $date = DateTimeImmutable::createFromFormat('d.m.Y', $rates[0])->format('Y-m-d');
 
             $param = [];
             $param['no'] = null;
@@ -96,18 +84,27 @@ class BulgariaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Bŭlgarska narodna banka';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bnb.bg';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.bulgaria.frequency');
     }
 }

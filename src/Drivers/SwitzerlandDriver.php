@@ -2,11 +2,10 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class SwitzerlandDriver extends BaseDriver implements CurrencyInterface
 {
@@ -21,9 +20,9 @@ class SwitzerlandDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'switzerland';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_CHF;
+    public CurrencyCode $currency = CurrencyCode::CHF;
 
     /**
      * @var string
@@ -31,23 +30,22 @@ class SwitzerlandDriver extends BaseDriver implements CurrencyInterface
     private string $xml;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI);
-        if ($respond->ok()) {
-            $this->xml = $respond->body();
+        $respond = $this->fetch(static::URI);
+        if ($respond) {
+            $this->xml = $respond;
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     private function parseResponse()
     {
-        $simpleXMLElement = simplexml_load_string($this->xml, "SimpleXMLElement", LIBXML_NOCDATA, "", true);
+        $simpleXMLElement = $this->parseXml($this->xml, LIBXML_NOCDATA, '', true);
 
         foreach ($simpleXMLElement->channel->item as $line) {
             preg_match(
@@ -60,7 +58,7 @@ class SwitzerlandDriver extends BaseDriver implements CurrencyInterface
                 $this->data[] = [
                     'no' => null,
                     'code' => $match[5],
-                    'date' => DateTime::createFromFormat('Y-m-d', trim($match[6])),
+                    'date' => DateTimeImmutable::createFromFormat('Y-m-d', trim($match[6])),
                     'driver' => static::DRIVER_NAME,
                     'multiplier' => $this->stringToFloat(trim($match[4])),
                     'rate' => $this->stringToFloat(trim($match[2])),
@@ -69,18 +67,27 @@ class SwitzerlandDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Swiss National Bank';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.snb.ch/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return 'Weekday rates at 11:00 AM Central European Time (CET)';
+        return __('currency-rate::description.switzerland.frequency');
     }
 }

@@ -2,11 +2,10 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateInterval;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class NorwayDriver extends BaseDriver implements CurrencyInterface
 {
@@ -21,39 +20,38 @@ class NorwayDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'norway';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_NOK;
+    public CurrencyCode $currency = CurrencyCode::NOK;
     /**
      * @var array
      */
     protected array $json;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $response = Http::get(static::URI, $this->getQueryString($date));
-        if ($response->ok()) {
-            $this->json = $response->json();
+        $response = $this->fetch(static::URI, $this->getQueryString());
+        if ($response) {
+            $this->json = json_decode($response, true);
             $this->parseBody();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function getQueryString(DateTime $date): array
+    private function getQueryString(): array
     {
         return [
-            'endPeriod' => $date->format('Y-m-d'),
-            'startPeriod' => $date->sub(\DateInterval::createFromDateString('1 day'))->format('Y-m-d'),
+            'endPeriod' => $this->date->format('Y-m-d'),
+            'startPeriod' => $this->date
+                ->sub(DateInterval::createFromDateString('1 day'))
+                ->format('Y-m-d'),
             'format' => 'sdmx-json',
             'locale' => 'en',
         ];
@@ -85,18 +83,27 @@ class NorwayDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Norges Bank';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.norges-bank.no/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.norway.frequency');
     }
 }

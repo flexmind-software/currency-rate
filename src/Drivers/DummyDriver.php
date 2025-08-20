@@ -2,11 +2,9 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class DummyDriver extends BaseDriver implements CurrencyInterface
 {
@@ -21,32 +19,30 @@ class DummyDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = '';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_EUR;
+    public CurrencyCode $currency = CurrencyCode::EUR;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI, $this->queryString($date));
-        if ($respond->ok()) {
-            $this->html = $respond->body();
-
+        $respond = $this->fetch(static::URI, $this->queryString());
+        if ($respond) {
+            $this->html = $respond;
             $this->parseResponse();
-            //            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
+     *
      *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
         return [];
     }
@@ -55,18 +51,27 @@ class DummyDriver extends BaseDriver implements CurrencyInterface
     {
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return '';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return '';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.dummy.frequency');
     }
 }

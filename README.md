@@ -32,10 +32,86 @@ This is the contents of the published config file:
 
 ```php
 return [
-    'driver' => env('FLEXMIND_CURRENCY_RATE_DRIVER', 'poland'),
-    'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates')
+    'driver' => env('FLEXMIND_CURRENCY_RATE_DRIVER', 'european-central-bank'),
+    'drivers' => [
+        'albania',
+        'armenia',
+        'australia',
+        'azerbaijan',
+        'bceao',
+        'belarus',
+        'bosnia-and-herzegovina',
+        'botswana',
+        'bulgaria',
+        'canada',
+        'china',
+        'croatia',
+        'czech-republic',
+        'denmark',
+        'england',
+        'european-central-bank',
+        'fiji',
+        'georgia',
+        'hungary',
+        'iceland',
+        'israel',
+        'macedonia',
+        'moldavia',
+        'norway',
+        'poland',
+        'romania',
+        'russia',
+        'serbia',
+        'sweden',
+        'switzerland',
+        'turkey',
+        'ukraine',
+    ],
+    'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates'),
+    'cache-ttl' => env('FLEXMIND_CURRENCY_RATE_CACHE_TTL', 3600),
 ];
 ```
+
+The `drivers` array defines which currency rate providers are available when running
+the command with `--driver=all`. Add or remove entries from this list to customise
+the drivers used in your application. See [config/currency-rate.php](config/currency-rate.php) for additional configuration options, including the cache TTL for HTTP requests.
+
+### Available Drivers
+
+| Country / Source | Driver |
+|------------------|--------|
+| Albania | `albania` |
+| Armenia | `armenia` |
+| Australia | `australia` |
+| Azerbaijan | `azerbaijan` |
+| BCEAO | `bceao` |
+| Belarus | `belarus` |
+| Bosnia and Herzegovina | `bosnia-and-herzegovina` |
+| Botswana | `botswana` |
+| Bulgaria | `bulgaria` |
+| Canada | `canada` |
+| China | `china` |
+| Croatia | `croatia` |
+| Czech Republic | `czech-republic` |
+| Denmark | `denmark` |
+| England | `england` |
+| European Central Bank | `european-central-bank` |
+| Fiji | `fiji` |
+| Georgia | `georgia` |
+| Hungary | `hungary` |
+| Iceland | `iceland` |
+| Israel | `israel` |
+| Macedonia | `macedonia` |
+| Moldavia | `moldavia` |
+| Norway | `norway` |
+| Poland | `poland` |
+| Romania | `romania` |
+| Russia | `russia` |
+| Serbia | `serbia` |
+| Sweden | `sweden` |
+| Switzerland | `switzerland` |
+| Turkey | `turkey` |
+| Ukraine | `ukraine` |
 
 ## Usage
 
@@ -48,6 +124,50 @@ Arguments:
 Options:
   --queue[=QUEUE]    Queue name, if set "none" cmd run without add job to queue [default: "none"]
   --driver[=DRIVER]  Driver to download rate [default: "all"]
+```
+
+## Events
+
+The `CurrencyRate::saveIn` method dispatches a `CurrencyRateSaved` event once rates are persisted. Consumers may listen for this event to trigger downstream actions:
+
+```php
+use FlexMindSoftware\CurrencyRate\Events\CurrencyRateSaved;
+use Illuminate\Support\Facades\Event;
+
+Event::listen(CurrencyRateSaved::class, function (CurrencyRateSaved $event) {
+    // $event->rates contains the saved records
+});
+
+### Examples
+
+Run for today's rates using all configured drivers:
+
+```bash
+php artisan flexmind:currency-rate
+```
+
+Fetch rates for a specific date:
+
+```bash
+php artisan flexmind:currency-rate 2023-09-15
+```
+
+Use a specific driver:
+
+```bash
+php artisan flexmind:currency-rate --driver=canada
+```
+
+Dispatch the job to a queue:
+
+```bash
+php artisan flexmind:currency-rate --queue=default
+```
+
+Execute immediately without queueing:
+
+```bash
+php artisan flexmind:currency-rate --queue=none
 ```
 
 ## Testing
@@ -196,14 +316,66 @@ composer test
             <td>ukraine</td>
         </tr>
         <tr>
+            <td colspan="4">Africa</td>
+        </tr>
+        <tr>
+            <td>Benin</td>
+            <td><a href="https://www.bceao.int" target="_blank">Central Bank of West African States (BCEAO)</a></td>
+            <td>bceao</td>
+        </tr>
+        <tr>
+            <td>Botswana</td>
+            <td><a href="https://www.bankofbotswana.bw" target="_blank">Bank of Botswana</a></td>
+            <td>botswana</td>
+        </tr>
+        <tr>
+            <td>Burkina Faso</td>
+            <td><a href="https://www.bceao.int" target="_blank">Central Bank of West African States (BCEAO)</a></td>
+            <td>bceao</td>
+        </tr>
+        <tr>
+            <td>Guinea-Bissau</td>
+            <td><a href="https://www.bceao.int" target="_blank">Central Bank of West African States (BCEAO)</a></td>
+            <td>bceao</td>
+        </tr>
+        <tr>
+            <td>Ivory Coast</td>
+            <td><a href="https://www.bceao.int" target="_blank">Central Bank of West African States (BCEAO)</a></td>
+            <td>bceao</td>
+        </tr>
+        <tr>
+            <td>Mali</td>
+            <td><a href="https://www.bceao.int" target="_blank">Central Bank of West African States (BCEAO)</a></td>
+            <td>bceao</td>
+        </tr>
+        <tr>
+            <td>Niger</td>
+            <td><a href="https://www.bceao.int" target="_blank">Central Bank of West African States (BCEAO)</a></td>
+            <td>bceao</td>
+        </tr>
+        <tr>
+            <td>Senegal</td>
+            <td><a href="https://www.bceao.int" target="_blank">Central Bank of West African States (BCEAO)</a></td>
+            <td>bceao</td>
+        </tr>
+        <tr>
+            <td>Togo</td>
+            <td><a href="https://www.bceao.int" target="_blank">Central Bank of West African States (BCEAO)</a></td>
+            <td>bceao</td>
+        </tr>
+        <tr>
             <td colspan="4">Asia</td>
         </tr>
         <tr>
+            <td>China</td>
+            <td><a href="http://www.chinamoney.com.cn/english/bmkcpr/" target="_blank">CFETS - China Foreign Exchange Trade System</a></td>
+            <td>china</td>
+        </tr>        
+        <tr>
             <td>Israel</td>
-            <td><a href="https://www.bankofcanada.ca/" target="_blank">בנק ישראל</a></td>
+            <td><a href="https://www.boi.org.il/" target="_blank">בנק ישראל</a></td>
             <td>israel</td>
         </tr>
-        </tbody>
         <tr>
             <td colspan="4">North America</td>
         </tr>
@@ -219,6 +391,11 @@ composer test
             <td>Australia</td>
             <td><a href="https://www.rba.gov.au/" target="_blank">Reserve Bank of Australia</a></td>
             <td>australia</td>
+        </tr>       
+        <tr>
+            <td>Fiji</td>
+            <td><a href="https://www.rbf.gov.fj/" target="_blank">Reserve Bank of Fiji</a></td>
+            <td>fiji</td>
         </tr>
     </tbody>
 </table>
@@ -230,6 +407,15 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Contributing
 
 Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
+
+### Adding new locales
+
+Translations for driver descriptions live in `resources/langs/{locale}/description.php`.
+To contribute a new locale:
+
+1. Create a new directory for the locale under `resources/langs` (for example `es` for Spanish).
+2. Copy `resources/langs/en/description.php` into that directory and translate the strings.
+3. Submit a pull request with the new translation file.
 
 ## Credits
 

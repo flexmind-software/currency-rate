@@ -2,11 +2,11 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateInterval;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -25,9 +25,9 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'armenia';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_AMD;
+    public CurrencyCode $currency = CurrencyCode::AMD;
 
     /**
      * @var string
@@ -35,31 +35,30 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
     private string $csvPlain;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $response = Http::get(static::URI, $this->queryString($date));
-        if ($response->ok()) {
-            $this->csvPlain = $response->body();
+        $response = $this->fetch(static::URI, $this->queryString($this->date));
+        if ($response) {
+            $this->csvPlain = $response;
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
+     *
      *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(DateTimeImmutable $date): array
     {
         $date = $this->lastDate ?? $date;
 
         $dateTo = $date->format('Y-m-d');
-        $dateFrom = $date->sub(\DateInterval::createFromDateString('1 month'))->format('Y-m-d');
+        $dateFrom = $date->sub(DateInterval::createFromDateString('1 month'))->format('Y-m-d');
 
         return [
             'ISOCodes' => 'AED,ARS,AUD,BGN,BRL,BYN,CAD,CHF,CNY,CZK,DKK,EGP,EUR,GBP,GEL,HKD,HUF,ILS,INR,IRR,ISK,' .
@@ -77,10 +76,7 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
     {
         $this->data = [];
 
-        $lines = explode("\n", $this->csvPlain);
-        $lines = array_map(function ($item) {
-            return explode(',', $item);
-        }, $lines);
+        $lines = $this->parseCsv($this->csvPlain, ',');
         $head = head($lines);
         $head[0] = null;
 
@@ -94,7 +90,7 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
                     $this->data[] = [
                         'no' => null,
                         'code' => $code,
-                        'date' => DateTime::createFromFormat('d/m/Y', $line[0])->format('Y-m-d'),
+                        'date' => DateTimeImmutable::createFromFormat('d/m/Y', $line[0])->format('Y-m-d'),
                         'driver' => static::DRIVER_NAME,
                         'multiplier' => $this->stringToFloat(1),
                         'rate' => $this->stringToFloat($value),
@@ -104,18 +100,27 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Hayastani Hanrapetut’yan Kentronakan Bank';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.cba.am/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.armenia.frequency');
     }
 }

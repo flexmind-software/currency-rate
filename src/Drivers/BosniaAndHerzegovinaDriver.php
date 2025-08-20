@@ -2,11 +2,9 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -25,38 +23,35 @@ class BosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'bosnia-and-herzegovina';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_BAM;
+    public CurrencyCode $currency = CurrencyCode::BAM;
     /**
      * @var array|mixed
      */
     protected array $jsonData;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $response = Http::asJson()->get(static::URI, $this->getQueryString($date));
-        if ($response->ok()) {
-            $this->jsonData = $response->json();
+        $response = $this->fetch(static::URI, $this->getQueryString());
+        if ($response) {
+            $this->jsonData = json_decode($response, true);
             $this->parseResponse();
-            $this->saveInDatabase(true);
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function getQueryString(DateTime $date): array
+    private function getQueryString(): array
     {
         return [
-            'date' => $date->format("m/d/Y 00:00:00"),
+            'date' => $this->date->format("m/d/Y 00:00:00"),
         ];
     }
 
@@ -74,18 +69,27 @@ class BosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Centralna Banka Bosne I Hergegovine';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.cbbh.ba/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.bosnia-and-herzegovina.frequency');
     }
 }

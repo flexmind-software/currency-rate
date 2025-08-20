@@ -2,9 +2,9 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateInterval;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use SoapClient;
 
@@ -21,9 +21,9 @@ class MacedoniaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'macedonia';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_MKD;
+    public CurrencyCode $currency = CurrencyCode::MKD;
 
     /**
      * @var string
@@ -31,29 +31,29 @@ class MacedoniaDriver extends BaseDriver implements CurrencyInterface
     private string $xml;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $client = new SoapClient(
-            static::URI
-        );
-
-        $xml = $client->GetExchangeRate(
-            [
-                'StartDate' => $date->format('d.m.Y'),
-                'EndDate' => $date->sub(\DateInterval::createFromDateString('1 day'))->format('d.m.Y'),
-            ]
-        );
-
+        $client = new SoapClient(static::URI);
+        $xml = $client->GetExchangeRate($this->soapParams());
         if (property_exists($xml, 'GetExchangeRateResult')) {
             $this->xml = $xml->GetExchangeRateResult;
-
             $this->parseResponse();
-            $this->saveInDatabase(true);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    private function soapParams(): array
+    {
+        return [
+            'StartDate' => $this->date->format('d.m.Y'),
+            'EndDate' => $this->date->sub(DateInterval::createFromDateString('1 day'))->format('d.m.Y'),
+        ];
     }
 
     private function parseResponse()
@@ -73,18 +73,27 @@ class MacedoniaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Narodna Banka na Republika Severna Makedonija';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.nbrm.mk/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.macedonia.frequency');
     }
 }

@@ -2,11 +2,9 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class UkraineDriver extends BaseDriver implements CurrencyInterface
 {
@@ -21,9 +19,9 @@ class UkraineDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'ukraine';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_UAH;
+    public CurrencyCode $currency = CurrencyCode::UAH;
 
     /**
      * @var string
@@ -31,19 +29,28 @@ class UkraineDriver extends BaseDriver implements CurrencyInterface
     protected string $html;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $this->date = $date;
-        $respond = Http::get(static::URI, $this->queryString($date));
-        if ($respond->ok()) {
-            $this->html = $respond->body();
+        $respond = $this->fetch(static::URI, $this->queryString());
+        if ($respond) {
+            $this->html = $respond;
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    private function queryString(): array
+    {
+        return [
+            'date' => $this->date->format('Y-m-d'),
+            'period' => 'daily',
+        ];
     }
 
     /**
@@ -76,29 +83,26 @@ class UkraineDriver extends BaseDriver implements CurrencyInterface
     }
 
     /**
-     * @param DateTime $date
-     * @return array
+     * @return string
      */
-    private function queryString(DateTime $date): array
-    {
-        return [
-            'date' => $date->format('Y-m-d'),
-            'period' => 'daily',
-        ];
-    }
-
     public function fullName(): string
     {
         return 'Natsionalʹnyy bank Ukrayiny';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bank.gov.ua/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.ukraine.frequency');
     }
 }

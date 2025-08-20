@@ -2,11 +2,9 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class IsraelDriver extends BaseDriver implements CurrencyInterface
 {
@@ -21,9 +19,9 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'israel';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_ILS;
+    public CurrencyCode $currency = CurrencyCode::ILS;
 
     /**
      * @var string
@@ -38,45 +36,41 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
     private array $countryList = [];
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $this->date = $date;
-
-        $respond = Http::get('https://www.boi.org.il/currency.xml');
-        if ($respond->ok()) {
-            $this->xml = $respond->body();
+        $respond = $this->fetch('https://www.boi.org.il/currency.xml');
+        if ($respond) {
+            $this->xml = $respond;
             $this->makeCountryMap();
         }
 
-        $respond = Http::get(static::URI, $this->queryString($date));
-        if ($respond->ok()) {
-            $this->html = $respond->body();
+        $respond = $this->fetch(static::URI, $this->queryString());
+        if ($respond) {
+            $this->html = $respond;
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
-    private function makeCountryMap()
+    private function makeCountryMap(): void
     {
-        $xmlElement = simplexml_load_string($this->xml, "SimpleXMLElement", LIBXML_NOCDATA);
-        $json = json_decode(json_encode($xmlElement), true);
+        $xmlElement = $this->parseXml($this->xml);
 
         $this->countryList = [];
-        foreach ($json['CURRENCY'] ?? [] as $item) {
-            $this->countryList[$item['COUNTRY']] = $item['CURRENCYCODE'];
+        foreach ($xmlElement->CURRENCY as $item) {
+            $country = (string) $item->COUNTRY;
+            $code = (string) $item->CURRENCYCODE;
+            $this->countryList[$country] = $code;
         }
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
         return [
             'wp' => 'ExchangeRates',
@@ -107,7 +101,7 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
         });
 
         $this->data = array_map(function ($item) {
-            return  [
+            return [
                 'no' => null,
                 'code' => $this->mapCountryToIso($item[2]),
                 'date' => $this->date->format('Y-m-d'),
@@ -123,18 +117,27 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
         return $this->countryList[$country] ?? null;
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Bank of Israel';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.boi.org.il/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return 'Daily';
+        return __('currency-rate::description.israel.frequency');
     }
 }

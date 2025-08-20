@@ -2,45 +2,74 @@
 
 namespace FlexMindSoftware\CurrencyRate\Models;
 
+use DateTimeImmutable;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
+
 trait RateTrait
 {
     /**
-     * @param string $currencyFrom
-     * @param string $currencyTo
-     * @param \DateTime $date
+     * Cache of rates retrieved within a single request.
      *
-     * @return array
+     * @var array<string, array{from: float|null, to: float|null}>
      */
-    public function retrieveDataToCalculation(string $currencyFrom, string $currencyTo, \DateTime $date): array
+    private static array $rateCache = [];
+
+    /**
+     * @param CurrencyCode|string $currencyFrom
+     * @param CurrencyCode|string $currencyTo
+     * @param DateTimeImmutable $date
+     * @return float|int
+     */
+    public function rate(CurrencyCode|string $currencyFrom, CurrencyCode|string $currencyTo, DateTimeImmutable $date)
     {
-        $row = CurrencyRate::where(
-            [
-                'driver' => static::DRIVER_NAME,
-                'date' => $date->format('Y-m-d'),
-            ]
-        )->where(function ($builder) use ($currencyFrom, $currencyTo) {
-            $builder->whereIn('code', [$currencyFrom, $currencyTo]);
-        })
-            ->select(['code', 'rate', 'multiplier'])
-            ->get();
+        $currencyFrom = $currencyFrom instanceof CurrencyCode ? $currencyFrom->value : $currencyFrom;
+        $currencyTo = $currencyTo instanceof CurrencyCode ? $currencyTo->value : $currencyTo;
+        $baseCurrency = $this->currency instanceof CurrencyCode ? $this->currency->value : $this->currency;
 
+        $rates = $this->retrieveDataToCalculation($currencyFrom, $currencyTo, $date);
 
-        $from = $row->where('code', '=', $currencyFrom)->first();
-        $to = $row->where('code', '=', $currencyTo)->first();
+        $from = $currencyFrom == $baseCurrency ? 1 : ($rates['from'] ?? null);
+        $to = $currencyTo == $baseCurrency ? 1 : ($rates['to'] ?? null);
 
-        return [$from, $to];
-    }
-
-    public function rate(string $currencyFrom, string $currencyTo, \DateTime $date)
-    {
-        [$from, $to] = $this->retrieveDataToCalculation($currencyFrom, $currencyTo, $date);
         if ($from && $to) {
-            $from = $currencyFrom == $this->currency ? 1 : $from->calculate_rate;
-            $to = $currencyTo == $this->currency ? 1 : $to->calculate_rate;
-
             return $to ? $from / $to : 0;
         }
 
         return 0;
+    }
+
+    /**
+     * @param CurrencyCode|string $currencyFrom
+     * @param CurrencyCode|string $currencyTo
+     * @param DateTimeImmutable $date
+     *
+     * @return array{from: ?float, to: ?float}
+     */
+    public function retrieveDataToCalculation(CurrencyCode|string $currencyFrom, CurrencyCode|string $currencyTo, DateTimeImmutable $date): array
+    {
+        $currencyFrom = $currencyFrom instanceof CurrencyCode ? $currencyFrom->value : $currencyFrom;
+        $currencyTo = $currencyTo instanceof CurrencyCode ? $currencyTo->value : $currencyTo;
+
+        $cacheKey = implode('|', [
+            static::DRIVER_NAME,
+            $date->format('Y-m-d'),
+            $currencyFrom,
+            $currencyTo,
+        ]);
+
+        if (! array_key_exists($cacheKey, self::$rateCache)) {
+            $row = CurrencyRate::where('driver', static::DRIVER_NAME)
+                ->whereDate('date', $date->format('Y-m-d'))
+                ->whereIn('code', [$currencyFrom, $currencyTo])
+                ->get()
+                ->pluck('calculate_rate', 'code');
+
+            self::$rateCache[$cacheKey] = [
+                'from' => $row->get($currencyFrom),
+                'to' => $row->get($currencyTo),
+            ];
+        }
+
+        return self::$rateCache[$cacheKey];
     }
 }

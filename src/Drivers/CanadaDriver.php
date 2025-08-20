@@ -3,11 +3,9 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateInterval;
-use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -25,53 +23,48 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'canada';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_CAD;
+    public CurrencyCode $currency = CurrencyCode::CAD;
     /**
      * @var mixed
      */
     private $jsonFile;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $this->date = $date;
-
         $this->getObservation();
         $this->parseRates();
-        $this->saveInDatabase();
+
+        return $this;
     }
 
     private function getObservation()
     {
         do {
-            $url = $this->sourceUrl($this->date);
-            $response = Http::get($url);
-            if ($response->ok()) {
-                $this->jsonFile = $response->json();
+            $url = $this->sourceUrl();
+            $response = $this->fetch($url);
+            if ($response) {
+                $this->jsonFile = json_decode($response, true);
                 if (blank($this->jsonFile['observations'])) {
-                    $this->date->sub(DateInterval::createFromDateString('1 day'));
+                    $this->date = $this->date->sub(DateInterval::createFromDateString('1 day'));
                 }
             }
         } while (count((array)$this->jsonFile['observations']) === 0);
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return string
      */
-    private function sourceUrl(DateTime $date): string
+    private function sourceUrl(): string
     {
         return sprintf(
             '%s?start_date=%s',
             static::URI,
-            $date->format('Y-m-d')
+            $this->date->format('Y-m-d')
         );
     }
 
@@ -83,7 +76,7 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
             foreach ($rates as $key => $rate) {
                 if (strpos($key, 'FX') !== false) {
                     $rowCurrency = str_replace('FX', '', $key);
-                    $rowCurrency = str_replace(Currency::CUR_CAD, '', $rowCurrency);
+                    $rowCurrency = str_replace(CurrencyCode::CAD->value, '', $rowCurrency);
 
                     $param = [];
                     $param['no'] = null;
@@ -99,18 +92,27 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Banqueu du Canada';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bankofcanada.ca/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.canada.frequency');
     }
 }

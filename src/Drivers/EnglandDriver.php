@@ -3,12 +3,11 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateInterval;
-use DateTime;
+use DateTimeImmutable;
 use DOMNodeList;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class EnglandDriver extends BaseDriver implements CurrencyInterface
 {
@@ -23,9 +22,9 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'england';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_GBP;
+    public CurrencyCode $currency = CurrencyCode::GBP;
 
     /**
      * @var string
@@ -37,39 +36,36 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
     private $tables = false;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
         do {
-            $respond = Http::get(static::URI, $this->queryString($date));
-            if ($respond->ok()) {
-                $xpath = $this->htmlParse($respond->body());
+            $respond = $this->fetch(static::URI, $this->queryString());
+            if ($respond) {
+                $xpath = $this->htmlParse($respond);
                 $this->tables = $xpath->query('//table');
             }
 
-            $date = $date->sub(DateInterval::createFromDateString('1 day'));
+            $this->date = $this->date->sub(DateInterval::createFromDateString('1 day'));
         } while ($this->tables && $this->tables->count() == 1);
 
         if ($this->tables) {
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
         return [
-            'TD' => $date->format('j'),
-            'TM' => $date->format('M'),
-            'TY' => $date->format('Y'),
+            'TD' => $this->date->format('j'),
+            'TM' => $this->date->format('M'),
+            'TY' => $this->date->format('Y'),
             'into' => 'GBP',
             'rateview' => 'D',
         ];
@@ -91,7 +87,7 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
         }
 
         $date = trim(str_replace(' £1 ', '', head($itemList)[1]));
-        $date = DateTime::createFromFormat('j M Y', $date)->format('Y-m-d');
+        $date = DateTimeImmutable::createFromFormat('j M Y', $date)->format('Y-m-d');
 
         foreach ($itemList as $i => $value) {
             if ($value[0] == 'Currency') {
@@ -111,49 +107,58 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
     private function currencyMap(string $currencyName)
     {
         $map = [
-            'Australian Dollar' => Currency::CUR_AUD,
-            'Canadian Dollar' => Currency::CUR_CAD,
-            'Chinese Yuan' => Currency::CUR_CNY,
-            'Czech Koruna' => Currency::CUR_CZK,
-            'Danish Krone' => Currency::CUR_DKK,
-            'Euro' => Currency::CUR_EUR,
-            'Hong Kong Dollar' => Currency::CUR_HKD,
-            'Hungarian Forint' => Currency::CUR_HUF,
-            'Indian Rupee' => Currency::CUR_INR,
-            'Israeli Shekel' => Currency::CUR_ILS,
-            'Japanese Yen' => Currency::CUR_JPY,
-            'Malaysian ringgit' => Currency::CUR_MYR,
-            'New Zealand Dollar' => Currency::CUR_NZD,
-            'Norwegian Krone' => Currency::CUR_NOK,
-            'Polish Zloty' => Currency::CUR_PLN,
-            'Russian Ruble' => Currency::CUR_RUB,
-            'Saudi Riyal' => Currency::CUR_SAR,
-            'Singapore Dollar' => Currency::CUR_SGD,
-            'South African Rand' => Currency::CUR_ZAR,
-            'South Korean Won' => Currency::CUR_KRW,
-            'Swedish Krona' => Currency::CUR_SEK,
-            'Swiss Franc' => Currency::CUR_CHF,
-            'Taiwan Dollar' => Currency::CUR_TWD,
-            'Thai Baht' => Currency::CUR_THB,
-            'Turkish Lira' => Currency::CUR_TRY,
-            'US Dollar' => Currency::CUR_USD,
+            'Australian Dollar' => CurrencyCode::AUD->value,
+            'Canadian Dollar' => CurrencyCode::CAD->value,
+            'Chinese Yuan' => CurrencyCode::CNY->value,
+            'Czech Koruna' => CurrencyCode::CZK->value,
+            'Danish Krone' => CurrencyCode::DKK->value,
+            'Euro' => CurrencyCode::EUR->value,
+            'Hong Kong Dollar' => CurrencyCode::HKD->value,
+            'Hungarian Forint' => CurrencyCode::HUF->value,
+            'Indian Rupee' => CurrencyCode::INR->value,
+            'Israeli Shekel' => CurrencyCode::ILS->value,
+            'Japanese Yen' => CurrencyCode::JPY->value,
+            'Malaysian ringgit' => CurrencyCode::MYR->value,
+            'New Zealand Dollar' => CurrencyCode::NZD->value,
+            'Norwegian Krone' => CurrencyCode::NOK->value,
+            'Polish Zloty' => CurrencyCode::PLN->value,
+            'Russian Ruble' => CurrencyCode::RUB->value,
+            'Saudi Riyal' => CurrencyCode::SAR->value,
+            'Singapore Dollar' => CurrencyCode::SGD->value,
+            'South African Rand' => CurrencyCode::ZAR->value,
+            'South Korean Won' => CurrencyCode::KRW->value,
+            'Swedish Krona' => CurrencyCode::SEK->value,
+            'Swiss Franc' => CurrencyCode::CHF->value,
+            'Taiwan Dollar' => CurrencyCode::TWD->value,
+            'Thai Baht' => CurrencyCode::THB->value,
+            'Turkish Lira' => CurrencyCode::TRY->value,
+            'US Dollar' => CurrencyCode::USD->value,
         ];
 
         return $map[$currencyName] ?? null;
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Bank of England';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bankofengland.co.uk/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.england.frequency');
     }
 }

@@ -2,13 +2,11 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use DOMDocument;
 use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class HungaryDriver extends BaseDriver implements CurrencyInterface
 {
@@ -24,9 +22,9 @@ class HungaryDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'hungary';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_HUF;
+    public CurrencyCode $currency = CurrencyCode::HUF;
 
     /**
      * @var string
@@ -34,32 +32,29 @@ class HungaryDriver extends BaseDriver implements CurrencyInterface
     protected string $html;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $response = Http::get(static::URI, $this->queryString($date));
-        if ($response->ok()) {
-            $this->html = $response->body();
+        $response = $this->fetch(static::URI, $this->queryString());
+        if ($response) {
+            $this->html = $response;
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
         return [
             'deviza' => 'rbCurrencyAll',
             'devizaSelected' => 'ZAR',
-            'datetill' => $date->format('d/m/Y'),
-            'datefrom' => ($this->lastDate ?? $date)->format('01/01/Y'),
+            'datetill' => $this->date->format('d/m/Y'),
+            'datefrom' => ($this->lastDate ?? $this->date)->format('01/01/Y'),
             'order' => 1,
         ];
     }
@@ -113,18 +108,27 @@ class HungaryDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Magyar Nemzeti Bank';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.mnb.hu/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.hungary.frequency');
     }
 }

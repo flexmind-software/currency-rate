@@ -2,11 +2,10 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateInterval;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -26,40 +25,36 @@ class SwedenDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'sweden';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_DKK;
+    public CurrencyCode $currency = CurrencyCode::DKK;
     /**
      * @var string
      */
     private string $response;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $response = Http::get(static::URI, $this->getQueryString($date));
-        if ($response->ok()) {
-            $this->response = $response->body();
-
+        $respond = $this->fetch(static::URI, $this->getQueryString());
+        if ($respond) {
+            $this->response = $respond;
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function getQueryString(DateTime $date): array
+    private function getQueryString(): array
     {
         return [
-            'to' => $date->format('d/m/y'),
-            'from' => $date->sub(\DateInterval::createFromDateString('1 day'))->format('d/m/y'),
+            'to' => $this->date->format('d/m/y'),
+            'from' => $this->date->sub(DateInterval::createFromDateString('1 day'))->format('d/m/y'),
             'c' => 'cAverage',
             'f' => 'Day',
             's' => 'Dot',
@@ -120,10 +115,7 @@ class SwedenDriver extends BaseDriver implements CurrencyInterface
      */
     private function parseResponse()
     {
-        $rows = explode("\r\n", $this->response);
-        $rows = array_map(function ($line) {
-            return explode(';', $line);
-        }, $rows);
+        $rows = $this->parseCsv($this->response, ';');
 
         $rows = array_filter($rows, function ($line) {
             return count($line) === 4;
@@ -146,18 +138,27 @@ class SwedenDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Narodna banka Srbije';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.nbs.rs/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.sweden.frequency');
     }
 }

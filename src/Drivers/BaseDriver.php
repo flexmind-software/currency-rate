@@ -2,30 +2,46 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use DOMDocument;
 use DOMXPath;
+use FlexMindSoftware\CurrencyRate\Contracts\DriverMetadata;
+use FlexMindSoftware\CurrencyRate\DTO\CurrencyRateData;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Psr\Http\Client\ClientInterface;
 
-abstract class BaseDriver
+abstract class BaseDriver implements DriverMetadata
 {
+    use HttpFetcher;
+
     /**
-     * @var DateTime
+     * @const string
      */
-    protected DateTime $date;
+    public const DRIVER_NAME = '';
+
+    /**
+     * @const string
+     */
+    public const URI = '';
+    /**
+     * @var DateTimeImmutable
+     */
+    protected DateTimeImmutable $date;
     /**
      * @var array
      */
     protected array $config;
 
     /**
-     * @var array
+     * @var array<int, array|CurrencyRateData>
      */
     protected array $data = [];
     /**
-     * @var DateTime|null
+     * @var DateTimeImmutable|null
      */
-    protected ?DateTime $lastDate;
+    protected ?DateTimeImmutable $lastDate;
 
     /**
      * @var string
@@ -37,25 +53,95 @@ abstract class BaseDriver
      */
     protected array $json;
 
-    public function __construct()
+    /**
+     * @param ClientInterface|null $httpClient
+     */
+    public function __construct(?ClientInterface $httpClient = null)
     {
+        $this->httpClient = $httpClient;
         $this->config = config('currency-rate');
         $this->lastDate = CurrencyRate::where('driver', static::DRIVER_NAME)->latest('date')->value('date');
     }
 
     /**
-     * @param bool $checkNo
+     * @param DateTimeImmutable $date
+     *
+     * @return $this
      */
-    protected function saveInDatabase(bool $checkNo = false)
+    public function setLastDataTime(DateTimeImmutable $date): self
+    {
+        $clone = clone $this;
+        $clone->lastDate = $date;
+
+        return $clone;
+    }
+
+    /**
+     * @param DateTimeImmutable $date
+     *
+     * @return $this
+     */
+    public function setDataTime(DateTimeImmutable $date): self
+    {
+        $clone = clone $this;
+        $clone->date = $date;
+
+        return $clone;
+    }
+
+    /**
+     * @return CurrencyRateData[]
+     */
+    public function retrieveData(): array
+    {
+        $data = is_array($this->data) ? $this->data : [$this->data];
+
+        if (isset($data['code'])) {
+            $data = [$data];
+        } elseif (array_is_list($data) === false) {
+            $data = array_values($data);
+        }
+
+        return array_map(function ($item) {
+            return $item instanceof CurrencyRateData ? $item : CurrencyRateData::fromArray($item);
+        }, $data);
+    }
+
+    /**
+     * Return driver unique name.
+     */
+    public function driverName(): string
+    {
+        return static::DRIVER_NAME;
+    }
+
+    /**
+     * Return driver base URI.
+     */
+    public function uri(): string
+    {
+        return static::URI;
+    }
+
+    protected function saveInDatabase()
     {
         if ($this->data) {
-            $columns = ['driver', 'code', 'date'];
-            if ($checkNo) {
-                $columns[] = 'no';
-            }
-            $chunks = array_chunk($this->data, 50);
+            $columns = ['driver', 'code', 'date', 'no'];
+            $dataset = $this->data instanceof CurrencyRateData ? [$this->data] : $this->data;
+            $chunks = array_chunk($dataset, 50);
+
             foreach ($chunks as $chunk) {
-                CurrencyRate::upsert($chunk, $columns, ['rate', 'multiplier']);
+                $mapped = array_map(function ($item) {
+                    return $item instanceof CurrencyRateData ? $item->toArray() : $item;
+                }, $chunk);
+
+                try {
+                    DB::transaction(function () use ($mapped, $columns) {
+                        CurrencyRate::upsert($mapped, $columns, ['rate', 'multiplier']);
+                    });
+                } catch (\Throwable $e) {
+                    Log::error('CurrencyRate upsert failed', ['exception' => $e]);
+                }
             }
         }
     }
@@ -96,5 +182,28 @@ abstract class BaseDriver
         libxml_clear_errors();
 
         return $xpath;
+    }
+
+    /**
+     * Extract rate data by date
+     * If the date does not exist we force set latest data
+     */
+    protected function findByDate(string $label, string $dateFormat = 'Y-m-d')
+    {
+        if (! $this->date) {
+            ! $this->data ?: $this->data = reset($this->data);
+        }
+
+        $formatDate = $this->date->format($dateFormat);
+
+        foreach ($this->data ?? [] as $data) {
+            $value = $data instanceof CurrencyRateData ? $data->{$label} : ($data[$label] ?? null);
+
+            if ($value !== $formatDate) {
+                continue;
+            }
+
+            $this->data = [$data];
+        }
     }
 }

@@ -3,9 +3,9 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateInterval;
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use Illuminate\Support\Facades\Http;
 use ZipArchive;
@@ -23,9 +23,9 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'croatia';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_HRK;
+    public CurrencyCode $currency = CurrencyCode::HRK;
 
     /**
      * @var array
@@ -33,14 +33,12 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
     protected array $json;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
         $url = static::URI . '?' . http_build_query($this->queryString());
-        $respond = Http::asForm()->post($url, $this->postParams($date));
+        $respond = Http::asForm()->post($url, $this->postParams());
         if ($respond->ok()) {
             $zippedContent = $respond->body();
 
@@ -56,19 +54,21 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
                 $file = head(glob($dir . '/*.json'));
                 $this->json = json_decode(file_get_contents($file), true);
                 $this->parseResponse();
-                $this->saveInDatabase();
+
                 unlink($file);
             }
 
             // Delete the temporary file
             unlink($tmp);
         }
+
+        return $this;
     }
 
     /**
      * @return array
      */
-    private function queryString()
+    private function queryString(): array
     {
         return [
             'p_p_id' => 'tecajnalista_WAR_hnbtecajnalistaportlet',
@@ -81,12 +81,11 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
     }
 
     /**
-     * @param DateTime $date
      * @return array
      */
-    private function postParams(DateTime $date)
+    private function postParams(): array
     {
-        $lastDate = $this->lastDate ?? $date;
+        $lastDate = $this->lastDate ?? $this->date;
 
         $to = $lastDate->format('d.m.Y');
         $from = $lastDate->add(DateInterval::createFromDateString('1 day'))->format('d.m.Y');
@@ -102,7 +101,7 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
             'yearLast' => -1,
             '_tecajnalista_WAR_hnbtecajnalistaportlet_month' => -1,
             '_tecajnalista_WAR_hnbtecajnalistaportlet_datumVrsta' => 3,
-            '_tecajnalista_WAR_hnbtecajnalistaportlet_dateOn' => $date->format('d.m.Y'),
+            '_tecajnalista_WAR_hnbtecajnalistaportlet_dateOn' => $this->date->format('d.m.Y'),
             '_tecajnalista_WAR_hnbtecajnalistaportlet_dateFrom' => $to,
             '_tecajnalista_WAR_hnbtecajnalistaportlet_dateTo' => $from,
             'izborValuta' => -1,
@@ -118,7 +117,7 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
             $this->data[] = [
                 'no' => $item['Exchange rate list number'],
                 'code' => $item['Currency'],
-                'date' => DateTime::createFromFormat('d.m.Y', $item['Date'], )->format('Y-m-d'),
+                'date' => DateTimeImmutable::createFromFormat('d.m.Y', $item['Date'])->format('Y-m-d'),
                 'driver' => static::DRIVER_NAME,
                 'multiplier' => floatval($item['Unit']),
                 'rate' => $this->stringToFloat($item['Middle rate']),
@@ -126,18 +125,27 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Hrvatska Narodna Banka';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.hnb.hr/home';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.croatia.frequency');
     }
 }

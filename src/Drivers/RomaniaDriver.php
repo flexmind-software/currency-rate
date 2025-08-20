@@ -2,11 +2,9 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 use SimpleXMLElement;
 
 /**
@@ -27,9 +25,9 @@ class RomaniaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'romania';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_RON;
+    public CurrencyCode $currency = CurrencyCode::RON;
     /**
      * @var array
      */
@@ -40,32 +38,28 @@ class RomaniaDriver extends BaseDriver implements CurrencyInterface
     private SimpleXMLElement $xml;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $response = Http::get($this->sourceUrl($date));
-        if ($response->ok()) {
-            $xml = $response->body();
-            $this->xml = simplexml_load_string($xml);
+        $respond = $this->fetch($this->sourceUrl());
+        if ($respond) {
+            $this->xml = $this->parseXml($respond);
             $this->parseDate();
-            $this->findByDate($date);
-            $this->saveInDatabase();
+            $this->findByDate("");
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return string
      */
-    private function sourceUrl(DateTime $date): string
+    private function sourceUrl(): string
     {
         return sprintf(
             '%s',
-            sprintf(static::URI, $date->format('Y')),
+            sprintf(static::URI, $this->date->format('Y')),
         );
     }
 
@@ -96,16 +90,14 @@ class RomaniaDriver extends BaseDriver implements CurrencyInterface
     /**
      * Extract rate data by date
      * If the date does not exist we force set latest data
-     *
-     * @param DateTime|null $date
      */
-    private function findByDate(?DateTime $date = null)
+    protected function findByDate(string $label, string $dateFormat = 'Y-m-d')
     {
-        if (! $date) {
+        if (! $this->date) {
             ! $this->data ?: $this->data = reset($this->data);
         }
 
-        $date = $date->format('Y-m-d');
+        $date = $this->date->format($dateFormat);
         if (isset($this->data[$date])) {
             $this->data = $this->data[$date];
         } else {
@@ -113,18 +105,27 @@ class RomaniaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Banca Nationala a Romaniei';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bnro.ro/Home.aspx';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.romania.frequency');
     }
 }

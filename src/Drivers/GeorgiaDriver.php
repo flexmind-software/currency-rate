@@ -2,11 +2,10 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class GeorgiaDriver extends BaseDriver implements CurrencyInterface
 {
@@ -24,9 +23,9 @@ class GeorgiaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'georgia';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_GEL;
+    public CurrencyCode $currency = CurrencyCode::GEL;
 
     /**
      * @var array
@@ -38,31 +37,27 @@ class GeorgiaDriver extends BaseDriver implements CurrencyInterface
     private array $currencyList;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $this->date = $date;
-        $respond = Http::get(static::URI . 'en/json');
-        if ($respond->ok()) {
-            $this->json = $respond->json();
+        $respond = $this->fetch(static::URI . 'en/json');
+        if ($respond) {
+            $this->json = json_decode($respond, true);
 
             $this->getCurrencyList();
 
-            $jsonDate = new DateTime();
-            $jsonDate->setTimestamp(strtotime(head($this->json)['date']));
+            $jsonDate = (new DateTimeImmutable())->setTimestamp(strtotime(head($this->json)['date']));
 
             $this->data = [];
-            if ($jsonDate->diff($date)->days != 0) {
+            if ($jsonDate->diff($this->date)->days != 0) {
                 $this->parseHistoricalDataResponse();
             } else {
                 $this->parseCurrentDataResponse();
             }
-
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     private function getCurrencyList()
@@ -73,21 +68,21 @@ class GeorgiaDriver extends BaseDriver implements CurrencyInterface
     private function parseHistoricalDataResponse()
     {
         foreach ($this->currencyList as $currency) {
-            $respond = Http::get(static::URI, $this->queryString($this->date, $currency));
-            if ($respond->ok()) {
-                $this->json = $respond->json();
+            $respond = $this->fetch(static::URI, $this->queryString($this->date, $currency));
+            if ($respond) {
+                $this->json = json_decode($respond, true);
                 $this->parseCurrentDataResponse();
             }
         }
     }
 
     /**
-     * @param DateTime $date
+     *
      * @param string $currency
      *
      * @return array
      */
-    private function queryString(DateTime $date, string $currency): array
+    private function queryString(DateTimeImmutable $date, string $currency): array
     {
         return [
             'currencies' => $currency,
@@ -110,18 +105,27 @@ class GeorgiaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'The National Bank of Georgia';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://nbg.gov.ge/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.georgia.frequency');
     }
 }

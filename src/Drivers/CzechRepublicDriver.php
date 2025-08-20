@@ -2,11 +2,10 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -28,31 +27,27 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'czech-republic';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_CZK;
+    public CurrencyCode $currency = CurrencyCode::CZK;
     /**
      * @var array
      */
     private array $headers;
     /**
-     * @var array|false[]|\string[][]
+     * @var array|false[]|string[][]
      */
     private array $rateList;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $this->date = $date;
-        $sourceUrl = $this->sourceUrl($date);
+        $sourceUrl = $this->sourceUrl();
 
-        $response = Http::get($sourceUrl);
-        if ($response->ok()) {
-            $fileContent = $response->body();
+        $fileContent = $this->fetch($sourceUrl);
+        if ($fileContent) {
 
             $explode = explode("\n", $fileContent);
 
@@ -63,21 +58,20 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
             $this->parseHeader();
             $this->parseRates();
             $this->prepareData();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return string
      */
-    private function sourceUrl(DateTime $date): string
+    private function sourceUrl(): string
     {
         return sprintf(
             '%s?%s',
             static::URI,
-            sprintf(static::QUERY_STRING, $date->format('Y'))
+            sprintf(static::QUERY_STRING, $this->date->format('Y'))
         );
     }
 
@@ -108,7 +102,7 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
             if ($row === 0) {
                 continue;
             }
-            $date = DateTime::createFromFormat('d.m.Y', $rates[0]);
+            $date = DateTimeImmutable::createFromFormat('d.m.Y', $rates[0]);
             if (! $date) {
                 break;
             }
@@ -153,18 +147,27 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
         $this->data = $toSave;
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Ceska Narodni Banka';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.cnb.cz';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return '';
+        return __('currency-rate::description.czech-republic.frequency');
     }
 }

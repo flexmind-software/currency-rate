@@ -1,0 +1,12 @@
+<ValCurs Date="24.09.2021">
+  <Valute>
+    <CharCode>USD</CharCode>
+    <Nominal>1</Nominal>
+    <Value>1.7000</Value>
+  </Valute>
+  <Valute>
+    <CharCode>JPY</CharCode>
+    <Nominal>100</Nominal>
+    <Value>1.5400</Value>
+  </Valute>
+</ValCurs>

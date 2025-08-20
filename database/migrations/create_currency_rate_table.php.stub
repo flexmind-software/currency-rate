@@ -18,7 +18,7 @@ return new class extends Migration
             $table->float('rate', 12, 4)->default(1);
             $table->float('multiplier')->default(1);
 
-            $table->unique(['date', 'code', 'driver'], DB::getTablePrefix() . '_currency_rates_unique_cols');
+            $table->unique(['driver', 'code', 'date', 'no'], DB::getTablePrefix() . '_currency_rates_unique_cols');
 
             $table->timestamps();
         });

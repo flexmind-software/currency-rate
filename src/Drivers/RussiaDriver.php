@@ -2,11 +2,10 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class RussiaDriver extends BaseDriver implements CurrencyInterface
 {
@@ -21,9 +20,9 @@ class RussiaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'russia';
     /**
-     * @var string
+     * @var CurrencyCode
      */
-    public string $currency = Currency::CUR_RUB;
+    public CurrencyCode $currency = CurrencyCode::RUB;
 
     /**
      * @var string
@@ -31,30 +30,27 @@ class RussiaDriver extends BaseDriver implements CurrencyInterface
     protected string $html;
 
     /**
-     * @param DateTime $date
-     *
-     * @return void
+     * @return self
      */
-    public function downloadRates(DateTime $date)
+    public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI, $this->queryString($date));
-        if ($respond->ok()) {
-            $this->html = $respond->body();
+        $respond = $this->fetch(static::URI, $this->queryString());
+        if ($respond) {
+            $this->html = $respond;
             $this->parseResponse();
-            $this->saveInDatabase();
         }
+
+        return $this;
     }
 
     /**
-     * @param DateTime $date
-     *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(): array
     {
         return [
             'UniDbQuery.Posted' => 'True',
-            'UniDbQuery.To' => $date->format('d/m/Y'),
+            'UniDbQuery.To' => $this->date->format('d/m/Y'),
         ];
     }
 
@@ -79,13 +75,13 @@ class RussiaDriver extends BaseDriver implements CurrencyInterface
 
         $h3 = $xpath->query('//h2[@class="h3"]')->item(0)->nodeValue;
         preg_match('/(.*)([0-9]{2}\/[0-9]{2}\/[0-9]{4})(.+)/im', $h3, $match);
-        $date = DateTime::createFromFormat('d/m/Y', $match[2])->format('Y-m-d');
+        $exchangeDate = DateTimeImmutable::createFromFormat('d/m/Y', $match[2])->format('Y-m-d');
 
-        $this->data = array_map(function ($item) use ($date) {
+        $this->data = array_map(function ($item) use ($exchangeDate) {
             return [
                 'no' => null,
                 'code' => $item[1],
-                'date' => $date ,
+                'date' => $exchangeDate,
                 'driver' => static::DRIVER_NAME,
                 'multiplier' => $this->stringToFloat($item[2]),
                 'rate' => $this->stringToFloat($item[4]),
@@ -93,18 +89,27 @@ class RussiaDriver extends BaseDriver implements CurrencyInterface
         }, $this->data);
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Central Bank of the Russian Federation';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.cbr.ru/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
-        return 'Daily';
+        return __('currency-rate::description.russia.frequency');
     }
 }
