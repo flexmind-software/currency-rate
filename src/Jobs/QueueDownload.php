@@ -69,6 +69,9 @@ class QueueDownload implements ShouldQueue, ShouldBeUnique, ShouldBeUniqueUntilP
         return sprintf('%s_%s_%s', $prefix, $this->driverName, $this->dateTime->format('Y_m_d'));
     }
 
+    /**
+     * @return void
+     */
     public function handle(): void
     {
         try {

@@ -21,7 +21,7 @@ class MoldaviaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'moldavia';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::MDL;
 
@@ -76,16 +76,25 @@ class MoldaviaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Banca Naţională a Moldovei';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bnm.md/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.moldavia.frequency');

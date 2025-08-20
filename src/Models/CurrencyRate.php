@@ -62,16 +62,27 @@ class CurrencyRate extends Model
         }
     }
 
+    /**
+     * @return string
+     */
     public function getTable()
     {
         return config('currency-rate.table-name');
     }
 
+    /**
+     * @param mixed $value
+     * @return float
+     */
     public function getCalculateRateAttribute($value)
     {
         return $this->rate * $this->multiplier;
     }
 
+    /**
+     * @param string $value
+     * @return void
+     */
     public function setCodeAttribute($value)
     {
         $this->attributes['code'] = strtoupper($value);

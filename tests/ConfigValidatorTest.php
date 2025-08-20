@@ -11,7 +11,10 @@ class ConfigValidatorTest extends TestCase
         return [];
     }
 
-    /** @test */
+    /**
+     * @test
+     * @return void
+     */
     public function it_throws_exception_when_required_config_missing()
     {
         $this->app['config']->set('currency-rate', []);
@@ -23,7 +26,10 @@ class ConfigValidatorTest extends TestCase
         $provider->packageRegistered();
     }
 
-    /** @test */
+    /**
+     * @test
+     * @return void
+     */
     public function it_passes_when_required_config_present()
     {
         $this->app['config']->set('currency-rate', [

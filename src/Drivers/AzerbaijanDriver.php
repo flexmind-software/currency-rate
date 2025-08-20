@@ -20,7 +20,7 @@ class AzerbaijanDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'azerbaijan';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::AZN;
 
@@ -60,16 +60,25 @@ class AzerbaijanDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Azerbaijan';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.cbar.az';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.azerbaijan.frequency');

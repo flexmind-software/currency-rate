@@ -25,7 +25,7 @@ class SwedenDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'sweden';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::DKK;
     /**
@@ -138,16 +138,25 @@ class SwedenDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Narodna banka Srbije';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.nbs.rs/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.sweden.frequency');

@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Http;
 
 class FakeDriverTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function setUp(): void
     {
         parent::setUp();
@@ -15,7 +18,10 @@ class FakeDriverTest extends TestCase
         $migration->up();
     }
 
-    /** @test */
+    /**
+     * @test
+     * @return void
+     */
     public function it_fetches_and_parses_rates()
     {
         Http::fake([

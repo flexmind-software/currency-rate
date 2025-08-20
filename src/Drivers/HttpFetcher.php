@@ -13,6 +13,9 @@ trait HttpFetcher
 {
     protected ?ClientInterface $httpClient = null;
 
+    /**
+     * @param ClientInterface|null $httpClient
+     */
     public function __construct(?ClientInterface $httpClient = null)
     {
         $this->httpClient = $httpClient;

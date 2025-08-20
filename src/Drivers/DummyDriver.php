@@ -19,7 +19,7 @@ class DummyDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = '';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::EUR;
 
@@ -51,16 +51,25 @@ class DummyDriver extends BaseDriver implements CurrencyInterface
     {
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return '';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return '';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.dummy.frequency');

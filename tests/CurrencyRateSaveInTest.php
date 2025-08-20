@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Event;
 
 class CurrencyRateSaveInTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function setUp(): void
     {
         parent::setUp();
@@ -17,7 +20,10 @@ class CurrencyRateSaveInTest extends TestCase
         $migration->up();
     }
 
-    /** @test */
+    /**
+     * @test
+     * @return void
+     */
     public function it_saves_records_to_database_and_fires_event()
     {
         Event::fake();

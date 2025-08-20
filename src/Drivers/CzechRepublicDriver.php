@@ -27,7 +27,7 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'czech-republic';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::CZK;
     /**
@@ -147,16 +147,25 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
         $this->data = $toSave;
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Ceska Narodni Banka';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.cnb.cz';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.czech-republic.frequency');

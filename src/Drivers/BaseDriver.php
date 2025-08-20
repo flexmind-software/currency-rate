@@ -53,6 +53,9 @@ abstract class BaseDriver implements DriverMetadata
      */
     protected array $json;
 
+    /**
+     * @param ClientInterface|null $httpClient
+     */
     public function __construct(?ClientInterface $httpClient = null)
     {
         $this->httpClient = $httpClient;

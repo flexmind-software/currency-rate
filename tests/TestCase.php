@@ -8,6 +8,9 @@ use Orchestra\Testbench\TestCase as Orchestra;
 
 class TestCase extends Orchestra
 {
+    /**
+     * @return void
+     */
     public function setUp(): void
     {
         parent::setUp();
@@ -24,6 +27,10 @@ class TestCase extends Orchestra
         ];
     }
 
+    /**
+     * @param mixed $app
+     * @return void
+     */
     public function getEnvironmentSetUp($app)
     {
         $app['config']->set('database.default', 'testing');

@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Queue;
 
 class CurrencyRateCommandTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function setUp(): void
     {
         parent::setUp();
@@ -19,7 +22,10 @@ class CurrencyRateCommandTest extends TestCase
         CurrencyRate::extend('fake', fn () => new FakeDriver());
     }
 
-    /** @test */
+    /**
+     * @test
+     * @return void
+     */
     public function it_processes_driver_without_errors()
     {
         Http::fake([
@@ -34,7 +40,10 @@ class CurrencyRateCommandTest extends TestCase
         ])->assertExitCode(0);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @return void
+     */
     public function it_dispatches_job_when_queue_is_not_none()
     {
         Queue::fake();

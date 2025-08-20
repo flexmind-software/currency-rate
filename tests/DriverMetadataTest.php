@@ -7,6 +7,9 @@ use FlexMindSoftware\CurrencyRate\Tests\Stubs\FakeDriver;
 
 class DriverMetadataTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function setUp(): void
     {
         parent::setUp();
@@ -15,7 +18,10 @@ class DriverMetadataTest extends TestCase
         $migration->up();
     }
 
-    /** @test */
+    /**
+     * @test
+     * @return void
+     */
     public function it_exposes_driver_name_and_uri()
     {
         $driver = new FakeDriver();

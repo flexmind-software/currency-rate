@@ -48,6 +48,12 @@ class Country
         self::$loaded = true;
     }
 
+    /**
+     * @param string $value
+     * @param string $key
+     * @return array<string, mixed>
+     * @throws Exception
+     */
     public static function getAllCountryList(string $value = 'name', string $key = 'iso2'): array
     {
         self::loadCountries();

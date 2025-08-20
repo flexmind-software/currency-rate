@@ -19,7 +19,7 @@ class UkraineDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'ukraine';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::UAH;
 
@@ -82,16 +82,25 @@ class UkraineDriver extends BaseDriver implements CurrencyInterface
         }, $this->data);
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Natsionalʹnyy bank Ukrayiny';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bank.gov.ua/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.ukraine.frequency');

@@ -14,6 +14,12 @@ trait RateTrait
      */
     private static array $rateCache = [];
 
+    /**
+     * @param CurrencyCode|string $currencyFrom
+     * @param CurrencyCode|string $currencyTo
+     * @param DateTimeImmutable $date
+     * @return float|int
+     */
     public function rate(CurrencyCode|string $currencyFrom, CurrencyCode|string $currencyTo, DateTimeImmutable $date)
     {
         $currencyFrom = $currencyFrom instanceof CurrencyCode ? $currencyFrom->value : $currencyFrom;

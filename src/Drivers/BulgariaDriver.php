@@ -23,7 +23,7 @@ class BulgariaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'bulgaria';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::BGN;
 
@@ -84,16 +84,25 @@ class BulgariaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Bŭlgarska narodna banka';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bnb.bg';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.bulgaria.frequency');

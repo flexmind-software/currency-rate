@@ -22,7 +22,7 @@ class TurkeyDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'turkey';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::TRY;
 
@@ -78,16 +78,25 @@ class TurkeyDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Türkiye Cumhuriyet Merkez Bankası';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.tcmb.gov.tr/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.turkey.frequency');
