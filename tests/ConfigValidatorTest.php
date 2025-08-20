@@ -38,4 +38,3 @@ class ConfigValidatorTest extends TestCase
         $this->assertTrue($this->app->bound('currency-rate'));
     }
 }
-
