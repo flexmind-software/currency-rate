@@ -18,7 +18,7 @@ class RomaniaDriverTest extends TestCase
     /** @test */
     public function it_parses_romania_response()
     {
-        $driver = (new class extends RomaniaDriver {
+        $driver = (new class () extends RomaniaDriver {
             protected function fetch(string $url, array $query = []): ?string
             {
                 return file_get_contents(__DIR__.'/Fixtures/romania.xml');

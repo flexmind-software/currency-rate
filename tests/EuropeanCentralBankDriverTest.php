@@ -18,7 +18,7 @@ class EuropeanCentralBankDriverTest extends TestCase
     /** @test */
     public function it_parses_ecb_response()
     {
-        $driver = (new class extends EuropeanCentralBankDriver {
+        $driver = (new class () extends EuropeanCentralBankDriver {
             protected function fetch(string $url, array $query = []): ?string
             {
                 return file_get_contents(__DIR__.'/Fixtures/ecb.xml');
@@ -35,4 +35,3 @@ class EuropeanCentralBankDriverTest extends TestCase
         $this->assertSame(1.0, $record->multiplier);
     }
 }
-

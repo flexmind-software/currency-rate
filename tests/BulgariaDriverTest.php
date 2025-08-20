@@ -18,7 +18,7 @@ class BulgariaDriverTest extends TestCase
     /** @test */
     public function it_parses_bulgaria_response()
     {
-        $driver = (new class extends BulgariaDriver {
+        $driver = (new class () extends BulgariaDriver {
             protected function fetch(string $url, array $query = []): ?string
             {
                 return file_get_contents(__DIR__.'/Fixtures/bulgaria.csv');

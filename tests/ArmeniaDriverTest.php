@@ -18,7 +18,7 @@ class ArmeniaDriverTest extends TestCase
     /** @test */
     public function it_parses_armenia_response()
     {
-        $driver = (new class extends ArmeniaDriver {
+        $driver = (new class () extends ArmeniaDriver {
             protected function fetch(string $url, array $query = []): ?string
             {
                 return file_get_contents(__DIR__.'/Fixtures/armenia.csv');

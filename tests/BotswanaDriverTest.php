@@ -18,7 +18,7 @@ class BotswanaDriverTest extends TestCase
     /** @test */
     public function it_parses_botswana_response()
     {
-        $driver = (new class extends BotswanaDriver {
+        $driver = (new class () extends BotswanaDriver {
             protected function fetch(string $url, array $query = []): ?string
             {
                 return file_get_contents(__DIR__.'/Fixtures/botswana.csv');

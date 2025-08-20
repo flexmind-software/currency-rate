@@ -18,7 +18,7 @@ class BelarusDriverTest extends TestCase
     /** @test */
     public function it_parses_belarus_response()
     {
-        $driver = (new class extends BelarusDriver {
+        $driver = (new class () extends BelarusDriver {
             protected function fetch(string $url, array $query = []): ?string
             {
                 return file_get_contents(__DIR__.'/Fixtures/belarus.xml');
@@ -42,4 +42,3 @@ class BelarusDriverTest extends TestCase
         $this->assertEquals(2.2906, $jpy->rate);
     }
 }
-

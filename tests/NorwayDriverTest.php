@@ -18,7 +18,7 @@ class NorwayDriverTest extends TestCase
     /** @test */
     public function it_parses_norway_response()
     {
-        $driver = (new class extends NorwayDriver {
+        $driver = (new class () extends NorwayDriver {
             protected function fetch(string $url, array $query = []): ?string
             {
                 return file_get_contents(__DIR__.'/Fixtures/norway.json');

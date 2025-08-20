@@ -18,7 +18,7 @@ class IsraelDriverTest extends TestCase
     /** @test */
     public function it_parses_israel_response()
     {
-        $driver = (new class extends IsraelDriver {
+        $driver = (new class () extends IsraelDriver {
             protected function fetch(string $url, array $query = []): ?string
             {
                 if (str_contains($url, 'currency.xml')) {
@@ -46,4 +46,3 @@ class IsraelDriverTest extends TestCase
         $this->assertEquals(110.0, $jpy->rate);
     }
 }
-

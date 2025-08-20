@@ -18,7 +18,7 @@ class ChinaDriverTest extends TestCase
     /** @test */
     public function it_parses_china_response()
     {
-        $driver = (new class extends ChinaDriver {
+        $driver = (new class () extends ChinaDriver {
             protected function fetch(string $url, array $query = []): ?string
             {
                 return file_get_contents(__DIR__.'/../resources/responses/china/currency.json');
@@ -42,4 +42,3 @@ class ChinaDriverTest extends TestCase
         $this->assertEquals(5.8569, $jpy->rate);
     }
 }
-

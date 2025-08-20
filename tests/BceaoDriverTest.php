@@ -18,7 +18,7 @@ class BceaoDriverTest extends TestCase
     /** @test */
     public function it_parses_bceao_response()
     {
-        $driver = (new class extends BceaoDriver {
+        $driver = (new class () extends BceaoDriver {
             protected function fetch(string $url, array $query = []): ?string
             {
                 return file_get_contents(__DIR__.'/Fixtures/bceao.html');

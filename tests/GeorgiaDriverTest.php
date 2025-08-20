@@ -18,7 +18,7 @@ class GeorgiaDriverTest extends TestCase
     /** @test */
     public function it_parses_georgia_response()
     {
-        $driver = (new class extends GeorgiaDriver {
+        $driver = (new class () extends GeorgiaDriver {
             protected function fetch(string $url, array $query = []): ?string
             {
                 return file_get_contents(__DIR__.'/Fixtures/georgia.json');
@@ -42,4 +42,3 @@ class GeorgiaDriverTest extends TestCase
         $this->assertEquals(280.5, $jpy->rate);
     }
 }
-

@@ -18,7 +18,7 @@ class HungaryDriverTest extends TestCase
     /** @test */
     public function it_parses_hungary_response()
     {
-        $driver = (new class extends HungaryDriver {
+        $driver = (new class () extends HungaryDriver {
             protected function fetch(string $url, array $query = []): ?string
             {
                 return file_get_contents(__DIR__.'/Fixtures/hungary.html');
@@ -42,4 +42,3 @@ class HungaryDriverTest extends TestCase
         $this->assertEquals(272.00, $jpy->rate);
     }
 }
-

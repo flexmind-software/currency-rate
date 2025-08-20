@@ -18,12 +18,13 @@ class PolandDriverTest extends TestCase
     /** @test */
     public function it_parses_poland_response()
     {
-        $driver = (new class extends PolandDriver {
+        $driver = (new class () extends PolandDriver {
             protected function fetch(string $url, array $query = []): ?string
             {
                 if (str_ends_with($url, 'dir.txt')) {
                     return 'a001z210924';
                 }
+
                 return file_get_contents(__DIR__.'/Fixtures/poland.xml');
             }
         })->setDataTime(new DateTimeImmutable('2021-09-24 13:00:00'));

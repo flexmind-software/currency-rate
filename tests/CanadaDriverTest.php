@@ -18,7 +18,7 @@ class CanadaDriverTest extends TestCase
     /** @test */
     public function it_parses_canada_response()
     {
-        $driver = (new class extends CanadaDriver {
+        $driver = (new class () extends CanadaDriver {
             protected function fetch(string $url, array $query = []): ?string
             {
                 return file_get_contents(__DIR__.'/Fixtures/canada.json');
@@ -42,4 +42,3 @@ class CanadaDriverTest extends TestCase
         $this->assertEquals(0.0116, $jpy->rate);
     }
 }
-

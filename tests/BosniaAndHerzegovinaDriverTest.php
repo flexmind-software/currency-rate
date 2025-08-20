@@ -18,7 +18,7 @@ class BosniaAndHerzegovinaDriverTest extends TestCase
     /** @test */
     public function it_parses_bosnia_response()
     {
-        $driver = (new class extends BosniaAndHerzegovinaDriver {
+        $driver = (new class () extends BosniaAndHerzegovinaDriver {
             protected function fetch(string $url, array $query = []): ?string
             {
                 return file_get_contents(__DIR__.'/Fixtures/bosnia.json');

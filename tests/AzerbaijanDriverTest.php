@@ -18,7 +18,7 @@ class AzerbaijanDriverTest extends TestCase
     /** @test */
     public function it_parses_azerbaijan_response()
     {
-        $driver = (new class extends AzerbaijanDriver {
+        $driver = (new class () extends AzerbaijanDriver {
             protected function fetch(string $url, array $query = []): ?string
             {
                 return file_get_contents(__DIR__.'/Fixtures/azerbaijan.xml');
