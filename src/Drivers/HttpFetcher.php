@@ -12,6 +12,7 @@ use Throwable;
 trait HttpFetcher
 {
     protected ?ClientInterface $httpClient = null;
+
     /**
      * @param ClientInterface|null $httpClient
      */
