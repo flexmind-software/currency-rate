@@ -3,8 +3,9 @@
 namespace FlexMindSoftware\CurrencyRate\Commands;
 
 use DateTime;
+use FlexMindSoftware\CurrencyRate\CurrencyRateFacade as CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Jobs\QueueDownload;
-use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
+use FlexMindSoftware\CurrencyRate\Models\CurrencyRate as CurrencyRateModel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
@@ -23,14 +24,17 @@ class CurrencyRateCommand extends Command
 
     public $description = 'Download and save into database currency rates from different national bank';
 
-    public function handle()
+    public function handle(): int
     {
         $currencyDate = $this->argument('date');
-        $timestamp = ! blank($currencyDate) ? strtotime($currencyDate) : time();
+        $timestamp = is_string($currencyDate) && $currencyDate !== '' ? strtotime($currencyDate) ?: time() : time();
 
-        $queue = $this->option('queue');
-        $driver = $this->option('driver');
-        $connection = $this->option('connection');
+        $queueOption = $this->option('queue');
+        $queue = is_string($queueOption) ? $queueOption : 'none';
+        $driverOption = $this->option('driver');
+        $driver = $driverOption ?? 'all';
+        $connectionOption = $this->option('connection');
+        $connection = is_string($connectionOption) ? $connectionOption : null;
 
         if ($driver === 'all') {
             $driver = $this->getAllDrivers();
@@ -49,12 +53,14 @@ class CurrencyRateCommand extends Command
                 $this->queueDriver($driver, $date, $connection, $queue);
             }
         }
+
+        return Command::SUCCESS;
     }
 
     private function processDriver(string $driver, DateTime $date, ?string $connection): void
     {
         try {
-            $data = \CurrencyRate::driver($driver)
+            $data = CurrencyRate::driver($driver)
                 ->setDataTime($date)
                 ->grabExchangeRates()
                 ->retrieveData();
@@ -75,6 +81,9 @@ class CurrencyRateCommand extends Command
         QueueDownload::dispatch($driver, $date, $connection)->onQueue($queue);
     }
 
+    /**
+     * @return array<int, string>
+     */
     private function getAllDrivers(): array
     {
         $drivers = config('currency-rate.drivers', []);
@@ -84,13 +93,12 @@ class CurrencyRateCommand extends Command
     }
 
     /**
-     * @param array $data
-     * @param string|null $connection
+     * @param array<int, mixed> $data
      */
-    private function saveInDatabase(array $data, ?string $connection): void
+    private function saveInDatabase(array $data, string $connection): void
     {
         if ($data) {
-            CurrencyRate::saveIn($data, $connection);
+            CurrencyRateModel::saveIn($data, $connection);
         }
     }
 }
