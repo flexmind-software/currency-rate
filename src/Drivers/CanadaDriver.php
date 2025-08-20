@@ -6,7 +6,6 @@ use DateInterval;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -47,9 +46,9 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
     {
         do {
             $url = $this->sourceUrl();
-            $response = Http::get($url);
-            if ($response->ok()) {
-                $this->jsonFile = $response->json();
+            $response = $this->fetch($url);
+            if ($response) {
+                $this->jsonFile = json_decode($response, true);
                 if (blank($this->jsonFile['observations'])) {
                     $this->date->sub(DateInterval::createFromDateString('1 day'));
                 }

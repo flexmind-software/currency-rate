@@ -6,7 +6,6 @@ use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 use SimpleXMLElement;
 
 class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
@@ -32,10 +31,9 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI);
-        if ($respond->ok()) {
-            $string = $respond->body();
-            $xml = new SimpleXMLElement($string);
+        $string = $this->fetch(static::URI);
+        if ($string) {
+            $xml = $this->parseXml($string);
 
             $this->parseDate($xml->Cube->Cube);
             $this->findByDate('date');

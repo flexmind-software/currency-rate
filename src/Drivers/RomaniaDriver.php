@@ -5,7 +5,6 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 use SimpleXMLElement;
 
 /**
@@ -43,10 +42,9 @@ class RomaniaDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $respond = Http::get($this->sourceUrl());
-        if ($respond->ok()) {
-            $xml = $respond->body();
-            $this->xml = simplexml_load_string($xml);
+        $respond = $this->fetch($this->sourceUrl());
+        if ($respond) {
+            $this->xml = $this->parseXml($respond);
             $this->parseDate();
             $this->findByDate("");
         }

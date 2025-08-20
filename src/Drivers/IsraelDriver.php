@@ -5,7 +5,6 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class IsraelDriver extends BaseDriver implements CurrencyInterface
 {
@@ -41,15 +40,15 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $respond = Http::get('https://www.boi.org.il/currency.xml');
-        if ($respond->ok()) {
-            $this->xml = $respond->body();
+        $respond = $this->fetch('https://www.boi.org.il/currency.xml');
+        if ($respond) {
+            $this->xml = $respond;
             $this->makeCountryMap();
         }
 
-        $respond = Http::get(static::URI, $this->queryString());
-        if ($respond->ok()) {
-            $this->html = $respond->body();
+        $respond = $this->fetch(static::URI, $this->queryString());
+        if ($respond) {
+            $this->html = $respond;
             $this->parseResponse();
         }
 
@@ -58,7 +57,7 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
 
     private function makeCountryMap()
     {
-        $xmlElement = simplexml_load_string($this->xml, "SimpleXMLElement", LIBXML_NOCDATA);
+        $xmlElement = $this->parseXml($this->xml);
         $json = json_decode(json_encode($xmlElement), true);
 
         $this->countryList = [];

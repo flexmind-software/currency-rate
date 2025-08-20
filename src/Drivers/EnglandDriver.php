@@ -8,7 +8,6 @@ use DOMNodeList;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class EnglandDriver extends BaseDriver implements CurrencyInterface
 {
@@ -42,9 +41,9 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
     public function grabExchangeRates(): self
     {
         do {
-            $respond = Http::get(static::URI, $this->queryString());
-            if ($respond->ok()) {
-                $xpath = $this->htmlParse($respond->body());
+            $respond = $this->fetch(static::URI, $this->queryString());
+            if ($respond) {
+                $xpath = $this->htmlParse($respond);
                 $this->tables = $xpath->query('//table');
             }
 

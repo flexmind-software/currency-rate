@@ -5,7 +5,6 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -36,11 +35,9 @@ class DenmarkDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $response = Http::get($this->sourceUrl());
-        if ($response->ok()) {
-            $xml = $response->body();
-
-            $xml = simplexml_load_string($xml, "SimpleXMLElement", LIBXML_NOCDATA);
+        $response = $this->fetch($this->sourceUrl());
+        if ($response) {
+            $xml = $this->parseXml($response);
             $json = json_decode(json_encode($xml), true);
 
             $this->parseDate($json);

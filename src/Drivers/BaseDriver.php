@@ -9,6 +9,7 @@ use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 
 abstract class BaseDriver
 {
+    use HttpFetcher;
     /**
      * @var DateTime
      */

@@ -6,7 +6,6 @@ use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class GeorgiaDriver extends BaseDriver implements CurrencyInterface
 {
@@ -42,9 +41,9 @@ class GeorgiaDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI . 'en/json');
-        if ($respond->ok()) {
-            $this->json = $respond->json();
+        $respond = $this->fetch(static::URI . 'en/json');
+        if ($respond) {
+            $this->json = json_decode($respond, true);
 
             $this->getCurrencyList();
 
@@ -70,9 +69,9 @@ class GeorgiaDriver extends BaseDriver implements CurrencyInterface
     private function parseHistoricalDataResponse()
     {
         foreach ($this->currencyList as $currency) {
-            $respond = Http::get(static::URI, $this->queryString($this->date, $currency));
-            if ($respond->ok()) {
-                $this->json = $respond->json();
+            $respond = $this->fetch(static::URI, $this->queryString($this->date, $currency));
+            if ($respond) {
+                $this->json = json_decode($respond, true);
                 $this->parseCurrentDataResponse();
             }
         }

@@ -6,8 +6,6 @@ use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
-use SimpleXMLElement;
 
 class PolandDriver extends BaseDriver implements CurrencyInterface
 {
@@ -32,9 +30,8 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $response = Http::get(static::URI . 'dir.txt');
-        if ($response->ok()) {
-            $exchangeRateList = $response->body();
+        $exchangeRateList = $this->fetch(static::URI . 'dir.txt');
+        if ($exchangeRateList) {
 
             $timestamp = $this->date->getTimestamp();
             if (intval(date('Hi', $timestamp)) < 1215) {
@@ -48,9 +45,8 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
                 ! blank($matches[0])
             ) {
                 foreach ($matches[0] as $nbpNo) {
-                    $response = Http::get(static::URI . $nbpNo . '.xml');
-                    if ($response->ok()) {
-                        $xml = $response->body();
+                    $xml = $this->fetch(static::URI . $nbpNo . '.xml');
+                    if ($xml) {
                         $this->parseData($xml);
                     }
                 }
@@ -67,7 +63,7 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
      */
     private function parseData(string $xml)
     {
-        $currencies = new SimpleXMLElement($xml);
+        $currencies = $this->parseXml($xml);
         $currencies = json_decode(json_encode($currencies), true);
 
         $param = [];

@@ -6,7 +6,6 @@ use DateInterval;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class NorwayDriver extends BaseDriver implements CurrencyInterface
 {
@@ -34,9 +33,9 @@ class NorwayDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $response = Http::get(static::URI, $this->getQueryString());
-        if ($response->ok()) {
-            $this->json = $response->json();
+        $response = $this->fetch(static::URI, $this->getQueryString());
+        if ($response) {
+            $this->json = json_decode($response, true);
             $this->parseBody();
         }
 

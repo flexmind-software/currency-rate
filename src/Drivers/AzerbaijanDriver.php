@@ -6,7 +6,6 @@ use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class AzerbaijanDriver extends BaseDriver implements CurrencyInterface
 {
@@ -35,9 +34,9 @@ class AzerbaijanDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI, ['date_req' => $this->date->format('d.m.Y')]);
-        if ($respond->ok()) {
-            $this->xml = $respond->body();
+        $respond = $this->fetch(static::URI, ['date_req' => $this->date->format('d.m.Y')]);
+        if ($respond) {
+            $this->xml = $respond;
             $this->parseResponse();
         }
 
@@ -46,7 +45,7 @@ class AzerbaijanDriver extends BaseDriver implements CurrencyInterface
 
     private function parseResponse()
     {
-        $xmlElement = simplexml_load_string($this->xml, "SimpleXMLElement", LIBXML_NOCDATA);
+        $xmlElement = $this->parseXml($this->xml);
         $json = json_decode(json_encode($xmlElement), true);
         $date = DateTime::createFromFormat('d.m.Y', $json['@attributes']['Date'])->format('Y-m-d');
 

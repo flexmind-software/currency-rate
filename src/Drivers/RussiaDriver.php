@@ -6,7 +6,6 @@ use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class RussiaDriver extends BaseDriver implements CurrencyInterface
 {
@@ -35,9 +34,9 @@ class RussiaDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI, $this->queryString());
-        if ($respond->ok()) {
-            $this->html = $respond->body();
+        $respond = $this->fetch(static::URI, $this->queryString());
+        if ($respond) {
+            $this->html = $respond;
             $this->parseResponse();
         }
 
