@@ -25,4 +25,3 @@ class DriverMetadataTest extends TestCase
         $this->assertSame(FakeDriver::URI, $driver->uri());
     }
 }
-

@@ -14,4 +14,3 @@ interface DriverMetadata
      */
     public function uri(): string;
 }
-
