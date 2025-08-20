@@ -4,12 +4,16 @@ namespace FlexMindSoftware\CurrencyRate\Tests;
 
 use FlexMindSoftware\CurrencyRate\Drivers\HttpFetcher;
 use Illuminate\Support\Facades\Http;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Psr7\Response;
 
 class HttpFetcherTest extends TestCase
 {
-    private function fetcher()
+    private function fetcher(?ClientInterface $client = null)
     {
-        return new class () {
+        return new class ($client) {
             use HttpFetcher;
 
             public function callFetch($url, $query = [])
@@ -38,6 +42,21 @@ class HttpFetcherTest extends TestCase
 
         $fetcher = $this->fetcher();
         $this->assertEquals('content', $fetcher->callFetch('https://example.com/test'));
+    }
+
+    /** @test */
+    public function fetch_uses_injected_client_when_provided()
+    {
+        $client = new class () implements ClientInterface {
+            public function sendRequest(RequestInterface $request): ResponseInterface
+            {
+                return new Response(200, [], 'psr-18');
+            }
+        };
+
+        $fetcher = $this->fetcher($client);
+
+        $this->assertEquals('psr-18', $fetcher->callFetch('https://example.com/test'));
     }
 
     /** @test */

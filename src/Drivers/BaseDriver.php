@@ -7,6 +7,7 @@ use DOMDocument;
 use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\DriverMetadata;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
+use Psr\Http\Client\ClientInterface;
 
 abstract class BaseDriver implements DriverMetadata
 {
@@ -49,8 +50,9 @@ abstract class BaseDriver implements DriverMetadata
      */
     protected array $json;
 
-    public function __construct()
+    public function __construct(?ClientInterface $httpClient = null)
     {
+        $this->httpClient = $httpClient;
         $this->config = config('currency-rate');
         $this->lastDate = CurrencyRate::where('driver', static::DRIVER_NAME)->latest('date')->value('date');
     }

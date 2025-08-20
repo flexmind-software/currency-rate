@@ -2,13 +2,32 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
+use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Http;
+use Psr\Http\Client\ClientInterface;
 use SimpleXMLElement;
 
 trait HttpFetcher
 {
+    protected ?ClientInterface $httpClient = null;
+
+    public function __construct(?ClientInterface $httpClient = null)
+    {
+        $this->httpClient = $httpClient;
+    }
+
     protected function fetch(string $url, array $query = []): ?string
     {
+        if ($this->httpClient) {
+            $uri = $url . (empty($query) ? '' : '?' . http_build_query($query));
+            $request = new Request('GET', $uri);
+            $response = $this->httpClient->sendRequest($request);
+
+            return $response->getStatusCode() >= 200 && $response->getStatusCode() < 300
+                ? (string) $response->getBody()
+                : null;
+        }
+
         $response = Http::get($url, $query);
 
         return $response->ok() ? $response->body() : null;
