@@ -51,7 +51,7 @@ trait RateTrait
             $currencyTo,
         ]);
 
-        if (!array_key_exists($cacheKey, self::$rateCache)) {
+        if (! array_key_exists($cacheKey, self::$rateCache)) {
             $row = CurrencyRate::where('driver', static::DRIVER_NAME)
                 ->whereDate('date', $date->format('Y-m-d'))
                 ->whereIn('code', [$currencyFrom, $currencyTo])
@@ -67,4 +67,3 @@ trait RateTrait
         return self::$rateCache[$cacheKey];
     }
 }
-
