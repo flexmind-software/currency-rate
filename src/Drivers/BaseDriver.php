@@ -2,7 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use DOMDocument;
 use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\DriverMetadata;
@@ -25,9 +25,9 @@ abstract class BaseDriver implements DriverMetadata
      */
     public const URI = '';
     /**
-     * @var DateTime
+     * @var DateTimeImmutable
      */
-    protected DateTime $date;
+    protected DateTimeImmutable $date;
     /**
      * @var array
      */
@@ -38,9 +38,9 @@ abstract class BaseDriver implements DriverMetadata
      */
     protected array $data = [];
     /**
-     * @var DateTime|null
+     * @var DateTimeImmutable|null
      */
-    protected ?DateTime $lastDate;
+    protected ?DateTimeImmutable $lastDate;
 
     /**
      * @var string
@@ -60,27 +60,29 @@ abstract class BaseDriver implements DriverMetadata
     }
 
     /**
-     * @param DateTime $date
+     * @param DateTimeImmutable $date
      *
      * @return $this
      */
-    public function setLastDataTime(DateTime $date): self
+    public function setLastDataTime(DateTimeImmutable $date): self
     {
-        $this->lastDate = $date;
+        $clone = clone $this;
+        $clone->lastDate = $date;
 
-        return $this;
+        return $clone;
     }
 
     /**
-     * @param DateTime $date
+     * @param DateTimeImmutable $date
      *
      * @return $this
      */
-    public function setDataTime(DateTime $date): self
+    public function setDataTime(DateTimeImmutable $date): self
     {
-        $this->date = $date;
+        $clone = clone $this;
+        $clone->date = $date;
 
-        return $this;
+        return $clone;
     }
 
     /**

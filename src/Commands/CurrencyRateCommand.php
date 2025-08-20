@@ -2,7 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Commands;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\CurrencyRateFacade as CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Jobs\QueueDownload;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate as CurrencyRateModel;
@@ -45,7 +45,7 @@ class CurrencyRateCommand extends Command
 
         $drivers = Arr::wrap($driver);
         $drivers = array_filter($drivers);
-        $date = new DateTime("@$timestamp");
+        $date = new DateTimeImmutable("@$timestamp");
 
         if ($queue === 'none' && count($drivers) > 1) {
             $jobs = [];
@@ -67,7 +67,7 @@ class CurrencyRateCommand extends Command
         return Command::SUCCESS;
     }
 
-    private function processDriver(string $driver, DateTime $date, ?string $connection): void
+    private function processDriver(string $driver, DateTimeImmutable $date, ?string $connection): void
     {
         try {
             $data = CurrencyRate::driver($driver)
@@ -86,7 +86,7 @@ class CurrencyRateCommand extends Command
         }
     }
 
-    private function queueDriver(string $driver, DateTime $date, ?string $connection, string $queue): void
+    private function queueDriver(string $driver, DateTimeImmutable $date, ?string $connection, string $queue): void
     {
         QueueDownload::dispatch($driver, $date, $connection)->onQueue($queue);
     }

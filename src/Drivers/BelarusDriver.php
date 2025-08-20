@@ -2,7 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -66,7 +66,7 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
         $xml = $this->parseXml($this->xml);
 
         if (count($xml->Currency)) {
-            $date = DateTime::createFromFormat('m/d/Y', $xml->attributes()[0])->format('Y-m-d');
+            $date = DateTimeImmutable::createFromFormat('m/d/Y', $xml->attributes()[0])->format('Y-m-d');
 
             foreach ($xml->Currency as $xmlElement) {
                 $this->data[] = [

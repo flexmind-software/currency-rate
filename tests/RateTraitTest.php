@@ -2,7 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Tests;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use Illuminate\Support\Facades\DB;
@@ -40,7 +40,7 @@ class RateTraitTest extends TestCase
     {
         $driver = new TestDriver();
 
-        $rate = $driver->rate(CurrencyCode::USD, CurrencyCode::PLN, new DateTime('2021-01-01'));
+        $rate = $driver->rate(CurrencyCode::USD, CurrencyCode::PLN, new DateTimeImmutable('2021-01-01'));
 
         $this->assertEquals(1.2 / 4.5, $rate);
     }
@@ -50,7 +50,7 @@ class RateTraitTest extends TestCase
     {
         $driver = new TestDriver();
 
-        $rate = $driver->rate(CurrencyCode::EUR, CurrencyCode::PLN, new DateTime('2021-01-01'));
+        $rate = $driver->rate(CurrencyCode::EUR, CurrencyCode::PLN, new DateTimeImmutable('2021-01-01'));
 
         $this->assertEquals(1 / 4.5, $rate);
     }
@@ -60,7 +60,7 @@ class RateTraitTest extends TestCase
     {
         $driver = new TestDriver();
 
-        $rate = $driver->rate(CurrencyCode::USD->value, CurrencyCode::PLN->value, new DateTime('2021-01-01'));
+        $rate = $driver->rate(CurrencyCode::USD->value, CurrencyCode::PLN->value, new DateTimeImmutable('2021-01-01'));
 
         $this->assertEquals(1.2 / 4.5, $rate);
     }
@@ -82,8 +82,8 @@ class RateTraitTest extends TestCase
 
         $driver = new TestDriver();
 
-        $driver->rate(CurrencyCode::USD, CurrencyCode::PLN, new DateTime('2021-01-01'));
-        $driver->rate(CurrencyCode::USD, CurrencyCode::PLN, new DateTime('2021-01-01'));
+        $driver->rate(CurrencyCode::USD, CurrencyCode::PLN, new DateTimeImmutable('2021-01-01'));
+        $driver->rate(CurrencyCode::USD, CurrencyCode::PLN, new DateTimeImmutable('2021-01-01'));
 
         $this->assertSame(1, $queries);
     }

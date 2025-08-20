@@ -3,7 +3,7 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateInterval;
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -53,7 +53,7 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
      *
      * @return array
      */
-    private function queryString(DateTime $date): array
+    private function queryString(DateTimeImmutable $date): array
     {
         $date = $this->lastDate ?? $date;
 
@@ -90,7 +90,7 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
                     $this->data[] = [
                         'no' => null,
                         'code' => $code,
-                        'date' => DateTime::createFromFormat('d/m/Y', $line[0])->format('Y-m-d'),
+                        'date' => DateTimeImmutable::createFromFormat('d/m/Y', $line[0])->format('Y-m-d'),
                         'driver' => static::DRIVER_NAME,
                         'multiplier' => $this->stringToFloat(1),
                         'rate' => $this->stringToFloat($value),

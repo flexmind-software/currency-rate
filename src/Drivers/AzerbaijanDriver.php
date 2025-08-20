@@ -2,7 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -46,7 +46,7 @@ class AzerbaijanDriver extends BaseDriver implements CurrencyInterface
     private function parseResponse(): void
     {
         $xmlElement = $this->parseXml($this->xml);
-        $date = DateTime::createFromFormat('d.m.Y', (string) $xmlElement['Date'])->format('Y-m-d');
+        $date = DateTimeImmutable::createFromFormat('d.m.Y', (string) $xmlElement['Date'])->format('Y-m-d');
 
         foreach ($xmlElement->Valute as $item) {
             $this->data[] = [

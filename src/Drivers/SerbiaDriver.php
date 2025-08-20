@@ -2,7 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use DOMElement;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
@@ -128,7 +128,7 @@ class SerbiaDriver extends BaseDriver implements CurrencyInterface
             $this->data[] = [
                 'no' => $value[0],
                 'code' => $value[4],
-                'date' => DateTime::createFromFormat('d.m.Y', $value[1])->format('Y-m-d'),
+                'date' => DateTimeImmutable::createFromFormat('d.m.Y', $value[1])->format('Y-m-d'),
                 'driver' => static::DRIVER_NAME,
                 'multiplier' => $this->stringToFloat($value[5]),
                 'rate' => $rate,

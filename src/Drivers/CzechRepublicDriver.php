@@ -2,7 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -102,7 +102,7 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
             if ($row === 0) {
                 continue;
             }
-            $date = DateTime::createFromFormat('d.m.Y', $rates[0]);
+            $date = DateTimeImmutable::createFromFormat('d.m.Y', $rates[0]);
             if (! $date) {
                 break;
             }

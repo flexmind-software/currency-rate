@@ -3,7 +3,7 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateInterval;
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -61,7 +61,7 @@ class TurkeyDriver extends BaseDriver implements CurrencyInterface
     {
         $simpleXMLElement = $this->parseXml($this->xml);
         $no = $simpleXMLElement->attributes()->Bulten_No;
-        $date = DateTime::createFromFormat('m/d/Y', (string)$simpleXMLElement->attributes()->Date)->format('Y-m-d');
+        $date = DateTimeImmutable::createFromFormat('m/d/Y', (string)$simpleXMLElement->attributes()->Date)->format('Y-m-d');
 
         $this->data = [];
         foreach ($simpleXMLElement->Currency as $element) {

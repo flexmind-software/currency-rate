@@ -2,7 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Tests;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\CurrencyRateFacade as CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Jobs\QueueDownload;
 use FlexMindSoftware\CurrencyRate\Tests\Stubs\FakeDriver;
@@ -27,7 +27,7 @@ class QueueDownloadTest extends TestCase
             'example.com/*' => Http::response('ok', 200),
         ]);
 
-        $job = new QueueDownload(FakeDriver::DRIVER_NAME, new DateTime('2023-10-01'), 'testing');
+        $job = new QueueDownload(FakeDriver::DRIVER_NAME, new DateTimeImmutable('2023-10-01'), 'testing');
         $job->handle();
 
         $this->assertTrue(true);
@@ -38,7 +38,7 @@ class QueueDownloadTest extends TestCase
     {
         Log::shouldReceive('error')->once();
 
-        $job = new QueueDownload('missing', new DateTime(), 'testing');
+        $job = new QueueDownload('missing', new DateTimeImmutable(), 'testing');
         $job->handle();
         $this->assertTrue(true);
     }

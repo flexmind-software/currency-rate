@@ -2,7 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -70,7 +70,7 @@ class BulgariaDriver extends BaseDriver implements CurrencyInterface
                 continue;
             }
 
-            $date = DateTime::createFromFormat('d.m.Y', $rates[0])->format('Y-m-d');
+            $date = DateTimeImmutable::createFromFormat('d.m.Y', $rates[0])->format('Y-m-d');
 
             $param = [];
             $param['no'] = null;

@@ -2,7 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -92,7 +92,7 @@ class BotswanaDriver extends BaseDriver implements CurrencyInterface
 
         if ($this->lastDate) {
             $this->data = array_filter($this->data, function ($item) {
-                return DateTime::createFromFormat('Y-m-d', $item['date'])->getTimestamp() >=
+                return DateTimeImmutable::createFromFormat('Y-m-d', $item['date'])->getTimestamp() >=
                     $this->lastDate->getTimestamp();
             });
         }

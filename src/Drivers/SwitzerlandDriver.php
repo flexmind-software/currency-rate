@@ -2,7 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -58,7 +58,7 @@ class SwitzerlandDriver extends BaseDriver implements CurrencyInterface
                 $this->data[] = [
                     'no' => null,
                     'code' => $match[5],
-                    'date' => DateTime::createFromFormat('Y-m-d', trim($match[6])),
+                    'date' => DateTimeImmutable::createFromFormat('Y-m-d', trim($match[6])),
                     'driver' => static::DRIVER_NAME,
                     'multiplier' => $this->stringToFloat(trim($match[4])),
                     'rate' => $this->stringToFloat(trim($match[2])),
