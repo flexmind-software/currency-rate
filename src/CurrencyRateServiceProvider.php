@@ -21,7 +21,7 @@ class CurrencyRateServiceProvider extends PackageServiceProvider
             ->hasCommand(CurrencyRateCommand::class);
     }
 
-    public function packageRegistered()
+    public function packageRegistered(): void
     {
         $this->app->singleton('currency-rate', function ($app) {
             return new CurrencyRateManager($app);
