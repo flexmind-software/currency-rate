@@ -5,7 +5,6 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class ChinaDriver extends BaseDriver implements CurrencyInterface
 {
@@ -29,9 +28,9 @@ class ChinaDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI, $this->queryString());
-        if ($respond->ok()) {
-            $this->json = $respond->json();
+        $respond = $this->fetch(static::URI, $this->queryString());
+        if ($respond) {
+            $this->json = json_decode($respond, true);
             $this->parseResponse();
         }
 

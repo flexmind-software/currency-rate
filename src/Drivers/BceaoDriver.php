@@ -8,7 +8,6 @@ use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class BceaoDriver extends BaseDriver implements CurrencyInterface
 {
@@ -38,9 +37,9 @@ class BceaoDriver extends BaseDriver implements CurrencyInterface
     {
         $exists = false;
         do {
-            $respond = Http::get(static::URI, $this->queryString());
-            if ($respond->ok()) {
-                $this->html = '<head><meta charset="utf-8" /></head><body>' . $respond->body() . '</body>';
+            $respond = $this->fetch(static::URI, $this->queryString());
+            if ($respond) {
+                $this->html = '<head><meta charset="utf-8" /></head><body>' . $respond . '</body>';
                 $this->xpath = $this->htmlParse();
                 if (! ($exists = $this->xpath->query('//table')->count() > 0)) {
                     $this->date->sub(DateInterval::createFromDateString('1 day'));

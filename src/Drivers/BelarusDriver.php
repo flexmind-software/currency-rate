@@ -6,7 +6,6 @@ use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -39,10 +38,10 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $response = Http::get(static::URI, $this->queryString());
+        $response = $this->fetch(static::URI, $this->queryString());
 
-        if ($response->ok()) {
-            $this->xml = $response->body();
+        if ($response) {
+            $this->xml = $response;
             $this->parseResponse();
         }
 
@@ -64,7 +63,7 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
      */
     private function parseResponse()
     {
-        $xml = simplexml_load_string($this->xml);
+        $xml = $this->parseXml($this->xml);
 
         if (count($xml->Currency)) {
             $date = DateTime::createFromFormat('m/d/Y', $xml->attributes()[0])->format('Y-m-d');

@@ -5,7 +5,6 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class AustraliaDriver extends BaseDriver implements CurrencyInterface
 {
@@ -34,9 +33,9 @@ class AustraliaDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI);
-        if ($respond->ok()) {
-            $this->xml = $respond->body();
+        $respond = $this->fetch(static::URI);
+        if ($respond) {
+            $this->xml = $respond;
             $this->parseResponse();
         }
 
@@ -45,7 +44,7 @@ class AustraliaDriver extends BaseDriver implements CurrencyInterface
 
     private function parseResponse()
     {
-        $xml = simplexml_load_string($this->xml, "SimpleXMLElement", LIBXML_NOCDATA);
+        $xml = $this->parseXml($this->xml);
         $json = json_decode(json_encode($xml), true);
 
         $currencyList = [];

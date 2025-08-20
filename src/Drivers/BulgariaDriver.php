@@ -6,7 +6,6 @@ use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -33,16 +32,10 @@ class BulgariaDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $response = Http::get(static::URI, $this->queryString());
+        $fileContent = $this->fetch(static::URI, $this->queryString());
 
-        if ($response->ok()) {
-            $fileContent = $response->body();
-
-            $explode = explode("\n", $fileContent);
-
-            $rateList = array_map(function ($item) {
-                return explode(',', $item);
-            }, $explode);
+        if ($fileContent) {
+            $rateList = $this->parseCsv($fileContent, ',');
 
             $rateList = array_filter($rateList, function ($item) {
                 return count($item) === 6;

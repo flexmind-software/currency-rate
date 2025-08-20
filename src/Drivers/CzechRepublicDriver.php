@@ -6,7 +6,6 @@ use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -47,9 +46,8 @@ class CzechRepublicDriver extends BaseDriver implements CurrencyInterface
     {
         $sourceUrl = $this->sourceUrl();
 
-        $response = Http::get($sourceUrl);
-        if ($response->ok()) {
-            $fileContent = $response->body();
+        $fileContent = $this->fetch($sourceUrl);
+        if ($fileContent) {
 
             $explode = explode("\n", $fileContent);
 

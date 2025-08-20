@@ -7,7 +7,6 @@ use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -40,9 +39,9 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $response = Http::get(static::URI, $this->queryString($this->date));
-        if ($response->ok()) {
-            $this->csvPlain = $response->body();
+        $response = $this->fetch(static::URI, $this->queryString($this->date));
+        if ($response) {
+            $this->csvPlain = $response;
             $this->parseResponse();
         }
 
@@ -77,10 +76,7 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
     {
         $this->data = [];
 
-        $lines = explode("\n", $this->csvPlain);
-        $lines = array_map(function ($item) {
-            return explode(',', $item);
-        }, $lines);
+        $lines = $this->parseCsv($this->csvPlain, ',');
         $head = head($lines);
         $head[0] = null;
 

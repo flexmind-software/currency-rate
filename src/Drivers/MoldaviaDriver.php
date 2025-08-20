@@ -7,7 +7,6 @@ use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 use SimpleXMLElement;
 
 class MoldaviaDriver extends BaseDriver implements CurrencyInterface
@@ -38,9 +37,9 @@ class MoldaviaDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI, $this->queryString());
-        if ($respond->ok()) {
-            $this->xml = $respond->body();
+        $respond = $this->fetch(static::URI, $this->queryString());
+        if ($respond) {
+            $this->xml = $respond;
             $this->parseResponse();
         }
 
@@ -62,7 +61,7 @@ class MoldaviaDriver extends BaseDriver implements CurrencyInterface
      */
     private function parseResponse()
     {
-        $xml = new SimpleXMLElement($this->xml);
+        $xml = $this->parseXml($this->xml);
         $date = Datetime::createFromFormat('d.m.Y', $xml->attributes()->Date)->format('d.m.Y');
 
         $this->data = [];

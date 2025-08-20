@@ -5,7 +5,6 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -37,9 +36,9 @@ class BosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $response = Http::asJson()->get(static::URI, $this->getQueryString());
-        if ($response->ok()) {
-            $this->jsonData = $response->json();
+        $response = $this->fetch(static::URI, $this->getQueryString());
+        if ($response) {
+            $this->jsonData = json_decode($response, true);
             $this->parseResponse();
         }
 

@@ -6,7 +6,6 @@ use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class BotswanaDriver extends BaseDriver implements CurrencyInterface
@@ -37,9 +36,9 @@ class BotswanaDriver extends BaseDriver implements CurrencyInterface
     public function grabExchangeRates(): self
     {
         try {
-            $respond = Http::get(static::URI, $this->queryString());
-            if ($respond->ok()) {
-                $this->csv = $respond->body();
+            $respond = $this->fetch(static::URI, $this->queryString());
+            if ($respond) {
+                $this->csv = $respond;
                 $this->parseResponse();
             }
         } catch (\Throwable $e) {
@@ -66,8 +65,7 @@ class BotswanaDriver extends BaseDriver implements CurrencyInterface
 
     private function parseResponse()
     {
-        $csv = explode("\n", $this->csv);
-        $csv = array_map('str_getcsv', $csv);
+        $csv = $this->parseCsv($this->csv);
 
         $headers = head($csv);
 

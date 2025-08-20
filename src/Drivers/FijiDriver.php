@@ -5,7 +5,6 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 use SimpleXLSX;
 
 class FijiDriver extends BaseDriver implements CurrencyInterface
@@ -42,9 +41,9 @@ class FijiDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI . $this->urlString());
-        if ($respond->ok()) {
-            $this->html = $respond->body();
+        $respond = $this->fetch(static::URI . $this->urlString());
+        if ($respond) {
+            $this->html = $respond;
             $this->parseResponse();
         }
 

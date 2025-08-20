@@ -7,7 +7,6 @@ use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class HungaryDriver extends BaseDriver implements CurrencyInterface
 {
@@ -37,9 +36,9 @@ class HungaryDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $response = Http::get(static::URI, $this->queryString());
-        if ($response->ok()) {
-            $this->html = $response->body();
+        $response = $this->fetch(static::URI, $this->queryString());
+        if ($response) {
+            $this->html = $response;
             $this->parseResponse();
         }
 

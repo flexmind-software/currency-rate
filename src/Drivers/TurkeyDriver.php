@@ -7,7 +7,6 @@ use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class TurkeyDriver extends BaseDriver implements CurrencyInterface
 {
@@ -38,12 +37,12 @@ class TurkeyDriver extends BaseDriver implements CurrencyInterface
     public function grabExchangeRates(): self
     {
         do {
-            $respond = Http::get(static::URI . $this->queryString());
-            if ($respond->ok()) {
-                $this->xml = $respond->body();
+            $respond = $this->fetch(static::URI . $this->queryString());
+            if ($respond) {
+                $this->xml = $respond;
             }
             $this->date = $this->date->sub(DateInterval::createFromDateString('1 day'));
-        } while (! $respond->ok());
+        } while (! $respond);
 
         $this->parseResponse();
 
@@ -60,7 +59,7 @@ class TurkeyDriver extends BaseDriver implements CurrencyInterface
 
     private function parseResponse()
     {
-        $simpleXMLElement = simplexml_load_string($this->xml);
+        $simpleXMLElement = $this->parseXml($this->xml);
         $no = $simpleXMLElement->attributes()->Bulten_No;
         $date = DateTime::createFromFormat('m/d/Y', (string)$simpleXMLElement->attributes()->Date)->format('Y-m-d');
 

@@ -6,7 +6,6 @@ use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 class SwitzerlandDriver extends BaseDriver implements CurrencyInterface
 {
@@ -35,9 +34,9 @@ class SwitzerlandDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI);
-        if ($respond->ok()) {
-            $this->xml = $respond->body();
+        $respond = $this->fetch(static::URI);
+        if ($respond) {
+            $this->xml = $respond;
             $this->parseResponse();
         }
 
@@ -46,7 +45,7 @@ class SwitzerlandDriver extends BaseDriver implements CurrencyInterface
 
     private function parseResponse()
     {
-        $simpleXMLElement = simplexml_load_string($this->xml, "SimpleXMLElement", LIBXML_NOCDATA, "", true);
+        $simpleXMLElement = $this->parseXml($this->xml, LIBXML_NOCDATA, '', true);
 
         foreach ($simpleXMLElement->channel->item as $line) {
             preg_match(

@@ -6,7 +6,6 @@ use DateInterval;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Http;
 
 /**
  *
@@ -39,9 +38,9 @@ class SwedenDriver extends BaseDriver implements CurrencyInterface
      */
     public function grabExchangeRates(): self
     {
-        $respond = Http::get(static::URI, $this->getQueryString());
-        if ($respond->ok()) {
-            $this->response = $respond->body();
+        $respond = $this->fetch(static::URI, $this->getQueryString());
+        if ($respond) {
+            $this->response = $respond;
             $this->parseResponse();
         }
 
@@ -116,10 +115,7 @@ class SwedenDriver extends BaseDriver implements CurrencyInterface
      */
     private function parseResponse()
     {
-        $rows = explode("\r\n", $this->response);
-        $rows = array_map(function ($line) {
-            return explode(';', $line);
-        }, $rows);
+        $rows = $this->parseCsv($this->response, ';');
 
         $rows = array_filter($rows, function ($line) {
             return count($line) === 4;
