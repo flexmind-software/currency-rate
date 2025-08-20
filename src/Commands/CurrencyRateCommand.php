@@ -8,6 +8,7 @@ use FlexMindSoftware\CurrencyRate\Jobs\QueueDownload;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate as CurrencyRateModel;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -34,7 +35,7 @@ class CurrencyRateCommand extends Command
         $driverOption = $this->option('driver');
         $driver = $driverOption ?? 'all';
         $connectionOption = $this->option('connection');
-        $connection = is_string($connectionOption) ? $connectionOption : null;
+        $connection = is_string($connectionOption) ? $connectionOption : 'default';
 
         if ($driver === 'all') {
             $driver = $this->getAllDrivers();
@@ -46,11 +47,20 @@ class CurrencyRateCommand extends Command
         $drivers = array_filter($drivers);
         $date = new DateTime("@$timestamp");
 
-        foreach ($drivers as $driver) {
-            if ($queue === 'none') {
-                $this->processDriver($driver, $date, $connection);
-            } else {
-                $this->queueDriver($driver, $date, $connection, $queue);
+        if ($queue === 'none' && count($drivers) > 1) {
+            $jobs = [];
+            foreach ($drivers as $driver) {
+                $jobs[] = new QueueDownload($driver, clone $date, $connection);
+            }
+
+            Bus::batch($jobs)->dispatch();
+        } else {
+            foreach ($drivers as $driver) {
+                if ($queue === 'none') {
+                    $this->processDriver($driver, $date, $connection);
+                } else {
+                    $this->queueDriver($driver, $date, $connection, $queue);
+                }
             }
         }
 
