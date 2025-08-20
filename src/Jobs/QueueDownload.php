@@ -2,7 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Jobs;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\CurrencyRateFacade as CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate as CurrencyRateModel;
 use Illuminate\Bus\Queueable;
@@ -35,9 +35,9 @@ class QueueDownload implements ShouldQueue, ShouldBeUnique, ShouldBeUniqueUntilP
      */
     protected string $driverName;
     /**
-     * @var DateTime
+     * @var DateTimeImmutable
      */
-    protected DateTime $dateTime;
+    protected DateTimeImmutable $dateTime;
     /**
      * @var string
      */
@@ -45,10 +45,10 @@ class QueueDownload implements ShouldQueue, ShouldBeUnique, ShouldBeUniqueUntilP
 
     /**
      * @param string $driverName
-     * @param DateTime $dateTime
+     * @param DateTimeImmutable $dateTime
      * @param string $connection
      */
-    public function __construct(string $driverName, DateTime $dateTime, string $connection)
+    public function __construct(string $driverName, DateTimeImmutable $dateTime, string $connection)
     {
         $this->driverName = $driverName;
         $this->dateTime = $dateTime;

@@ -42,7 +42,7 @@ class BceaoDriver extends BaseDriver implements CurrencyInterface
                 $this->html = '<head><meta charset="utf-8" /></head><body>' . $respond . '</body>';
                 $this->xpath = $this->htmlParse();
                 if (! ($exists = $this->xpath->query('//table')->count() > 0)) {
-                    $this->date->sub(DateInterval::createFromDateString('1 day'));
+                    $this->date = $this->date->sub(DateInterval::createFromDateString('1 day'));
                 }
             }
         } while (! $exists);

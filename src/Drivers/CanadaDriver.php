@@ -50,7 +50,7 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
             if ($response) {
                 $this->jsonFile = json_decode($response, true);
                 if (blank($this->jsonFile['observations'])) {
-                    $this->date->sub(DateInterval::createFromDateString('1 day'));
+                    $this->date = $this->date->sub(DateInterval::createFromDateString('1 day'));
                 }
             }
         } while (count((array)$this->jsonFile['observations']) === 0);

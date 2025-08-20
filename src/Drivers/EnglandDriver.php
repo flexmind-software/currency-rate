@@ -3,7 +3,7 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateInterval;
-use DateTime;
+use DateTimeImmutable;
 use DOMNodeList;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
@@ -47,7 +47,7 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
                 $this->tables = $xpath->query('//table');
             }
 
-            $date = $this->date->sub(DateInterval::createFromDateString('1 day'));
+            $this->date = $this->date->sub(DateInterval::createFromDateString('1 day'));
         } while ($this->tables && $this->tables->count() == 1);
 
         if ($this->tables) {
@@ -87,7 +87,7 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
         }
 
         $date = trim(str_replace(' £1 ', '', head($itemList)[1]));
-        $date = DateTime::createFromFormat('j M Y', $date)->format('Y-m-d');
+        $date = DateTimeImmutable::createFromFormat('j M Y', $date)->format('Y-m-d');
 
         foreach ($itemList as $i => $value) {
             if ($value[0] == 'Currency') {

@@ -3,7 +3,7 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateInterval;
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -117,7 +117,7 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
             $this->data[] = [
                 'no' => $item['Exchange rate list number'],
                 'code' => $item['Currency'],
-                'date' => DateTime::createFromFormat('d.m.Y', $item['Date'])->format('Y-m-d'),
+                'date' => DateTimeImmutable::createFromFormat('d.m.Y', $item['Date'])->format('Y-m-d'),
                 'driver' => static::DRIVER_NAME,
                 'multiplier' => floatval($item['Unit']),
                 'rate' => $this->stringToFloat($item['Middle rate']),

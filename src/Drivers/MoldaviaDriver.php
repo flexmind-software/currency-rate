@@ -2,7 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
@@ -61,7 +61,7 @@ class MoldaviaDriver extends BaseDriver implements CurrencyInterface
     private function parseResponse()
     {
         $xml = $this->parseXml($this->xml);
-        $date = Datetime::createFromFormat('d.m.Y', $xml->attributes()->Date)->format('d.m.Y');
+        $date = DateTimeImmutable::createFromFormat('d.m.Y', $xml->attributes()->Date)->format('d.m.Y');
 
         $this->data = [];
         foreach ($xml->Valute as $xmlElement) {

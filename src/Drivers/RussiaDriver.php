@@ -2,7 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -75,7 +75,7 @@ class RussiaDriver extends BaseDriver implements CurrencyInterface
 
         $h3 = $xpath->query('//h2[@class="h3"]')->item(0)->nodeValue;
         preg_match('/(.*)([0-9]{2}\/[0-9]{2}\/[0-9]{4})(.+)/im', $h3, $match);
-        $exchangeDate = DateTime::createFromFormat('d/m/Y', $match[2])->format('Y-m-d');
+        $exchangeDate = DateTimeImmutable::createFromFormat('d/m/Y', $match[2])->format('Y-m-d');
 
         $this->data = array_map(function ($item) use ($exchangeDate) {
             return [
