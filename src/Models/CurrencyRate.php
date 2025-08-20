@@ -2,8 +2,8 @@
 
 namespace FlexMindSoftware\CurrencyRate\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use FlexMindSoftware\CurrencyRate\Events\CurrencyRateSaved;
+use Illuminate\Database\Eloquent\Model;
 
 class CurrencyRate extends Model
 {

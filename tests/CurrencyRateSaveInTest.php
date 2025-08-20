@@ -2,8 +2,8 @@
 
 namespace FlexMindSoftware\CurrencyRate\Tests;
 
-use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Events\CurrencyRateSaved;
+use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use Illuminate\Support\Facades\Event;
 
 class CurrencyRateSaveInTest extends TestCase
