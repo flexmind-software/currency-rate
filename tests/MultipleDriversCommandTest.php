@@ -6,8 +6,8 @@ use FlexMindSoftware\CurrencyRate\CurrencyRateFacade as CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Jobs\QueueDownload;
 use FlexMindSoftware\CurrencyRate\Tests\Stubs\FakeDriver;
 use FlexMindSoftware\CurrencyRate\Tests\Stubs\SecondFakeDriver;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Queue;
 
 class MultipleDriversCommandTest extends TestCase
@@ -19,7 +19,7 @@ class MultipleDriversCommandTest extends TestCase
         $migration = include __DIR__.'/../database/migrations/create_currency_rate_table.php.stub';
         $migration->up();
         $batchMigrationClass = 'TestbenchCreateJobBatchesTable';
-        if (!class_exists($batchMigrationClass)) {
+        if (! class_exists($batchMigrationClass)) {
             include __DIR__.'/../vendor/orchestra/testbench-core/laravel/migrations/queue/0001_01_01_000000_testbench_create_job_batches_table.php';
         }
         (new $batchMigrationClass())->up();
