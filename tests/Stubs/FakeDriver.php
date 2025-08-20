@@ -12,11 +12,12 @@ class FakeDriver extends BaseDriver implements CurrencyInterface
     use RateTrait;
 
     public const DRIVER_NAME = 'fake';
+    public const URI = 'https://example.com/rates';
     public CurrencyCode $currency = CurrencyCode::EUR;
 
     public function grabExchangeRates(): self
     {
-        $this->fetch('https://example.com/rates');
+        $this->fetch(static::URI);
 
         $this->data[] = [
             'driver' => self::DRIVER_NAME,
