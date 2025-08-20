@@ -11,6 +11,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class QueueDownload implements ShouldQueue, ShouldBeUnique, ShouldBeUniqueUntilProcessing
 {
@@ -59,18 +61,27 @@ class QueueDownload implements ShouldQueue, ShouldBeUnique, ShouldBeUniqueUntilP
      */
     public function uniqueId(): string
     {
-        return sprintf('%s_%s_%s', 'flexmind', $this->driverName, $this->dateTime->format('Y_m_d'));
+        $prefix = config('app.name', 'currency-rate');
+
+        return sprintf('%s_%s_%s', $prefix, $this->driverName, $this->dateTime->format('Y_m_d'));
     }
 
     public function handle()
     {
-        $data = \CurrencyRate::driver($this->driverName)
-            ->setDataTime($this->dateTime)
-            ->grabExchangeRates()
-            ->retrieveData();
+        try {
+            $data = \CurrencyRate::driver($this->driverName)
+                ->setDataTime($this->dateTime)
+                ->grabExchangeRates()
+                ->retrieveData();
 
-        if ($data && $this->databaseConnection) {
-            CurrencyRate::saveIn($data, $this->databaseConnection);
+            if ($data && $this->databaseConnection) {
+                CurrencyRate::saveIn($data, $this->databaseConnection);
+            }
+        } catch (Throwable $exception) {
+            Log::error(
+                'QueueDownload job failed: ' . $exception->getMessage(),
+                $exception->getTrace()
+            );
         }
     }
 }
