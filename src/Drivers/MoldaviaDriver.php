@@ -7,7 +7,6 @@ use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Models\Currency;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use SimpleXMLElement;
 
 class MoldaviaDriver extends BaseDriver implements CurrencyInterface
 {

@@ -14,7 +14,7 @@ class HttpFetcherTest extends TestCase
             'example.com/*' => Http::response('content', 200),
         ]);
 
-        $fetcher = new class {
+        $fetcher = new class () {
             use HttpFetcher;
         };
 
@@ -24,7 +24,7 @@ class HttpFetcherTest extends TestCase
     /** @test */
     public function parse_xml_returns_simplexml_element()
     {
-        $fetcher = new class {
+        $fetcher = new class () {
             use HttpFetcher;
         };
 
@@ -37,7 +37,7 @@ class HttpFetcherTest extends TestCase
     /** @test */
     public function parse_csv_splits_rows()
     {
-        $fetcher = new class {
+        $fetcher = new class () {
             use HttpFetcher;
         };
 
@@ -48,4 +48,3 @@ class HttpFetcherTest extends TestCase
         $this->assertEquals(['1', '2'], $parsed[1]);
     }
 }
-
