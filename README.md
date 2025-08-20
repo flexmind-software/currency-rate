@@ -88,6 +88,19 @@ Options:
   --driver[=DRIVER]  Driver to download rate [default: "all"]
 ```
 
+## Events
+
+The `CurrencyRate::saveIn` method dispatches a `CurrencyRateSaved` event once rates are persisted. Consumers may listen for this event to trigger downstream actions:
+
+```php
+use FlexMindSoftware\CurrencyRate\Events\CurrencyRateSaved;
+use Illuminate\Support\Facades\Event;
+
+Event::listen(CurrencyRateSaved::class, function (CurrencyRateSaved $event) {
+    // $event->rates contains the saved records
+});
+```
+
 ## Testing
 
 ```bash
