@@ -36,5 +36,10 @@ return [
         'turkey',
         'ukraine',
     ],
-    'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates')
+    'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates'),
+    'retry' => [
+        'count' => env('FLEXMIND_CURRENCY_RATE_RETRY_COUNT', 3),
+        'sleep' => env('FLEXMIND_CURRENCY_RATE_RETRY_SLEEP', 1000),
+        'factor' => env('FLEXMIND_CURRENCY_RATE_RETRY_FACTOR', 2),
+    ],
 ];

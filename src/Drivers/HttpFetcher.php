@@ -4,14 +4,32 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use Illuminate\Support\Facades\Http;
 use SimpleXMLElement;
+use Throwable;
 
 trait HttpFetcher
 {
     protected function fetch(string $url, array $query = []): ?string
     {
-        $response = Http::get($url, $query);
+        $retry = config('currency-rate.retry');
+        $count = (int) ($retry['count'] ?? 1);
+        $sleep = (int) ($retry['sleep'] ?? 1000);
+        $factor = (int) ($retry['factor'] ?? 2);
 
-        return $response->ok() ? $response->body() : null;
+        try {
+            return retry($count, function () use ($url, $query) {
+                $response = Http::get($url, $query);
+
+                if ($response->ok()) {
+                    return $response->body();
+                }
+
+                throw new \Exception('Request failed');
+            }, function (int $attempt) use ($sleep, $factor) {
+                return (int) ($sleep * ($factor ** ($attempt - 1)));
+            });
+        } catch (Throwable $e) {
+            return null;
+        }
     }
 
     protected function parseXml(
