@@ -2,6 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Models;
 
+use FlexMindSoftware\CurrencyRate\Events\CurrencyRateSaved;
 use Illuminate\Database\Eloquent\Model;
 
 class CurrencyRate extends Model
@@ -50,6 +51,8 @@ class CurrencyRate extends Model
             foreach ($chunks as $chunk) {
                 static::on($connection)
                     ->upsert($chunk, $columns, ['rate', 'no', 'multiplier']);
+
+                event(new CurrencyRateSaved($chunk));
             }
         }
     }

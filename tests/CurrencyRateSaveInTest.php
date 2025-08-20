@@ -2,7 +2,9 @@
 
 namespace FlexMindSoftware\CurrencyRate\Tests;
 
+use FlexMindSoftware\CurrencyRate\Events\CurrencyRateSaved;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
+use Illuminate\Support\Facades\Event;
 
 class CurrencyRateSaveInTest extends TestCase
 {
@@ -15,8 +17,10 @@ class CurrencyRateSaveInTest extends TestCase
     }
 
     /** @test */
-    public function it_saves_records_to_database()
+    public function it_saves_records_to_database_and_fires_event()
     {
+        Event::fake();
+
         $data = [
             [
                 'driver' => 'test',
@@ -40,5 +44,9 @@ class CurrencyRateSaveInTest extends TestCase
 
         $this->assertDatabaseHas('currency_rates', ['code' => 'USD']);
         $this->assertDatabaseHas('currency_rates', ['code' => 'PLN']);
+
+        Event::assertDispatched(CurrencyRateSaved::class, function ($event) use ($data) {
+            return $event->rates === $data;
+        });
     }
 }
