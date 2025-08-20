@@ -1,0 +1,8 @@
+{
+  "Number": "198",
+  "Date": "2021-09-24T00:00:00",
+  "CurrencyExchangeItems": [
+    { "AlphaCode": "USD", "Units": 1, "Middle": "1.6540" },
+    { "AlphaCode": "JPY", "Units": 100, "Middle": "1.5000" }
+  ]
+}

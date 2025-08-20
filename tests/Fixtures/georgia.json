@@ -1,0 +1,9 @@
+[
+  {
+    "date": "2021-09-24T00:00:00Z",
+    "currencies": [
+      { "code": "USD", "quantity": 1, "rate": 3.12 },
+      { "code": "JPY", "quantity": 100, "rate": 280.5 }
+    ]
+  }
+]

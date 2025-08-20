@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ges>
+  <Cube>
+    <Cube time="2021-09-24">
+      <Cube currency="USD" rate="1.1728"/>
+      <Cube currency="JPY" rate="129.66"/>
+    </Cube>
+  </Cube>
+</ges>
