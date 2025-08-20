@@ -2,46 +2,49 @@
 
 return [
     'albania' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'armenia' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'australia' => [
         'frequency' => 'Jours ouvrables vers 16h00 heure de l\'est de l\'Australie',
     ],
+    'azerbaijan' => [
+        'frequency' => 'Quotidiennement les jours ouvrables',
+    ],
     'bceao' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'belarus' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'bosnia-and-herzegovina' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'botswana' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'bulgaria' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'canada' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'china' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'croatia' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'czech-republic' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'denmark' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'england' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'european-central-bank' => [
         'frequency' => 'Jour ouvrable à 15h00 heure d\'Europe centrale (CET)',
@@ -55,25 +58,25 @@ return [
             'monnaies par rapport au FJD.',
     ],
     'georgia' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'hungary' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'iceland' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'israel' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'macedonia' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'moldavia' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'norway' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'poland' => [
         'frequency' => 'La table A des taux de change moyens des devises étrangères est publiée (mise à jour) sur le site de la NBP ' .
@@ -83,25 +86,25 @@ return [
             '(mises à jour) sur le site de la NBP les jours ouvrables entre 7h45 et 8h15.',
     ],
     'romania' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'russia' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'serbia' => [
         'frequency' => 'Jour ouvrable à 8h00 CET. Les week-ends et jours fériés, une liste des taux de change pour le dernier jour ' .
             'ouvrable',
     ],
     'sweden' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'switzerland' => [
         'frequency' => 'Jour ouvrable à 11h00 heure d\'Europe centrale (CET)',
     ],
     'turkey' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
     'ukraine' => [
-        'frequency' => '',
+        'frequency' => 'Quotidiennement les jours ouvrables',
     ],
 ];

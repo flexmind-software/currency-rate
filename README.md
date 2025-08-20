@@ -78,40 +78,40 @@ the drivers used in your application. See [config/currency-rate.php](config/curr
 
 ### Available Drivers
 
-| Country / Source | Driver |
-|------------------|--------|
-| Albania | `albania` |
-| Armenia | `armenia` |
-| Australia | `australia` |
-| Azerbaijan | `azerbaijan` |
-| BCEAO | `bceao` |
-| Belarus | `belarus` |
-| Bosnia and Herzegovina | `bosnia-and-herzegovina` |
-| Botswana | `botswana` |
-| Bulgaria | `bulgaria` |
-| Canada | `canada` |
-| China | `china` |
-| Croatia | `croatia` |
-| Czech Republic | `czech-republic` |
-| Denmark | `denmark` |
-| England | `england` |
-| European Central Bank | `european-central-bank` |
-| Fiji | `fiji` |
-| Georgia | `georgia` |
-| Hungary | `hungary` |
-| Iceland | `iceland` |
-| Israel | `israel` |
-| Macedonia | `macedonia` |
-| Moldavia | `moldavia` |
-| Norway | `norway` |
-| Poland | `poland` |
-| Romania | `romania` |
-| Russia | `russia` |
-| Serbia | `serbia` |
-| Sweden | `sweden` |
-| Switzerland | `switzerland` |
-| Turkey | `turkey` |
-| Ukraine | `ukraine` |
+| Country / Source | Driver | Frequency |
+|------------------|--------|-----------|
+| Albania | `albania` | Daily on business days |
+| Armenia | `armenia` | Daily on business days |
+| Australia | `australia` | Weekdays around 4:00 PM Eastern Australian Time |
+| Azerbaijan | `azerbaijan` | Daily on business days |
+| BCEAO | `bceao` | Daily on business days |
+| Belarus | `belarus` | Daily on business days |
+| Bosnia and Herzegovina | `bosnia-and-herzegovina` | Daily on business days |
+| Botswana | `botswana` | Daily on business days |
+| Bulgaria | `bulgaria` | Daily on business days |
+| Canada | `canada` | Daily on business days |
+| China | `china` | Daily on business days |
+| Croatia | `croatia` | Daily on business days |
+| Czech Republic | `czech-republic` | Daily on business days |
+| Denmark | `denmark` | Daily on business days |
+| England | `england` | Daily on business days |
+| European Central Bank | `european-central-bank` | Weekdays at 3:00 PM CET |
+| Fiji | `fiji` | Official rate set at 8:30 AM FJT each business day |
+| Georgia | `georgia` | Daily on business days |
+| Hungary | `hungary` | Daily on business days |
+| Iceland | `iceland` | Daily on business days |
+| Israel | `israel` | Daily on business days |
+| Macedonia | `macedonia` | Daily on business days |
+| Moldavia | `moldavia` | Daily on business days |
+| Norway | `norway` | Daily on business days |
+| Poland | `poland` | Tables A/B/C: business days; B on Wednesdays; C at 7:45–8:15 AM |
+| Romania | `romania` | Daily on business days |
+| Russia | `russia` | Daily on business days |
+| Serbia | `serbia` | Weekdays at 8:00 CET; weekends use last working day |
+| Sweden | `sweden` | Daily on business days |
+| Switzerland | `switzerland` | Weekdays at 11:00 AM CET |
+| Turkey | `turkey` | Daily on business days |
+| Ukraine | `ukraine` | Daily on business days |
 
 ## Usage
 

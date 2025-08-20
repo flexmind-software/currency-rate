@@ -2,46 +2,49 @@
 
 return [
     'albania' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'armenia' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'australia' => [
         'frequency' => 'W dni powszednie około 16:00 czasu wschodnioaustralijskiego',
     ],
+    'azerbaijan' => [
+        'frequency' => 'Codziennie w dni robocze',
+    ],
     'bceao' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'belarus' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'bosnia-and-herzegovina' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'botswana' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'bulgaria' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'canada' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'china' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'croatia' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'czech-republic' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'denmark' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'england' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'european-central-bank' => [
         'frequency' => 'Dzień powszedni o 15:00 czasu środkowoeuropejskiego (CET)',
@@ -55,25 +58,25 @@ return [
             'walut w stosunku do FJD.',
     ],
     'georgia' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'hungary' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'iceland' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'israel' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'macedonia' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'moldavia' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'norway' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'poland' => [
         'frequency' => 'Tabela A kursów średnich walut obcych publikowana (aktualizowana) jest na stronie ' .
@@ -83,25 +86,25 @@ return [
             'rozliczeniowych aktualizowane są w każdy dzień roboczy, między godziną 7:45 a 8:15.',
     ],
     'romania' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'russia' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'serbia' => [
         'frequency' => 'Dzień powszedni o 8:00 czasu środkowoeuropejskiego (CET). W weekendy i święta wykaz ' .
             'kursów walut z ostatniego dnia roboczego.',
     ],
     'sweden' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'switzerland' => [
         'frequency' => 'Dzień powszedni o 11:00 czasu środkowoeuropejskiego (CET)',
     ],
     'turkey' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
     'ukraine' => [
-        'frequency' => '',
+        'frequency' => 'Codziennie w dni robocze',
     ],
 ];
