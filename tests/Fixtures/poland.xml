@@ -1,0 +1,14 @@
+<tabela_kursow typ="A">
+  <numer_tabeli>001/A/NBP/2021</numer_tabeli>
+  <data_publikacji>2021-09-24</data_publikacji>
+  <pozycja>
+    <kod_waluty>USD</kod_waluty>
+    <przelicznik>1</przelicznik>
+    <kurs_sredni>3,9500</kurs_sredni>
+  </pozycja>
+  <pozycja>
+    <kod_waluty>JPY</kod_waluty>
+    <przelicznik>100</przelicznik>
+    <kurs_sredni>3,5000</kurs_sredni>
+  </pozycja>
+</tabela_kursow>

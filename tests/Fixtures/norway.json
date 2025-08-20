@@ -1,0 +1,24 @@
+{
+  "meta": { "id": "EXR" },
+  "data": {
+    "structure": {
+      "dimensions": {
+        "observation": [
+          { "id": "TIME_PERIOD", "values": [ { "id": "0", "name": "2021-09-24" } ] }
+        ],
+        "series": [
+          {},
+          { "values": [ { "id": "USD" }, { "id": "JPY" } ] }
+        ]
+      }
+    },
+    "dataSets": [
+      {
+        "series": {
+          "0:0:0:0": { "attributes": [0,0,0,0], "observations": { "0": [8.5] } },
+          "0:1:0:0": { "attributes": [0,0,1,0], "observations": { "0": [95.0] } }
+        }
+      }
+    ]
+  }
+}
