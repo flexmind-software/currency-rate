@@ -408,6 +408,15 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
 
+### Adding new locales
+
+Translations for driver descriptions live in `resources/langs/{locale}/description.php`.
+To contribute a new locale:
+
+1. Create a new directory for the locale under `resources/langs` (for example `es` for Spanish).
+2. Copy `resources/langs/en/description.php` into that directory and translate the strings.
+3. Submit a pull request with the new translation file.
+
 ## Credits
 
 - [Krzysztof Bielecki](https://github.com/qwerkon)
