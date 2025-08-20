@@ -24,7 +24,7 @@ class AlbaniaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'albania';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::ALL;
     /**
@@ -114,16 +114,25 @@ class AlbaniaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Bankës së Shqipërisë';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bankofalbania.org/home/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.albania.frequency');

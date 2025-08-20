@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Queue;
 
 class MultipleDriversCommandTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function setUp(): void
     {
         parent::setUp();
@@ -28,7 +31,10 @@ class MultipleDriversCommandTest extends TestCase
         config(['currency-rate.drivers' => [FakeDriver::DRIVER_NAME, SecondFakeDriver::DRIVER_NAME]]);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @return void
+     */
     public function it_dispatches_jobs_for_all_drivers()
     {
         Queue::fake();
@@ -49,7 +55,10 @@ class MultipleDriversCommandTest extends TestCase
         });
     }
 
-    /** @test */
+    /**
+     * @test
+     * @return void
+     */
     public function it_saves_rates_from_all_drivers()
     {
         Http::fake([
@@ -67,7 +76,10 @@ class MultipleDriversCommandTest extends TestCase
         $this->assertDatabaseHas('currency_rates', ['code' => 'GBP']);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @return void
+     */
     public function it_batches_jobs_when_no_queue_and_multiple_drivers()
     {
         Bus::fake();

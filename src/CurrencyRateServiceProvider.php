@@ -9,6 +9,10 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class CurrencyRateServiceProvider extends PackageServiceProvider
 {
+    /**
+     * @param Package $package
+     * @return void
+     */
     public function configurePackage(Package $package): void
     {
         /*
@@ -22,6 +26,9 @@ class CurrencyRateServiceProvider extends PackageServiceProvider
             ->hasCommand(CurrencyRateCommand::class);
     }
 
+    /**
+     * @return void
+     */
     public function packageRegistered(): void
     {
         $this->validateConfig();

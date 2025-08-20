@@ -25,7 +25,7 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'belarus';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::BYN;
     /**
@@ -81,16 +81,25 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Natsional\'nyy bank Respubliki Belarus\'';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.nbrb.by/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.belarus.frequency');

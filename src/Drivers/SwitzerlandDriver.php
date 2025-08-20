@@ -20,7 +20,7 @@ class SwitzerlandDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'switzerland';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::CHF;
 
@@ -67,16 +67,25 @@ class SwitzerlandDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Swiss National Bank';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.snb.ch/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.switzerland.frequency');

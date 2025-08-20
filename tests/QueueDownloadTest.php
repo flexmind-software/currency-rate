@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Log;
 
 class QueueDownloadTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function setUp(): void
     {
         parent::setUp();
@@ -20,7 +23,10 @@ class QueueDownloadTest extends TestCase
         CurrencyRate::extend('fake', fn () => new FakeDriver());
     }
 
-    /** @test */
+    /**
+     * @test
+     * @return void
+     */
     public function it_handles_job_without_errors()
     {
         Http::fake([
@@ -33,7 +39,10 @@ class QueueDownloadTest extends TestCase
         $this->assertTrue(true);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @return void
+     */
     public function handle_logs_exception()
     {
         Log::shouldReceive('error')->once();

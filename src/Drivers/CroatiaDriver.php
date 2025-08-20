@@ -23,7 +23,7 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'croatia';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::HRK;
 
@@ -125,16 +125,25 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Hrvatska Narodna Banka';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.hnb.hr/home';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.croatia.frequency');

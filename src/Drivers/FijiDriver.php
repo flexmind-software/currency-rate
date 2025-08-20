@@ -20,7 +20,7 @@ class FijiDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'fiji';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::FJD;
 
@@ -103,16 +103,25 @@ class FijiDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Reserve Bank of Fiji';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.rbf.gov.fj/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.fiji.frequency');

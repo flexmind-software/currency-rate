@@ -22,7 +22,7 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'england';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::GBP;
 
@@ -138,16 +138,25 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
         return $map[$currencyName] ?? null;
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Bank of England';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bankofengland.co.uk/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.england.frequency');

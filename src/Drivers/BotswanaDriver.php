@@ -21,7 +21,7 @@ class BotswanaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'botswana';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::BWP;
 
@@ -98,16 +98,25 @@ class BotswanaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Bank of Botswana';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bankofbotswana.bw';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.botswana.frequency');

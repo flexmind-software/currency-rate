@@ -14,8 +14,14 @@ class FakeDriver extends BaseDriver implements CurrencyInterface
 
     public const DRIVER_NAME = 'fake';
     public const URI = 'https://example.com/rates';
+    /**
+     * @var CurrencyCode
+     */
     public CurrencyCode $currency = CurrencyCode::EUR;
 
+    /**
+     * @return self
+     */
     public function grabExchangeRates(): self
     {
         $this->fetch(static::URI);
@@ -32,16 +38,25 @@ class FakeDriver extends BaseDriver implements CurrencyInterface
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Fake Driver';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://example.com';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return '';

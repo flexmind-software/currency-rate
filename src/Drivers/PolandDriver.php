@@ -20,7 +20,7 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'poland';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::PLN;
 
@@ -81,16 +81,25 @@ class PolandDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Narodowy Bank Polski';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.nbp.pl/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.poland.frequency');

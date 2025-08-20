@@ -22,7 +22,7 @@ class BceaoDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'bceao';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::XOF;
     /**
@@ -129,16 +129,25 @@ class BceaoDriver extends BaseDriver implements CurrencyInterface
         return $currencyList[$name] ?? $name;
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'BCEAO | Banque Centrale des Etats de l’Afrique de l’Ouest';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bceao.int';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.bceao.frequency');

@@ -21,7 +21,7 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'european-central-bank';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::EUR;
 
@@ -63,16 +63,25 @@ class EuropeanCentralBankDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'European Central Bank';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.ecb.europa.eu/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.european-central-bank.frequency');

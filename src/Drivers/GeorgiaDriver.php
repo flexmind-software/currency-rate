@@ -23,7 +23,7 @@ class GeorgiaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'georgia';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::GEL;
 
@@ -105,16 +105,25 @@ class GeorgiaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'The National Bank of Georgia';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://nbg.gov.ge/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.georgia.frequency');

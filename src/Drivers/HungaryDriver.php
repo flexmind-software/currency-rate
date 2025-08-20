@@ -22,7 +22,7 @@ class HungaryDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'hungary';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::HUF;
 
@@ -108,16 +108,25 @@ class HungaryDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Magyar Nemzeti Bank';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.mnb.hu/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.hungary.frequency');

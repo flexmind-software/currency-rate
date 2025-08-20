@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 
 class RateTraitTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function setUp(): void
     {
         parent::setUp();
@@ -35,7 +38,10 @@ class RateTraitTest extends TestCase
 
     }
 
-    /** @test */
+    /**
+     * @test
+     * @return void
+     */
     public function it_calculates_exchange_rate()
     {
         $driver = new TestDriver();
@@ -45,7 +51,10 @@ class RateTraitTest extends TestCase
         $this->assertEquals(1.2 / 4.5, $rate);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @return void
+     */
     public function it_uses_base_currency_when_calculating()
     {
         $driver = new TestDriver();
@@ -55,7 +64,10 @@ class RateTraitTest extends TestCase
         $this->assertEquals(1 / 4.5, $rate);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @return void
+     */
     public function it_accepts_string_currency_codes()
     {
         $driver = new TestDriver();
@@ -65,7 +77,10 @@ class RateTraitTest extends TestCase
         $this->assertEquals(1.2 / 4.5, $rate);
     }
 
-    /** @test */
+    /**
+     * @test
+     * @return void
+     */
     public function it_caches_results_within_request()
     {
         $reflection = new \ReflectionClass(TestDriver::class);

@@ -25,7 +25,7 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'armenia';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::AMD;
 
@@ -100,16 +100,25 @@ class ArmeniaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Hayastani Hanrapetut’yan Kentronakan Bank';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.cba.am/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.armenia.frequency');

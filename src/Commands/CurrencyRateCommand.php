@@ -25,6 +25,9 @@ class CurrencyRateCommand extends Command
 
     public $description = 'Download and save into database currency rates from different national bank';
 
+    /**
+     * @return int
+     */
     public function handle(): int
     {
         $currencyDate = $this->argument('date');

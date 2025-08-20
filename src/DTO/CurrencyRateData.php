@@ -4,6 +4,14 @@ namespace FlexMindSoftware\CurrencyRate\DTO;
 
 class CurrencyRateData
 {
+    /**
+     * @param string $driver
+     * @param string $code
+     * @param string $date
+     * @param float $rate
+     * @param float $multiplier
+     * @param string|null $no
+     */
     public function __construct(
         public string $driver,
         public string $code,
@@ -14,6 +22,9 @@ class CurrencyRateData
     ) {
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         return [
@@ -26,6 +37,10 @@ class CurrencyRateData
         ];
     }
 
+    /**
+     * @param array<string, mixed> $data
+     * @return self
+     */
     public static function fromArray(array $data): self
     {
         return new self(

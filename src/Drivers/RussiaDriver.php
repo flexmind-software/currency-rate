@@ -20,7 +20,7 @@ class RussiaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'russia';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::RUB;
 
@@ -89,16 +89,25 @@ class RussiaDriver extends BaseDriver implements CurrencyInterface
         }, $this->data);
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Central Bank of the Russian Federation';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.cbr.ru/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.russia.frequency');

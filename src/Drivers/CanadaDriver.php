@@ -23,7 +23,7 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'canada';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::CAD;
     /**
@@ -92,16 +92,25 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Banqueu du Canada';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bankofcanada.ca/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.canada.frequency');

@@ -19,7 +19,7 @@ class AustraliaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'australia';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::AUD;
 
@@ -73,16 +73,25 @@ class AustraliaDriver extends BaseDriver implements CurrencyInterface
         $this->data = $currencyList;
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Reserve Bank of Australia';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.rba.gov.au/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.australia.frequency');
