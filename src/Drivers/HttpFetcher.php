@@ -3,6 +3,7 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use GuzzleHttp\Psr7\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Psr\Http\Client\ClientInterface;
 use SimpleXMLElement;
@@ -18,19 +19,38 @@ trait HttpFetcher
 
     protected function fetch(string $url, array $query = []): ?string
     {
+        ksort($query);
+        $key = 'currency-rate:' . $url . (empty($query) ? '' : '?' . http_build_query($query));
+
+        if (Cache::has($key)) {
+            return Cache::get($key);
+        }
+
+        $body = null;
+
         if ($this->httpClient) {
+            // Ścieżka PSR-18
             $uri = $url . (empty($query) ? '' : '?' . http_build_query($query));
             $request = new Request('GET', $uri);
             $response = $this->httpClient->sendRequest($request);
 
-            return $response->getStatusCode() >= 200 && $response->getStatusCode() < 300
-                ? (string) $response->getBody()
-                : null;
+            if ($response->getStatusCode() >= 200 && $response->getStatusCode() < 300) {
+                $body = (string) $response->getBody();
+            }
+        } else {
+            // Domyślnie Laravel HTTP client
+            $response = Http::get($url, $query);
+            if ($response->ok()) {
+                $body = $response->body();
+            }
         }
 
-        $response = Http::get($url, $query);
+        if ($body !== null) {
+            Cache::put($key, $body, config('currency-rate.cache-ttl'));
+            return $body;
+        }
 
-        return $response->ok() ? $response->body() : null;
+        return null;
     }
 
     protected function parseXml(

@@ -4,6 +4,7 @@ namespace FlexMindSoftware\CurrencyRate\Tests;
 
 use FlexMindSoftware\CurrencyRate\Drivers\HttpFetcher;
 use GuzzleHttp\Psr7\Response;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestInterface;
@@ -11,6 +12,16 @@ use Psr\Http\Message\ResponseInterface;
 
 class HttpFetcherTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+        Cache::flush();
+    }
+
+    /**
+     * Helper: zwraca klasę-anonimową z traitem.
+     * Jeśli przekażesz $client, trafi do traitowego __construct.
+     */
     private function fetcher(?ClientInterface $client = null)
     {
         return new class ($client) {
@@ -50,6 +61,7 @@ class HttpFetcherTest extends TestCase
         $client = new class () implements ClientInterface {
             public function sendRequest(RequestInterface $request): ResponseInterface
             {
+                // upewnijmy się, że PSR-18 ścieżka jest używana
                 return new Response(200, [], 'psr-18');
             }
         };
@@ -60,6 +72,24 @@ class HttpFetcherTest extends TestCase
     }
 
     /** @test */
+    public function fetch_caches_successful_response()
+    {
+        Http::fakeSequence()
+            ->push('content', 200)
+            ->push('new-content', 200);
+
+        $fetcher = $this->fetcher();
+
+        // pierwszy call zapisuje do cache
+        $this->assertEquals('content', $fetcher->callFetch('https://example.com/test', ['a' => 1]));
+        // drugi call z tym samym query powinien wyciągnąć z cache
+        $this->assertEquals('content', $fetcher->callFetch('https://example.com/test', ['a' => 1]));
+
+        // tylko jedno realne żądanie HTTP
+        Http::assertSentCount(1);
+    }
+
+    /** @test */
     public function parse_xml_returns_simplexml_element()
     {
         $fetcher = $this->fetcher();
@@ -67,7 +97,7 @@ class HttpFetcherTest extends TestCase
         $xml = '<root><item>value</item></root>';
         $parsed = $fetcher->callParseXml($xml);
 
-        $this->assertEquals('value', (string)$parsed->item);
+        $this->assertEquals('value', (string) $parsed->item);
     }
 
     /** @test */

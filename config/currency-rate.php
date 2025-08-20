@@ -36,5 +36,6 @@ return [
         'turkey',
         'ukraine',
     ],
-    'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates')
+    'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates'),
+    'cache-ttl' => env('FLEXMIND_CURRENCY_RATE_CACHE_TTL', 3600),
 ];
