@@ -106,36 +106,36 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
 
     private function currencyMap(string $currencyName)
     {
-          $map = [
-              'Australian Dollar' => CurrencyCode::AUD->value,
-              'Canadian Dollar' => CurrencyCode::CAD->value,
-              'Chinese Yuan' => CurrencyCode::CNY->value,
-              'Czech Koruna' => CurrencyCode::CZK->value,
-              'Danish Krone' => CurrencyCode::DKK->value,
-              'Euro' => CurrencyCode::EUR->value,
-              'Hong Kong Dollar' => CurrencyCode::HKD->value,
-              'Hungarian Forint' => CurrencyCode::HUF->value,
-              'Indian Rupee' => CurrencyCode::INR->value,
-              'Israeli Shekel' => CurrencyCode::ILS->value,
-              'Japanese Yen' => CurrencyCode::JPY->value,
-              'Malaysian ringgit' => CurrencyCode::MYR->value,
-              'New Zealand Dollar' => CurrencyCode::NZD->value,
-              'Norwegian Krone' => CurrencyCode::NOK->value,
-              'Polish Zloty' => CurrencyCode::PLN->value,
-              'Russian Ruble' => CurrencyCode::RUB->value,
-              'Saudi Riyal' => CurrencyCode::SAR->value,
-              'Singapore Dollar' => CurrencyCode::SGD->value,
-              'South African Rand' => CurrencyCode::ZAR->value,
-              'South Korean Won' => CurrencyCode::KRW->value,
-              'Swedish Krona' => CurrencyCode::SEK->value,
-              'Swiss Franc' => CurrencyCode::CHF->value,
-              'Taiwan Dollar' => CurrencyCode::TWD->value,
-              'Thai Baht' => CurrencyCode::THB->value,
-              'Turkish Lira' => CurrencyCode::TRY->value,
-              'US Dollar' => CurrencyCode::USD->value,
-          ];
+        $map = [
+            'Australian Dollar' => CurrencyCode::AUD->value,
+            'Canadian Dollar' => CurrencyCode::CAD->value,
+            'Chinese Yuan' => CurrencyCode::CNY->value,
+            'Czech Koruna' => CurrencyCode::CZK->value,
+            'Danish Krone' => CurrencyCode::DKK->value,
+            'Euro' => CurrencyCode::EUR->value,
+            'Hong Kong Dollar' => CurrencyCode::HKD->value,
+            'Hungarian Forint' => CurrencyCode::HUF->value,
+            'Indian Rupee' => CurrencyCode::INR->value,
+            'Israeli Shekel' => CurrencyCode::ILS->value,
+            'Japanese Yen' => CurrencyCode::JPY->value,
+            'Malaysian ringgit' => CurrencyCode::MYR->value,
+            'New Zealand Dollar' => CurrencyCode::NZD->value,
+            'Norwegian Krone' => CurrencyCode::NOK->value,
+            'Polish Zloty' => CurrencyCode::PLN->value,
+            'Russian Ruble' => CurrencyCode::RUB->value,
+            'Saudi Riyal' => CurrencyCode::SAR->value,
+            'Singapore Dollar' => CurrencyCode::SGD->value,
+            'South African Rand' => CurrencyCode::ZAR->value,
+            'South Korean Won' => CurrencyCode::KRW->value,
+            'Swedish Krona' => CurrencyCode::SEK->value,
+            'Swiss Franc' => CurrencyCode::CHF->value,
+            'Taiwan Dollar' => CurrencyCode::TWD->value,
+            'Thai Baht' => CurrencyCode::THB->value,
+            'Turkish Lira' => CurrencyCode::TRY->value,
+            'US Dollar' => CurrencyCode::USD->value,
+        ];
 
-          return $map[$currencyName] ?? null;
+        return $map[$currencyName] ?? null;
     }
 
     public function fullName(): string

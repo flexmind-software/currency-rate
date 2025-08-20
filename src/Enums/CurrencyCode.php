@@ -55,4 +55,3 @@ enum CurrencyCode: string
     case BWP = 'BWP';
     case FJD = 'FJD';
 }
-
