@@ -4,7 +4,7 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DOMElement;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use Illuminate\Support\Facades\Http;
 
@@ -23,7 +23,7 @@ class IcelandDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_ISK;
+    public CurrencyCode $currency = CurrencyCode::ISK;
 
     /**
      * @var array

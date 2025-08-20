@@ -7,7 +7,7 @@ use DateTime;
 use DOMNodeList;
 use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use Illuminate\Support\Facades\Http;
 
@@ -26,7 +26,7 @@ class AlbaniaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_ALL;
+    public CurrencyCode $currency = CurrencyCode::ALL;
     /**
      * @var DOMNodeList|false
      */

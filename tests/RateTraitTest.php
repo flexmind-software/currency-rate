@@ -3,7 +3,7 @@
 namespace FlexMindSoftware\CurrencyRate\Tests;
 
 use DateTime;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 
 class RateTraitTest extends TestCase
@@ -18,7 +18,7 @@ class RateTraitTest extends TestCase
         CurrencyRate::create([
             'driver' => TestDriver::DRIVER_NAME,
             'date' => '2021-01-01',
-            'code' => Currency::CUR_USD,
+            'code' => CurrencyCode::USD->value,
             'rate' => 1.2,
             'multiplier' => 1,
         ]);
@@ -26,7 +26,7 @@ class RateTraitTest extends TestCase
         CurrencyRate::create([
             'driver' => TestDriver::DRIVER_NAME,
             'date' => '2021-01-01',
-            'code' => Currency::CUR_PLN,
+            'code' => CurrencyCode::PLN->value,
             'rate' => 4.5,
             'multiplier' => 1,
         ]);
@@ -38,7 +38,7 @@ class RateTraitTest extends TestCase
     {
         $driver = new TestDriver();
 
-        $rate = $driver->rate(Currency::CUR_USD, Currency::CUR_PLN, new DateTime('2021-01-01'));
+        $rate = $driver->rate(CurrencyCode::USD, CurrencyCode::PLN, new DateTime('2021-01-01'));
 
         $this->assertEquals(1.2 / 4.5, $rate);
     }
@@ -48,9 +48,19 @@ class RateTraitTest extends TestCase
     {
         $driver = new TestDriver();
 
-        $rate = $driver->rate(Currency::CUR_EUR, Currency::CUR_PLN, new DateTime('2021-01-01'));
+        $rate = $driver->rate(CurrencyCode::EUR, CurrencyCode::PLN, new DateTime('2021-01-01'));
 
         $this->assertEquals(1 / 4.5, $rate);
+    }
+
+    /** @test */
+    public function it_accepts_string_currency_codes()
+    {
+        $driver = new TestDriver();
+
+        $rate = $driver->rate(CurrencyCode::USD->value, CurrencyCode::PLN->value, new DateTime('2021-01-01'));
+
+        $this->assertEquals(1.2 / 4.5, $rate);
     }
 }
 
@@ -60,5 +70,5 @@ class TestDriver
 
     public const DRIVER_NAME = 'test-driver';
 
-    public string $currency = Currency::CUR_EUR;
+    public CurrencyCode $currency = CurrencyCode::EUR;
 }

@@ -4,7 +4,7 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
 /**
@@ -27,7 +27,7 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_BYN;
+    public CurrencyCode $currency = CurrencyCode::BYN;
     /**
      * @var string
      */

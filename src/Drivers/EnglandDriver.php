@@ -6,7 +6,7 @@ use DateInterval;
 use DateTime;
 use DOMNodeList;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
 class EnglandDriver extends BaseDriver implements CurrencyInterface
@@ -24,7 +24,7 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_GBP;
+    public CurrencyCode $currency = CurrencyCode::GBP;
 
     /**
      * @var string
@@ -107,32 +107,32 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
     private function currencyMap(string $currencyName)
     {
         $map = [
-            'Australian Dollar' => Currency::CUR_AUD,
-            'Canadian Dollar' => Currency::CUR_CAD,
-            'Chinese Yuan' => Currency::CUR_CNY,
-            'Czech Koruna' => Currency::CUR_CZK,
-            'Danish Krone' => Currency::CUR_DKK,
-            'Euro' => Currency::CUR_EUR,
-            'Hong Kong Dollar' => Currency::CUR_HKD,
-            'Hungarian Forint' => Currency::CUR_HUF,
-            'Indian Rupee' => Currency::CUR_INR,
-            'Israeli Shekel' => Currency::CUR_ILS,
-            'Japanese Yen' => Currency::CUR_JPY,
-            'Malaysian ringgit' => Currency::CUR_MYR,
-            'New Zealand Dollar' => Currency::CUR_NZD,
-            'Norwegian Krone' => Currency::CUR_NOK,
-            'Polish Zloty' => Currency::CUR_PLN,
-            'Russian Ruble' => Currency::CUR_RUB,
-            'Saudi Riyal' => Currency::CUR_SAR,
-            'Singapore Dollar' => Currency::CUR_SGD,
-            'South African Rand' => Currency::CUR_ZAR,
-            'South Korean Won' => Currency::CUR_KRW,
-            'Swedish Krona' => Currency::CUR_SEK,
-            'Swiss Franc' => Currency::CUR_CHF,
-            'Taiwan Dollar' => Currency::CUR_TWD,
-            'Thai Baht' => Currency::CUR_THB,
-            'Turkish Lira' => Currency::CUR_TRY,
-            'US Dollar' => Currency::CUR_USD,
+            'Australian Dollar' => CurrencyCode::AUD->value,
+            'Canadian Dollar' => CurrencyCode::CAD->value,
+            'Chinese Yuan' => CurrencyCode::CNY->value,
+            'Czech Koruna' => CurrencyCode::CZK->value,
+            'Danish Krone' => CurrencyCode::DKK->value,
+            'Euro' => CurrencyCode::EUR->value,
+            'Hong Kong Dollar' => CurrencyCode::HKD->value,
+            'Hungarian Forint' => CurrencyCode::HUF->value,
+            'Indian Rupee' => CurrencyCode::INR->value,
+            'Israeli Shekel' => CurrencyCode::ILS->value,
+            'Japanese Yen' => CurrencyCode::JPY->value,
+            'Malaysian ringgit' => CurrencyCode::MYR->value,
+            'New Zealand Dollar' => CurrencyCode::NZD->value,
+            'Norwegian Krone' => CurrencyCode::NOK->value,
+            'Polish Zloty' => CurrencyCode::PLN->value,
+            'Russian Ruble' => CurrencyCode::RUB->value,
+            'Saudi Riyal' => CurrencyCode::SAR->value,
+            'Singapore Dollar' => CurrencyCode::SGD->value,
+            'South African Rand' => CurrencyCode::ZAR->value,
+            'South Korean Won' => CurrencyCode::KRW->value,
+            'Swedish Krona' => CurrencyCode::SEK->value,
+            'Swiss Franc' => CurrencyCode::CHF->value,
+            'Taiwan Dollar' => CurrencyCode::TWD->value,
+            'Thai Baht' => CurrencyCode::THB->value,
+            'Turkish Lira' => CurrencyCode::TRY->value,
+            'US Dollar' => CurrencyCode::USD->value,
         ];
 
         return $map[$currencyName] ?? null;

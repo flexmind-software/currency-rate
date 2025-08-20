@@ -3,7 +3,7 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use SimpleXLSX;
 
@@ -22,18 +22,18 @@ class FijiDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_FJD;
+    public CurrencyCode $currency = CurrencyCode::FJD;
 
     /**
      * @var array
      */
     private array $currencyMap = [
-        "YEN" => Currency::CUR_CNY,
-        "CHF" => Currency::CUR_CHF,
-        "A$" => Currency::CUR_AUD,
-        "NZ$" => Currency::CUR_NZD,
-        "US$" => Currency::CUR_USD,
-        "EURO" => Currency::CUR_EUR,
+        "YEN" => CurrencyCode::CNY,
+        "CHF" => CurrencyCode::CHF,
+        "A$" => CurrencyCode::AUD,
+        "NZ$" => CurrencyCode::NZD,
+        "US$" => CurrencyCode::USD,
+        "EURO" => CurrencyCode::EUR,
     ];
 
     /**
@@ -91,7 +91,7 @@ class FijiDriver extends BaseDriver implements CurrencyInterface
                     if (! blank($headers[$i])) {
                         $this->data[] = [
                             'no' => null,
-                            'code' => $headers[$i],
+                              'code' => $headers[$i]?->value,
                             'date' => date('Y-m-d', strtotime($items[0])),
                             'driver' => static::DRIVER_NAME,
                             'multiplier' => $this->stringToFloat(1),
