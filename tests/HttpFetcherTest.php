@@ -56,6 +56,44 @@ class HttpFetcherTest extends TestCase
     }
 
     /** @test */
+    public function fetch_retries_on_failure_and_returns_body()
+    {
+        Http::fake([
+            'example.com/*' => Http::sequence()
+                ->push('error', 500)
+                ->push('content', 200),
+        ]);
+
+        config()->set('currency-rate.retry.count', 3);
+        config()->set('currency-rate.retry.sleep', 0);
+        config()->set('currency-rate.retry.factor', 1);
+
+        $fetcher = $this->fetcher();
+
+        $this->assertEquals('content', $fetcher->callFetch('https://example.com/test'));
+        Http::assertSentCount(2);
+    }
+
+    /** @test */
+    public function fetch_returns_null_after_all_retries_fail()
+    {
+        Http::fake([
+            'example.com/*' => Http::sequence()
+                ->push('error', 500)
+                ->push('error', 500),
+        ]);
+
+        config()->set('currency-rate.retry.count', 2);
+        config()->set('currency-rate.retry.sleep', 0);
+        config()->set('currency-rate.retry.factor', 1);
+
+        $fetcher = $this->fetcher();
+
+        $this->assertNull($fetcher->callFetch('https://example.com/test'));
+        Http::assertSentCount(2);
+    }
+
+    /** @test */
     public function fetch_uses_injected_client_when_provided()
     {
         $client = new class () implements ClientInterface {

@@ -2,6 +2,7 @@
 
 return [
     'driver' => env('FLEXMIND_CURRENCY_RATE_DRIVER', 'european-central-bank'),
+
     'drivers' => [
         'albania',
         'armenia',
@@ -36,6 +37,14 @@ return [
         'turkey',
         'ukraine',
     ],
+
     'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates'),
+
     'cache-ttl' => env('FLEXMIND_CURRENCY_RATE_CACHE_TTL', 3600),
+
+    'retry' => [
+        'count'  => (int) env('FLEXMIND_CURRENCY_RATE_RETRY_COUNT', 3), 
+        'sleep'  => (int) env('FLEXMIND_CURRENCY_RATE_RETRY_SLEEP', 1000),
+        'factor' => (int) env('FLEXMIND_CURRENCY_RATE_RETRY_FACTOR', 2),
+    ],
 ];
