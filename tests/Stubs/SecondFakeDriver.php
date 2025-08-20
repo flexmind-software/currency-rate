@@ -4,6 +4,7 @@ namespace FlexMindSoftware\CurrencyRate\Tests\Stubs;
 
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Drivers\BaseDriver;
+use FlexMindSoftware\CurrencyRate\DTO\CurrencyRateData;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
@@ -19,14 +20,14 @@ class SecondFakeDriver extends BaseDriver implements CurrencyInterface
     {
         $this->fetch(static::URI);
 
-        $this->data[] = [
-            'driver' => self::DRIVER_NAME,
-            'code' => 'GBP',
-            'date' => '2023-10-01',
-            'rate' => 1.2,
-            'multiplier' => 1,
-            'no' => null,
-        ];
+        $this->data[] = new CurrencyRateData(
+            driver: self::DRIVER_NAME,
+            code: 'GBP',
+            date: '2023-10-01',
+            rate: 1.2,
+            multiplier: 1,
+            no: null,
+        );
 
         return $this;
     }

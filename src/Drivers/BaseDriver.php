@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use DOMDocument;
 use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\DriverMetadata;
+use FlexMindSoftware\CurrencyRate\DTO\CurrencyRateData;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -34,7 +35,7 @@ abstract class BaseDriver implements DriverMetadata
     protected array $config;
 
     /**
-     * @var array
+     * @var array<int, array|CurrencyRateData>
      */
     protected array $data = [];
     /**
@@ -86,11 +87,21 @@ abstract class BaseDriver implements DriverMetadata
     }
 
     /**
-     * @return array
+     * @return CurrencyRateData[]
      */
     public function retrieveData(): array
     {
-        return $this->data;
+        $data = is_array($this->data) ? $this->data : [$this->data];
+
+        if (isset($data['code'])) {
+            $data = [$data];
+        } elseif (array_is_list($data) === false) {
+            $data = array_values($data);
+        }
+
+        return array_map(function ($item) {
+            return $item instanceof CurrencyRateData ? $item : CurrencyRateData::fromArray($item);
+        }, $data);
     }
 
     /**
@@ -113,12 +124,17 @@ abstract class BaseDriver implements DriverMetadata
     {
         if ($this->data) {
             $columns = ['driver', 'code', 'date', 'no'];
-            $chunks = array_chunk($this->data, 50);
+            $dataset = $this->data instanceof CurrencyRateData ? [$this->data] : $this->data;
+            $chunks = array_chunk($dataset, 50);
 
             foreach ($chunks as $chunk) {
+                $mapped = array_map(function ($item) {
+                    return $item instanceof CurrencyRateData ? $item->toArray() : $item;
+                }, $chunk);
+
                 try {
-                    DB::transaction(function () use ($chunk, $columns) {
-                        CurrencyRate::upsert($chunk, $columns, ['rate', 'multiplier']);
+                    DB::transaction(function () use ($mapped, $columns) {
+                        CurrencyRate::upsert($mapped, $columns, ['rate', 'multiplier']);
                     });
                 } catch (\Throwable $e) {
                     Log::error('CurrencyRate upsert failed', ['exception' => $e]);
@@ -178,11 +194,13 @@ abstract class BaseDriver implements DriverMetadata
         $formatDate = $this->date->format($dateFormat);
 
         foreach ($this->data ?? [] as $data) {
-            if (empty($data[$label]) || $data[$label] !== $formatDate) {
+            $value = $data instanceof CurrencyRateData ? $data->{$label} : ($data[$label] ?? null);
+
+            if ($value !== $formatDate) {
                 continue;
             }
 
-            $this->data = $data;
+            $this->data = [$data];
         }
     }
 }

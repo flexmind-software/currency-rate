@@ -2,6 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Tests;
 
+use FlexMindSoftware\CurrencyRate\DTO\CurrencyRateData;
 use FlexMindSoftware\CurrencyRate\Events\CurrencyRateSaved;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use Illuminate\Support\Facades\Event;
@@ -22,22 +23,22 @@ class CurrencyRateSaveInTest extends TestCase
         Event::fake();
 
         $data = [
-            [
-                'driver' => 'test',
-                'code' => 'USD',
-                'date' => '2023-10-01',
-                'rate' => 1.1,
-                'multiplier' => 1,
-                'no' => null,
-            ],
-            [
-                'driver' => 'test',
-                'code' => 'PLN',
-                'date' => '2023-10-01',
-                'rate' => 4.4,
-                'multiplier' => 1,
-                'no' => null,
-            ],
+            new CurrencyRateData(
+                driver: 'test',
+                code: 'USD',
+                date: '2023-10-01',
+                rate: 1.1,
+                multiplier: 1,
+                no: null,
+            ),
+            new CurrencyRateData(
+                driver: 'test',
+                code: 'PLN',
+                date: '2023-10-01',
+                rate: 4.4,
+                multiplier: 1,
+                no: null,
+            ),
         ];
 
         CurrencyRate::saveIn($data, 'testing');
@@ -46,7 +47,9 @@ class CurrencyRateSaveInTest extends TestCase
         $this->assertDatabaseHas('currency_rates', ['code' => 'PLN']);
 
         Event::assertDispatched(CurrencyRateSaved::class, function ($event) use ($data) {
-            return $event->rates === $data;
+            $expected = array_map(fn ($d) => $d->toArray(), $data);
+
+            return $event->rates === $expected;
         });
     }
 }

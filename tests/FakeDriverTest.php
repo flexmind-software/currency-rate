@@ -27,7 +27,7 @@ class FakeDriverTest extends TestCase
 
         $data = $driver->retrieveData();
 
-        $this->assertEquals('USD', $data[0]['code']);
-        $this->assertEquals(1.1, $data[0]['rate']);
+        $this->assertEquals('USD', $data[0]->code);
+        $this->assertEquals(1.1, $data[0]->rate);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace FlexMindSoftware\CurrencyRate\Models;
 
+use FlexMindSoftware\CurrencyRate\DTO\CurrencyRateData;
 use FlexMindSoftware\CurrencyRate\Events\CurrencyRateSaved;
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,7 +36,7 @@ class CurrencyRate extends Model
     ];
 
     /**
-     * @param array $data
+     * @param CurrencyRateData[] $data
      * @param string $connection
      */
     public static function saveIn(array $data, string $connection = 'default')
@@ -49,10 +50,14 @@ class CurrencyRate extends Model
             }
 
             foreach ($chunks as $chunk) {
-                static::on($connection)
-                    ->upsert($chunk, $columns, ['rate', 'no', 'multiplier']);
+                $mapped = array_map(function ($item) {
+                    return $item instanceof CurrencyRateData ? $item->toArray() : $item;
+                }, $chunk);
 
-                event(new CurrencyRateSaved($chunk));
+                static::on($connection)
+                    ->upsert($mapped, $columns, ['rate', 'no', 'multiplier']);
+
+                event(new CurrencyRateSaved($mapped));
             }
         }
     }
