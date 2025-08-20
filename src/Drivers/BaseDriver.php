@@ -7,6 +7,9 @@ use DOMDocument;
 use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\DriverMetadata;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Psr\Http\Client\ClientInterface;
 
 abstract class BaseDriver implements DriverMetadata
 {
@@ -49,8 +52,9 @@ abstract class BaseDriver implements DriverMetadata
      */
     protected array $json;
 
-    public function __construct()
+    public function __construct(?ClientInterface $httpClient = null)
     {
+        $this->httpClient = $httpClient;
         $this->config = config('currency-rate');
         $this->lastDate = CurrencyRate::where('driver', static::DRIVER_NAME)->latest('date')->value('date');
     }
@@ -108,8 +112,15 @@ abstract class BaseDriver implements DriverMetadata
         if ($this->data) {
             $columns = ['driver', 'code', 'date', 'no'];
             $chunks = array_chunk($this->data, 50);
+
             foreach ($chunks as $chunk) {
-                CurrencyRate::upsert($chunk, $columns, ['rate', 'multiplier']);
+                try {
+                    DB::transaction(function () use ($chunk, $columns) {
+                        CurrencyRate::upsert($chunk, $columns, ['rate', 'multiplier']);
+                    });
+                } catch (\Throwable $e) {
+                    Log::error('CurrencyRate upsert failed', ['exception' => $e]);
+                }
             }
         }
     }
