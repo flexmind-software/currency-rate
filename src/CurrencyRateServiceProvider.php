@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate;
 
 use FlexMindSoftware\CurrencyRate\Commands\CurrencyRateCommand;
