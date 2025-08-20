@@ -11,6 +11,7 @@ class RateTraitTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
+        file_put_contents(__DIR__.'/../database/database.sqlite', '');
 
         $migration = include __DIR__.'/../database/migrations/create_currency_rate_table.php.stub';
         $migration->up();
