@@ -3,10 +3,17 @@
 namespace FlexMindSoftware\CurrencyRate\Tests;
 
 use FlexMindSoftware\CurrencyRate\Drivers\HttpFetcher;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 
 class HttpFetcherTest extends TestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+        Cache::flush();
+    }
+
     private function fetcher()
     {
         return new class () {
@@ -38,6 +45,21 @@ class HttpFetcherTest extends TestCase
 
         $fetcher = $this->fetcher();
         $this->assertEquals('content', $fetcher->callFetch('https://example.com/test'));
+    }
+
+    /** @test */
+    public function fetch_caches_successful_response()
+    {
+        Http::fakeSequence()
+            ->push('content', 200)
+            ->push('new-content', 200);
+
+        $fetcher = $this->fetcher();
+
+        $this->assertEquals('content', $fetcher->callFetch('https://example.com/test', ['a' => 1]));
+        $this->assertEquals('content', $fetcher->callFetch('https://example.com/test', ['a' => 1]));
+
+        Http::assertSentCount(1);
     }
 
     /** @test */

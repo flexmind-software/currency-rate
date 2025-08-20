@@ -67,13 +67,14 @@ return [
         'turkey',
         'ukraine',
     ],
-    'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates')
+    'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates'),
+    'cache-ttl' => env('FLEXMIND_CURRENCY_RATE_CACHE_TTL', 3600),
 ];
 ```
 
 The `drivers` array defines which currency rate providers are available when running
 the command with `--driver=all`. Add or remove entries from this list to customise
-the drivers used in your application. See [config/currency-rate.php](config/currency-rate.php) for additional configuration options.
+the drivers used in your application. See [config/currency-rate.php](config/currency-rate.php) for additional configuration options, including the cache TTL for HTTP requests.
 
 ### Available Drivers
 
