@@ -3,7 +3,7 @@
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
 class UkraineDriver extends BaseDriver implements CurrencyInterface
@@ -21,7 +21,7 @@ class UkraineDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_UAH;
+    public CurrencyCode $currency = CurrencyCode::UAH;
 
     /**
      * @var string

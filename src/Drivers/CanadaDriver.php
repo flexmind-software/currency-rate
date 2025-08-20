@@ -4,7 +4,7 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateInterval;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
 /**
@@ -25,7 +25,7 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_CAD;
+    public CurrencyCode $currency = CurrencyCode::CAD;
     /**
      * @var mixed
      */
@@ -76,7 +76,7 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
             foreach ($rates as $key => $rate) {
                 if (strpos($key, 'FX') !== false) {
                     $rowCurrency = str_replace('FX', '', $key);
-                    $rowCurrency = str_replace(Currency::CUR_CAD, '', $rowCurrency);
+                    $rowCurrency = str_replace(CurrencyCode::CAD->value, '', $rowCurrency);
 
                     $param = [];
                     $param['no'] = null;

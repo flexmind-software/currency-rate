@@ -4,7 +4,7 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateInterval;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use SoapClient;
 
@@ -23,7 +23,7 @@ class MacedoniaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_MKD;
+    public CurrencyCode $currency = CurrencyCode::MKD;
 
     /**
      * @var string

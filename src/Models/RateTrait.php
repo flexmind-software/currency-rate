@@ -3,15 +3,20 @@
 namespace FlexMindSoftware\CurrencyRate\Models;
 
 use DateTime;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 
 trait RateTrait
 {
-    public function rate(string $currencyFrom, string $currencyTo, DateTime $date)
+    public function rate(CurrencyCode|string $currencyFrom, CurrencyCode|string $currencyTo, DateTime $date)
     {
+        $currencyFrom = $currencyFrom instanceof CurrencyCode ? $currencyFrom->value : $currencyFrom;
+        $currencyTo = $currencyTo instanceof CurrencyCode ? $currencyTo->value : $currencyTo;
+        $baseCurrency = $this->currency instanceof CurrencyCode ? $this->currency->value : $this->currency;
+
         $rates = $this->retrieveDataToCalculation($currencyFrom, $currencyTo, $date);
 
-        $from = $currencyFrom == $this->currency ? 1 : ($rates['from'] ?? null);
-        $to = $currencyTo == $this->currency ? 1 : ($rates['to'] ?? null);
+        $from = $currencyFrom == $baseCurrency ? 1 : ($rates['from'] ?? null);
+        $to = $currencyTo == $baseCurrency ? 1 : ($rates['to'] ?? null);
 
         if ($from && $to) {
             return $to ? $from / $to : 0;
@@ -21,14 +26,17 @@ trait RateTrait
     }
 
     /**
-     * @param string $currencyFrom
-     * @param string $currencyTo
+     * @param CurrencyCode|string $currencyFrom
+     * @param CurrencyCode|string $currencyTo
      * @param DateTime $date
      *
      * @return array
      */
-    public function retrieveDataToCalculation(string $currencyFrom, string $currencyTo, DateTime $date): array
+    public function retrieveDataToCalculation(CurrencyCode|string $currencyFrom, CurrencyCode|string $currencyTo, DateTime $date): array
     {
+        $currencyFrom = $currencyFrom instanceof CurrencyCode ? $currencyFrom->value : $currencyFrom;
+        $currencyTo = $currencyTo instanceof CurrencyCode ? $currencyTo->value : $currencyTo;
+
         $row = CurrencyRate::where('driver', static::DRIVER_NAME)
             ->whereDate('date', $date->format('Y-m-d'))
             ->whereIn('code', [$currencyFrom, $currencyTo])

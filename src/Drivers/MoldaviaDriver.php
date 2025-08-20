@@ -5,7 +5,7 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 use DateTime;
 use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
 class MoldaviaDriver extends BaseDriver implements CurrencyInterface
@@ -23,7 +23,7 @@ class MoldaviaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_MDL;
+    public CurrencyCode $currency = CurrencyCode::MDL;
 
     /**
      * @var string

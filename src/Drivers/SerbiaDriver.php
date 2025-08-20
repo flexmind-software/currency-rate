@@ -5,7 +5,7 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 use DateTime;
 use DOMElement;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use GuzzleHttp\Cookie\CookieJar;
 use Illuminate\Support\Facades\Http;
@@ -26,7 +26,7 @@ class SerbiaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_RSD;
+    public CurrencyCode $currency = CurrencyCode::RSD;
 
     /**
      * @var string

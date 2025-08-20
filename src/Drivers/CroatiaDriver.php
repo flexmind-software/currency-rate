@@ -5,7 +5,7 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 use DateInterval;
 use DateTime;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 use Illuminate\Support\Facades\Http;
 use ZipArchive;
@@ -25,7 +25,7 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_HRK;
+    public CurrencyCode $currency = CurrencyCode::HRK;
 
     /**
      * @var array

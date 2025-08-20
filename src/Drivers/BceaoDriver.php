@@ -6,7 +6,7 @@ use DateInterval;
 use DOMElement;
 use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
-use FlexMindSoftware\CurrencyRate\Models\Currency;
+use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
 
 class BceaoDriver extends BaseDriver implements CurrencyInterface
@@ -24,7 +24,7 @@ class BceaoDriver extends BaseDriver implements CurrencyInterface
     /**
      * @var string
      */
-    public string $currency = Currency::CUR_XOF;
+    public CurrencyCode $currency = CurrencyCode::XOF;
     /**
      * @var DOMXPath
      */
@@ -105,25 +105,25 @@ class BceaoDriver extends BaseDriver implements CurrencyInterface
     private function currencyMap(string $name): string
     {
         $currencyList = [
-            'Couronne danoise' => Currency::CUR_DKK,
-            'Couronne suédoise' => Currency::CUR_SEK,
-            'Couronne norvégienne' => Currency::CUR_NOK,
-            'Couronne thèque' => Currency::CUR_DKK,
-            'Forint hongrois' => Currency::CUR_HUF,
-            'Zloty polonais' => Currency::CUR_PLN,
-            'Dollar australien' => Currency::CUR_AUD,
-            'Dollar néo-zélandais' => Currency::CUR_NZD,
-            'Rand sud-africain' => Currency::CUR_ZAR,
-            'Roupie Indienne' => Currency::CUR_INR,
-            'Baht thailandais' => Currency::CUR_THB,
-            'Real brésilien' => Currency::CUR_BRL,
-            'Dollar singapourien' => Currency::CUR_SGD,
-            'Nouvelle livre turque' => Currency::CUR_TRY,
-            'Nouveau Shekel' => Currency::CUR_ILS,
-            'Won Coréen' => Currency::CUR_KRW,
-            'Dollar Hong Kong' => Currency::CUR_HKD,
-            'Ryal Saudien' => Currency::CUR_SAR,
-            'Dinar Koweitien' => Currency::CUR_KWD,
+            'Couronne danoise' => CurrencyCode::DKK->value,
+            'Couronne suédoise' => CurrencyCode::SEK->value,
+            'Couronne norvégienne' => CurrencyCode::NOK->value,
+            'Couronne thèque' => CurrencyCode::DKK->value,
+            'Forint hongrois' => CurrencyCode::HUF->value,
+            'Zloty polonais' => CurrencyCode::PLN->value,
+            'Dollar australien' => CurrencyCode::AUD->value,
+            'Dollar néo-zélandais' => CurrencyCode::NZD->value,
+            'Rand sud-africain' => CurrencyCode::ZAR->value,
+            'Roupie Indienne' => CurrencyCode::INR->value,
+            'Baht thailandais' => CurrencyCode::THB->value,
+            'Real brésilien' => CurrencyCode::BRL->value,
+            'Dollar singapourien' => CurrencyCode::SGD->value,
+            'Nouvelle livre turque' => CurrencyCode::TRY->value,
+            'Nouveau Shekel' => CurrencyCode::ILS->value,
+            'Won Coréen' => CurrencyCode::KRW->value,
+            'Dollar Hong Kong' => CurrencyCode::HKD->value,
+            'Ryal Saudien' => CurrencyCode::SAR->value,
+            'Dinar Koweitien' => CurrencyCode::KWD->value,
         ];
 
         return $currencyList[$name] ?? $name;
