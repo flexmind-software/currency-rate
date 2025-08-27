@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FlexMindSoftware\CurrencyRate\Support;
 
-use Illuminate\Cache\Repository as CacheRepository;
 use Illuminate\Cache\RedisStore;
+use Illuminate\Cache\Repository as CacheRepository;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Contracts\Redis\Factory as RedisFactory;
 use Illuminate\Support\Facades\Cache;
