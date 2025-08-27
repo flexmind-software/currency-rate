@@ -6,6 +6,7 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DOMDocument;
 use DOMXPath;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -101,8 +102,8 @@ class HungaryDriver extends BaseDriver implements CurrencyInterface
             foreach ($row as $i => $item) {
                 if ($item != '-') {
                     $line = $currencies[$i];
-                    $line['date'] = date('Y-m-d', strtotime($date));
-                    $line['rate'] = (float)$item;
+                    $line['date'] = DateTimeImmutable::createFromFormat('Y.m.d.', $date)->format('Y-m-d');
+                    $line['rate'] = (float) $item;
 
                     $this->data[] = $line;
                 }

@@ -163,9 +163,9 @@ abstract class BaseDriver implements DriverMetadata
      *
      * @return float
      */
-    protected function stringToFloat(string $string): float
+    protected function stringToFloat(int|float|string $string): float
     {
-        return (float)str_replace(',', '.', $string);
+        return (float) str_replace(',', '.', (string) $string);
     }
 
     /**

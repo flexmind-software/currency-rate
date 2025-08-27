@@ -108,4 +108,7 @@ return [
     'ukraine' => [
         'frequency' => 'Daily on business days',
     ],
+    'united-states' => [
+        'frequency' => 'Daily on business days',
+    ],
 ];

@@ -68,16 +68,16 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
         $xml = $this->parseXml($this->xml);
 
         if (count($xml->Currency)) {
-            $date = DateTimeImmutable::createFromFormat('m/d/Y', $xml->attributes()[0])->format('Y-m-d');
+            $date = DateTimeImmutable::createFromFormat('m/d/Y', (string) $xml->attributes()[0])->format('Y-m-d');
 
             foreach ($xml->Currency as $xmlElement) {
                 $this->data[] = [
-                    'no' => (int)$xmlElement->attributes()[0],
+                    'no' => (string) $xmlElement->attributes()[0],
                     'code' => (string)$xmlElement->CharCode,
                     'date' => $date,
                     'driver' => static::DRIVER_NAME,
-                    'multiplier' => $this->stringToFloat((int)$xmlElement->Scale),
-                    'rate' => $this->stringToFloat($xmlElement->Rate),
+                    'multiplier' => $this->stringToFloat((string) $xmlElement->Scale),
+                    'rate' => $this->stringToFloat((string) $xmlElement->Rate),
                 ];
             }
         }
