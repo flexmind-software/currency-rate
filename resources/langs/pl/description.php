@@ -107,4 +107,7 @@ return [
     'ukraine' => [
         'frequency' => 'Codziennie w dni robocze',
     ],
+    'united-states' => [
+        'frequency' => 'Codziennie w dni robocze',
+    ],
 ];

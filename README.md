@@ -66,10 +66,14 @@ return [
         'switzerland',
         'turkey',
         'ukraine',
+        'united-states',
     ],
     'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates'),
     'cache-ttl' => env('FLEXMIND_CURRENCY_RATE_CACHE_TTL', 3600),
     'cache_store' => env('FLEXMIND_CURRENCY_RATE_CACHE_STORE', 'array'),
+    'fed' => [
+        'api_key' => env('FRED_API_KEY'),
+    ],
     'queue_concurrency' => env('FLEXMIND_CURRENCY_RATE_QUEUE_CONCURRENCY', 10),
 ];
 ```
@@ -122,6 +126,7 @@ The package can throttle how many `QueueDownload` jobs run at the same time. Con
 | Switzerland | `switzerland` | Weekdays at 11:00 AM CET |
 | Turkey | `turkey` | Daily on business days |
 | Ukraine | `ukraine` | Daily on business days |
+| United States | `united-states` | Daily on business days |
 
 ## Usage
 
@@ -165,7 +170,7 @@ php artisan flexmind:currency-rate 2023-09-15
 Use a specific driver:
 
 ```bash
-php artisan flexmind:currency-rate --driver=canada
+php artisan flexmind:currency-rate --driver=united-states
 ```
 
 Dispatch the job to a queue:

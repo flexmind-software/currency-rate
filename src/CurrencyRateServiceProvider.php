@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FlexMindSoftware\CurrencyRate;
 
 use FlexMindSoftware\CurrencyRate\Commands\CurrencyRateCommand;
+use FlexMindSoftware\CurrencyRate\Drivers\UnitedStatesDriver;
 use InvalidArgumentException;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
@@ -39,6 +40,8 @@ class CurrencyRateServiceProvider extends PackageServiceProvider
         $this->app->singleton('currency-rate', function ($app) {
             return new CurrencyRateManager($app);
         });
+
+        $this->app->bind(UnitedStatesDriver::class, fn ($app) => new UnitedStatesDriver());
     }
 
     protected function validateConfig(): void

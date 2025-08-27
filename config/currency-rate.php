@@ -36,6 +36,7 @@ return [
         'switzerland',
         'turkey',
         'ukraine',
+        'united-states',
     ],
 
     'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates'),
@@ -44,6 +45,9 @@ return [
 
     'cache_store' => env('FLEXMIND_CURRENCY_RATE_CACHE_STORE', 'array'),
 
+    'fed' => [
+        'api_key' => env('FRED_API_KEY'),
+    ],
     'queue_concurrency' => env('FLEXMIND_CURRENCY_RATE_QUEUE_CONCURRENCY', 10),
 
     'retry' => [
