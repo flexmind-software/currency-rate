@@ -69,12 +69,17 @@ return [
     ],
     'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates'),
     'cache-ttl' => env('FLEXMIND_CURRENCY_RATE_CACHE_TTL', 3600),
+    'cache_store' => env('FLEXMIND_CURRENCY_RATE_CACHE_STORE', 'array'),
 ];
 ```
 
 The `drivers` array defines which currency rate providers are available when running
 the command with `--driver=all`. Add or remove entries from this list to customise
 the drivers used in your application. See [config/currency-rate.php](config/currency-rate.php) for additional configuration options, including the cache TTL for HTTP requests.
+
+### Redis cache store
+
+To cache HTTP responses in Redis, set the `FLEXMIND_CURRENCY_RATE_CACHE_STORE` environment variable to `redis` and configure your Redis connection in the application's `database.redis` configuration.
 
 ### Available Drivers
 
