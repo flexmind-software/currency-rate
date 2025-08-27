@@ -7,6 +7,7 @@ namespace FlexMindSoftware\CurrencyRate\Drivers;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
+use FlexMindSoftware\CurrencyRate\Support\Logger;
 use SimpleXLSX;
 
 class FijiDriver extends BaseDriver implements CurrencyInterface

@@ -8,6 +8,7 @@ use DateInterval;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
+use FlexMindSoftware\CurrencyRate\Support\Logger;
 use SoapClient;
 
 class MacedoniaDriver extends BaseDriver implements CurrencyInterface

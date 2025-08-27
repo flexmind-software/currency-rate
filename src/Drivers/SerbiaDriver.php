@@ -9,6 +9,7 @@ use DOMElement;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
+use FlexMindSoftware\CurrencyRate\Support\Logger;
 use GuzzleHttp\Cookie\CookieJar;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
