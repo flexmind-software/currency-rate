@@ -413,6 +413,10 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
 
+## Audit Logs
+
+The package keeps track of rate changes in the `audit_logs` table. Each record stores the `currency_code`, previous and new rate (`old_rate`, `new_rate`) and the time of change (`changed_at`). This allows auditing modifications to currency rates over time.
+
 ### Adding new locales
 
 Translations for driver descriptions live in `resources/langs/{locale}/description.php`.
