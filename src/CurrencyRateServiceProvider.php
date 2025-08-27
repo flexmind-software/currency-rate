@@ -8,6 +8,7 @@ use FlexMindSoftware\CurrencyRate\Commands\CurrencyRateCommand;
 use FlexMindSoftware\CurrencyRate\Commands\DownloadCommand;
 use FlexMindSoftware\CurrencyRate\Drivers\UnitedStatesDriver;
 use InvalidArgumentException;
+use Illuminate\Support\Str;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
@@ -46,6 +47,14 @@ class CurrencyRateServiceProvider extends PackageServiceProvider
         $this->app->bind(UnitedStatesDriver::class, fn ($app) => new UnitedStatesDriver());
     }
 
+    /**
+     * @return void
+     */
+    public function packageBooted(): void
+    {
+        $this->validateDrivers();
+    }
+
     protected function validateConfig(): void
     {
         $required = ['driver', 'table-name', 'drivers'];
@@ -54,6 +63,19 @@ class CurrencyRateServiceProvider extends PackageServiceProvider
             if (! config()->has("currency-rate.$key") || empty(config("currency-rate.$key"))) {
                 throw new InvalidArgumentException(
                     "currency-rate configuration missing required key [$key]."
+                );
+            }
+        }
+    }
+
+    protected function validateDrivers(): void
+    {
+        foreach (config('currency-rate.drivers', []) as $driver) {
+            $class = 'FlexMindSoftware\\CurrencyRate\\Drivers\\'.Str::studly($driver).'Driver';
+
+            if (! class_exists($class)) {
+                throw new InvalidArgumentException(
+                    "Driver class [$class] for driver [$driver] does not exist."
                 );
             }
         }
