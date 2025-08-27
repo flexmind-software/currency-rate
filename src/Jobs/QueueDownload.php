@@ -15,7 +15,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
+use FlexMindSoftware\CurrencyRate\Support\Logger;
 use Illuminate\Support\Facades\Redis;
 use Throwable;
 
@@ -93,7 +93,7 @@ class QueueDownload implements ShouldQueue, ShouldBeUnique, ShouldBeUniqueUntilP
                         CurrencyRateModel::saveIn($data, $this->databaseConnection);
                     }
                 } catch (Throwable $exception) {
-                    Log::error(
+                    Logger::error(
                         'QueueDownload job failed: ' . $exception->getMessage(),
                         $exception->getTrace()
                     );

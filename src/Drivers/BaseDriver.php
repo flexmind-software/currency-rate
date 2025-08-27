@@ -11,7 +11,7 @@ use FlexMindSoftware\CurrencyRate\Contracts\DriverMetadata;
 use FlexMindSoftware\CurrencyRate\DTO\CurrencyRateData;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use FlexMindSoftware\CurrencyRate\Support\Logger;
 use Psr\Http\Client\ClientInterface;
 
 abstract class BaseDriver implements DriverMetadata
@@ -142,7 +142,7 @@ abstract class BaseDriver implements DriverMetadata
                         CurrencyRate::upsert($mapped, $columns, ['rate', 'multiplier']);
                     });
                 } catch (\Throwable $e) {
-                    Log::error('CurrencyRate upsert failed', ['exception' => $e]);
+                    Logger::error('CurrencyRate upsert failed', ['exception' => $e]);
                 }
             }
         }

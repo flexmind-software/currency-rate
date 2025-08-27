@@ -71,6 +71,8 @@ return [
     'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates'),
     'cache-ttl' => env('FLEXMIND_CURRENCY_RATE_CACHE_TTL', 3600),
     'cache_store' => env('FLEXMIND_CURRENCY_RATE_CACHE_STORE', 'array'),
+
+    'log_channel' => env('FLEXMIND_CURRENCY_RATE_LOG_CHANNEL', null),
     'fed' => [
         'api_key' => env('FRED_API_KEY'),
     ],
@@ -81,6 +83,8 @@ return [
 The `drivers` array defines which currency rate providers are available when running
 the command with `--driver=all`. Add or remove entries from this list to customise
 the drivers used in your application. See [config/currency-rate.php](config/currency-rate.php) for additional configuration options, including the cache TTL for HTTP requests and the `queue_concurrency` limit for queued jobs.
+
+Set the `log_channel` option (or the `FLEXMIND_CURRENCY_RATE_LOG_CHANNEL` environment variable) to direct package logs to a specific Laravel logging channel. If `null`, the application's default logging channel will be used.
 
 ### Redis cache store
 

@@ -47,6 +47,7 @@ class QueueDownloadTest extends TestCase
      */
     public function handle_logs_exception()
     {
+        Log::shouldReceive('channel')->andReturnSelf();
         Log::shouldReceive('error')->once();
 
         $job = new QueueDownload('missing', new DateTimeImmutable(), 'testing');
