@@ -8,10 +8,10 @@ use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\CurrencyRateFacade as CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Jobs\QueueDownload;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate as CurrencyRateModel;
+use FlexMindSoftware\CurrencyRate\Support\Logger;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Bus;
-use FlexMindSoftware\CurrencyRate\Support\Logger;
 use Throwable;
 
 /**

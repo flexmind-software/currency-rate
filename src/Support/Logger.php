@@ -25,4 +25,3 @@ class Logger
         return self::channel()->{$name}(...$arguments);
     }
 }
-

@@ -10,8 +10,8 @@ use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\DriverMetadata;
 use FlexMindSoftware\CurrencyRate\DTO\CurrencyRateData;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate;
-use Illuminate\Support\Facades\DB;
 use FlexMindSoftware\CurrencyRate\Support\Logger;
+use Illuminate\Support\Facades\DB;
 use Psr\Http\Client\ClientInterface;
 
 abstract class BaseDriver implements DriverMetadata

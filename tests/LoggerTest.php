@@ -26,4 +26,3 @@ class LoggerTest extends TestCase
         Logger::error('test');
     }
 }
-
