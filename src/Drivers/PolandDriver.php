@@ -8,7 +8,6 @@ use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use FlexMindSoftware\CurrencyRate\Support\Logger;
 
 class PolandDriver extends BaseDriver implements CurrencyInterface
 {

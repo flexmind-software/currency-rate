@@ -10,7 +10,6 @@ use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use FlexMindSoftware\CurrencyRate\Support\Logger;
 
 class BceaoDriver extends BaseDriver implements CurrencyInterface
 {

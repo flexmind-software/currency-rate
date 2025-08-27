@@ -8,7 +8,6 @@ use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use FlexMindSoftware\CurrencyRate\Support\Logger;
 
 class GeorgiaDriver extends BaseDriver implements CurrencyInterface
 {

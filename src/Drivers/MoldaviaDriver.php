@@ -9,7 +9,6 @@ use Exception;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use FlexMindSoftware\CurrencyRate\Support\Logger;
 
 class MoldaviaDriver extends BaseDriver implements CurrencyInterface
 {
