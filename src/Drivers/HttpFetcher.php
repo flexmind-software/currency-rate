@@ -41,6 +41,7 @@ trait HttpFetcher
 
         if ($cache->has($key)) {
             Logger::debug('Fetch cache hit', ['key' => $key]);
+
             return $cache->get($key);
         }
 
