@@ -24,6 +24,7 @@ class CurrencyRateServiceProvider extends PackageServiceProvider
             ->name('currency-rate')
             ->hasConfigFile()
             ->hasTranslations()
+            ->hasRoute('api')
             ->hasMigration('create_currency_rate_table')
             ->hasCommand(CurrencyRateCommand::class);
     }

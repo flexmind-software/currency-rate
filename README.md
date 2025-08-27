@@ -175,6 +175,25 @@ Execute immediately without queueing:
 php artisan flexmind:currency-rate --queue=none
 ```
 
+## API
+
+Request the latest rate for a given currency code:
+
+```
+GET /api/currency-rate/{code}
+```
+
+Example response:
+
+```json
+{
+    "value": 4.5,
+    "date": "2023-10-01"
+}
+```
+
+If the currency code does not exist, the endpoint returns a `404` status.
+
 ## Testing
 
 ```bash
