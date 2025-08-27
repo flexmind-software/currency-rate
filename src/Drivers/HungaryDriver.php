@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
+use DateTimeImmutable;
 use DOMDocument;
 use DOMXPath;
-use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
