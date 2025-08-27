@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
+use FlexMindSoftware\CurrencyRate\Support\CacheFactory;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Http;
-use FlexMindSoftware\CurrencyRate\Support\CacheFactory;
 use Psr\Http\Client\ClientInterface;
 use SimpleXMLElement;
 use Throwable;

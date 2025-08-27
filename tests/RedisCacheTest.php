@@ -33,19 +33,22 @@ class RedisCacheTest extends TestCase
     /** @test */
     public function it_caches_with_ttl_and_reads_from_redis(): void
     {
-        $redis = new class implements RedisFactory {
+        $redis = new class () implements RedisFactory {
             public array $calls = [];
             public array $data = [];
 
             public function connection($name = null)
             {
                 return new class ($this) {
-                    public function __construct(private $parent) {}
+                    public function __construct(private $parent)
+                    {
+                    }
 
                     public function setex($key, $seconds, $value)
                     {
                         $this->parent->calls[] = [$key, $seconds, $value];
                         $this->parent->data[$key] = $value;
+
                         return true;
                     }
 
