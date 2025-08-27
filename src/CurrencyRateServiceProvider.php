@@ -6,8 +6,8 @@ namespace FlexMindSoftware\CurrencyRate;
 
 use FlexMindSoftware\CurrencyRate\Commands\CurrencyRateCommand;
 use FlexMindSoftware\CurrencyRate\Drivers\UnitedStatesDriver;
-use InvalidArgumentException;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
