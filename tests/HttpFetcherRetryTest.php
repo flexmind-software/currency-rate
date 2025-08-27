@@ -35,22 +35,26 @@ class HttpFetcherRetryTest extends TestCase
         $mock = new MockHandler([
             function (Request $request) use (&$attempts) {
                 $attempts++;
+
                 throw new ConnectException('timeout', $request);
             },
             function (Request $request) use (&$attempts) {
                 $attempts++;
+
                 throw new ConnectException('timeout', $request);
             },
             function (Request $request) use (&$attempts) {
                 $attempts++;
+
                 return new Response(200, [], 'ok');
             },
         ]);
 
         $client = new Client(['handler' => HandlerStack::create($mock)]);
 
-        $fetcher = new class($client) {
+        $fetcher = new class ($client) {
             use HttpFetcher;
+
             public function callFetch(string $url, array $query = [])
             {
                 return $this->fetch($url, $query);
