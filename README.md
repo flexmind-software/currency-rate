@@ -18,14 +18,14 @@ composer require flexmind-software/currency-rate
 You can publish and run the migrations with:
 
 ```bash
-php artisan vendor:publish --provider="FlexMindSoftware\CurrencyRate\CurrencyRateProvider" --tag="currency-rate-migrations"
+php artisan vendor:publish --provider="FlexMindSoftware\\CurrencyRate\\CurrencyRateServiceProvider" --tag="currency-rate-migrations"
 php artisan migrate
 ```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --provider="FlexMindSoftware\CurrencyRate\CurrencyRateProvider" --tag="currency-rate-config"
+php artisan vendor:publish --provider="FlexMindSoftware\\CurrencyRate\\CurrencyRateServiceProvider" --tag="currency-rate-config"
 ```
 
 This is the contents of the published config file:
@@ -134,12 +134,57 @@ The package can throttle how many `QueueDownload` jobs run at the same time. Con
 
 ## Usage
 
+1. Install the package via Composer:
+
+   ```bash
+   composer require flexmind-software/currency-rate
+   ```
+
+2. Publish and run the migrations:
+
+   ```bash
+   php artisan vendor:publish --provider="FlexMindSoftware\\CurrencyRate\\CurrencyRateServiceProvider" --tag="currency-rate-migrations"
+   php artisan migrate
+   ```
+
+3. Publish the configuration file:
+
+   ```bash
+   php artisan vendor:publish --provider="FlexMindSoftware\\CurrencyRate\\CurrencyRateServiceProvider" --tag="currency-rate-config"
+   ```
+
+4. Adjust `config/currency-rate.php` or your environment variables to set the default driver and other options.
+
+5. Download the latest currency rates:
+
+   ```bash
+   php artisan flexmind:currency-rate:download
+   ```
+
+### Using the API
+
+```php
+use DateTimeImmutable;
+use FlexMindSoftware\CurrencyRate\CurrencyRateFacade as CurrencyRate;
+
+$rates = CurrencyRate::driver('european-central-bank')
+    ->setDataTime(new DateTimeImmutable('now'))
+    ->grabExchangeRates()
+    ->retrieveData();
+
+foreach ($rates as $rate) {
+    echo $rate->code . ' => ' . $rate->rate . PHP_EOL;
+}
+```
+
+### Command options
+
 ```bash
 php artisan flexmind:currency-rate [options] [--] [<date>]
 
 Arguments:
   date               Date to download currency rate, if empty is today
-  
+
 Options:
   --queue[=QUEUE]    Queue name, if set "none" cmd run without add job to queue [default: "none"]
   --driver[=DRIVER]  Driver to download rate [default: "all"]
