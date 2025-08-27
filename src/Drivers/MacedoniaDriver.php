@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateInterval;
@@ -21,7 +23,7 @@ class MacedoniaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'macedonia';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::MKD;
 
@@ -73,16 +75,25 @@ class MacedoniaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Narodna Banka na Republika Severna Makedonija';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.nbrm.mk/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.macedonia.frequency');

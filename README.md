@@ -66,52 +66,71 @@ return [
         'switzerland',
         'turkey',
         'ukraine',
+        'united-states',
     ],
     'table-name' => env('FLEXMIND_CURRENCY_RATE_TABLENAME', 'currency_rates'),
     'cache-ttl' => env('FLEXMIND_CURRENCY_RATE_CACHE_TTL', 3600),
+    'cache_store' => env('FLEXMIND_CURRENCY_RATE_CACHE_STORE', 'array'),
+
+    'log_channel' => env('FLEXMIND_CURRENCY_RATE_LOG_CHANNEL', null),
+    'fed' => [
+        'api_key' => env('FRED_API_KEY'),
+    ],
+    'queue_concurrency' => env('FLEXMIND_CURRENCY_RATE_QUEUE_CONCURRENCY', 10),
 ];
 ```
 
 The `drivers` array defines which currency rate providers are available when running
 the command with `--driver=all`. Add or remove entries from this list to customise
-the drivers used in your application. See [config/currency-rate.php](config/currency-rate.php) for additional configuration options, including the cache TTL for HTTP requests.
+the drivers used in your application. See [config/currency-rate.php](config/currency-rate.php) for additional configuration options, including the cache TTL for HTTP requests and the `queue_concurrency` limit for queued jobs.
+
+Set the `log_channel` option (or the `FLEXMIND_CURRENCY_RATE_LOG_CHANNEL` environment variable) to direct package logs to a specific Laravel logging channel. If `null`, the application's default logging channel will be used.
+
+### Redis cache store
+
+To cache HTTP responses in Redis, set the `FLEXMIND_CURRENCY_RATE_CACHE_STORE` environment variable to `redis` and configure your Redis connection in the application's `database.redis` configuration.
+
+### Queue concurrency
+
+The package can throttle how many `QueueDownload` jobs run at the same time. Configure the `queue_concurrency` option (or `FLEXMIND_CURRENCY_RATE_QUEUE_CONCURRENCY` environment variable) to define the maximum number of concurrent jobs. Exceeding jobs will be released and retried once a slot becomes available.
 
 ### Available Drivers
 
-| Country / Source | Driver |
-|------------------|--------|
-| Albania | `albania` |
-| Armenia | `armenia` |
-| Australia | `australia` |
-| Azerbaijan | `azerbaijan` |
-| BCEAO | `bceao` |
-| Belarus | `belarus` |
-| Bosnia and Herzegovina | `bosnia-and-herzegovina` |
-| Botswana | `botswana` |
-| Bulgaria | `bulgaria` |
-| Canada | `canada` |
-| China | `china` |
-| Croatia | `croatia` |
-| Czech Republic | `czech-republic` |
-| Denmark | `denmark` |
-| England | `england` |
-| European Central Bank | `european-central-bank` |
-| Fiji | `fiji` |
-| Georgia | `georgia` |
-| Hungary | `hungary` |
-| Iceland | `iceland` |
-| Israel | `israel` |
-| Macedonia | `macedonia` |
-| Moldavia | `moldavia` |
-| Norway | `norway` |
-| Poland | `poland` |
-| Romania | `romania` |
-| Russia | `russia` |
-| Serbia | `serbia` |
-| Sweden | `sweden` |
-| Switzerland | `switzerland` |
-| Turkey | `turkey` |
-| Ukraine | `ukraine` |
+| Country / Source | Driver | Frequency |
+|------------------|--------|-----------|
+| Albania | `albania` | Daily on business days |
+| Armenia | `armenia` | Daily on business days |
+| Australia | `australia` | Weekdays around 4:00 PM Eastern Australian Time |
+| Azerbaijan | `azerbaijan` | Daily on business days |
+| BCEAO | `bceao` | Daily on business days |
+| Belarus | `belarus` | Daily on business days |
+| Bosnia and Herzegovina | `bosnia-and-herzegovina` | Daily on business days |
+| Botswana | `botswana` | Daily on business days |
+| Bulgaria | `bulgaria` | Daily on business days |
+| Canada | `canada` | Daily on business days |
+| China | `china` | Daily on business days |
+| Croatia | `croatia` | Daily on business days |
+| Czech Republic | `czech-republic` | Daily on business days |
+| Denmark | `denmark` | Daily on business days |
+| England | `england` | Daily on business days |
+| European Central Bank | `european-central-bank` | Weekdays at 3:00 PM CET |
+| Fiji | `fiji` | Official rate set at 8:30 AM FJT each business day |
+| Georgia | `georgia` | Daily on business days |
+| Hungary | `hungary` | Daily on business days |
+| Iceland | `iceland` | Daily on business days |
+| Israel | `israel` | Daily on business days |
+| Macedonia | `macedonia` | Daily on business days |
+| Moldavia | `moldavia` | Daily on business days |
+| Norway | `norway` | Daily on business days |
+| Poland | `poland` | Tables A/B/C: business days; B on Wednesdays; C at 7:45–8:15 AM |
+| Romania | `romania` | Daily on business days |
+| Russia | `russia` | Daily on business days |
+| Serbia | `serbia` | Weekdays at 8:00 CET; weekends use last working day |
+| Sweden | `sweden` | Daily on business days |
+| Switzerland | `switzerland` | Weekdays at 11:00 AM CET |
+| Turkey | `turkey` | Daily on business days |
+| Ukraine | `ukraine` | Daily on business days |
+| United States | `united-states` | Daily on business days |
 
 ## Usage
 
@@ -124,6 +143,7 @@ Arguments:
 Options:
   --queue[=QUEUE]    Queue name, if set "none" cmd run without add job to queue [default: "none"]
   --driver[=DRIVER]  Driver to download rate [default: "all"]
+  --currency[=CUR]   Comma-separated list of currency codes to save
 ```
 
 ## Events
@@ -155,7 +175,7 @@ php artisan flexmind:currency-rate 2023-09-15
 Use a specific driver:
 
 ```bash
-php artisan flexmind:currency-rate --driver=canada
+php artisan flexmind:currency-rate --driver=united-states
 ```
 
 Dispatch the job to a queue:
@@ -169,6 +189,25 @@ Execute immediately without queueing:
 ```bash
 php artisan flexmind:currency-rate --queue=none
 ```
+
+## API
+
+Request the latest rate for a given currency code:
+
+```
+GET /api/currency-rate/{code}
+```
+
+Example response:
+
+```json
+{
+    "value": 4.5,
+    "date": "2023-10-01"
+}
+```
+
+If the currency code does not exist, the endpoint returns a `404` status.
 
 ## Testing
 
@@ -407,6 +446,20 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 ## Contributing
 
 Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
+
+## Audit Logs
+
+The package keeps track of rate changes in the `audit_logs` table. Each record stores the `currency_code`, previous and new rate (`old_rate`, `new_rate`) and the time of change (`changed_at`). This allows auditing modifications to currency rates over time.
+
+### Adding new locales
+
+Translations for driver descriptions live in `resources/langs/{locale}/description.php`.
+Currently supported locales: `en`, `es`, `fr`, `pl`.
+To contribute a new locale:
+
+1. Create a new directory for the locale under `resources/langs` (for example `es` for Spanish).
+2. Copy `resources/langs/en/description.php` into that directory and translate the strings.
+3. Submit a pull request with the new translation file.
 
 ## Credits
 

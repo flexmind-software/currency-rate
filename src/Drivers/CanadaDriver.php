@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateInterval;
@@ -23,7 +25,7 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'canada';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::CAD;
     /**
@@ -50,7 +52,7 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
             if ($response) {
                 $this->jsonFile = json_decode($response, true);
                 if (blank($this->jsonFile['observations'])) {
-                    $this->date->sub(DateInterval::createFromDateString('1 day'));
+                    $this->date = $this->date->sub(DateInterval::createFromDateString('1 day'));
                 }
             }
         } while (count((array)$this->jsonFile['observations']) === 0);
@@ -92,16 +94,25 @@ class CanadaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Banqueu du Canada';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bankofcanada.ca/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.canada.frequency');

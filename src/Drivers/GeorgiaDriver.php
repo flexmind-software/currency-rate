@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -23,7 +25,7 @@ class GeorgiaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'georgia';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::GEL;
 
@@ -47,8 +49,7 @@ class GeorgiaDriver extends BaseDriver implements CurrencyInterface
 
             $this->getCurrencyList();
 
-            $jsonDate = new DateTime();
-            $jsonDate->setTimestamp(strtotime(head($this->json)['date']));
+            $jsonDate = (new DateTimeImmutable())->setTimestamp(strtotime(head($this->json)['date']));
 
             $this->data = [];
             if ($jsonDate->diff($this->date)->days != 0) {
@@ -83,7 +84,7 @@ class GeorgiaDriver extends BaseDriver implements CurrencyInterface
      *
      * @return array
      */
-    private function queryString(DateTime $date, string $currency): array
+    private function queryString(DateTimeImmutable $date, string $currency): array
     {
         return [
             'currencies' => $currency,
@@ -106,16 +107,25 @@ class GeorgiaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'The National Bank of Georgia';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://nbg.gov.ge/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.georgia.frequency');

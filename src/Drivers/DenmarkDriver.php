@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
@@ -27,7 +29,7 @@ class DenmarkDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'denmark';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::DKK;
 
@@ -76,16 +78,25 @@ class DenmarkDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Danmarks Nationalbanks';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.nationalbanken.dk';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.denmark.frequency');

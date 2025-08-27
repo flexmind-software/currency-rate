@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
@@ -19,7 +21,7 @@ class ChinaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'china';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::CNY;
 
@@ -67,16 +69,25 @@ class ChinaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'CFETS - China Foreign Exchange Trade System';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'http://www.chinamoney.com.cn/english/bmkcpr/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.china.frequency');

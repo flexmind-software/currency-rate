@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
+use FlexMindSoftware\CurrencyRate\Support\CacheFactory;
 use GuzzleHttp\Psr7\Request;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Psr\Http\Client\ClientInterface;
 use SimpleXMLElement;
@@ -13,6 +15,9 @@ trait HttpFetcher
 {
     protected ?ClientInterface $httpClient = null;
 
+    /**
+     * @param ClientInterface|null $httpClient
+     */
     public function __construct(?ClientInterface $httpClient = null)
     {
         $this->httpClient = $httpClient;
@@ -24,8 +29,10 @@ trait HttpFetcher
         ksort($query);
         $key = 'currency-rate:' . $url . (empty($query) ? '' : '?' . http_build_query($query));
 
-        if (Cache::has($key)) {
-            return Cache::get($key);
+        $cache = CacheFactory::make();
+
+        if ($cache->has($key)) {
+            return $cache->get($key);
         }
 
         // --- RETRY CONFIG
@@ -61,8 +68,7 @@ trait HttpFetcher
                 }
 
                 if ($body !== null) {
-                    Cache::put($key, $body, config('currency-rate.cache-ttl'));
-
+                    $cache->put($key, $body, (int) config('currency-rate.cache-ttl'));
                     return $body;
                 }
 

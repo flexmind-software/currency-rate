@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Tests;
 
 use FlexMindSoftware\CurrencyRate\Tests\Stubs\FakeDriver;
@@ -7,6 +9,9 @@ use Illuminate\Support\Facades\Http;
 
 class FakeDriverTest extends TestCase
 {
+    /**
+     * @return void
+     */
     public function setUp(): void
     {
         parent::setUp();
@@ -15,7 +20,10 @@ class FakeDriverTest extends TestCase
         $migration->up();
     }
 
-    /** @test */
+    /**
+     * @test
+     * @return void
+     */
     public function it_fetches_and_parses_rates()
     {
         Http::fake([
@@ -27,7 +35,7 @@ class FakeDriverTest extends TestCase
 
         $data = $driver->retrieveData();
 
-        $this->assertEquals('USD', $data[0]['code']);
-        $this->assertEquals(1.1, $data[0]['rate']);
+        $this->assertEquals('USD', $data[0]->code);
+        $this->assertEquals(1.1, $data[0]->rate);
     }
 }

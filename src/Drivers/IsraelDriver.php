@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
@@ -19,7 +21,7 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'israel';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::ILS;
 
@@ -117,16 +119,25 @@ class IsraelDriver extends BaseDriver implements CurrencyInterface
         return $this->countryList[$country] ?? null;
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Bank of Israel';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.boi.org.il/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.israel.frequency');

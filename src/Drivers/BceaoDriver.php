@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateInterval;
@@ -22,7 +24,7 @@ class BceaoDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'bceao';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::XOF;
     /**
@@ -42,7 +44,7 @@ class BceaoDriver extends BaseDriver implements CurrencyInterface
                 $this->html = '<head><meta charset="utf-8" /></head><body>' . $respond . '</body>';
                 $this->xpath = $this->htmlParse();
                 if (! ($exists = $this->xpath->query('//table')->count() > 0)) {
-                    $this->date->sub(DateInterval::createFromDateString('1 day'));
+                    $this->date = $this->date->sub(DateInterval::createFromDateString('1 day'));
                 }
             }
         } while (! $exists);
@@ -129,16 +131,25 @@ class BceaoDriver extends BaseDriver implements CurrencyInterface
         return $currencyList[$name] ?? $name;
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'BCEAO | Banque Centrale des Etats de l’Afrique de l’Ouest';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bceao.int';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.bceao.frequency');

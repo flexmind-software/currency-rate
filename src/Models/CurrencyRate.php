@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Models;
 
+use FlexMindSoftware\CurrencyRate\DTO\CurrencyRateData;
 use FlexMindSoftware\CurrencyRate\Events\CurrencyRateSaved;
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,7 +38,7 @@ class CurrencyRate extends Model
     ];
 
     /**
-     * @param array $data
+     * @param CurrencyRateData[] $data
      * @param string $connection
      */
     public static function saveIn(array $data, string $connection = 'default')
@@ -49,24 +52,39 @@ class CurrencyRate extends Model
             }
 
             foreach ($chunks as $chunk) {
-                static::on($connection)
-                    ->upsert($chunk, $columns, ['rate', 'no', 'multiplier']);
+                $mapped = array_map(function ($item) {
+                    return $item instanceof CurrencyRateData ? $item->toArray() : $item;
+                }, $chunk);
 
-                event(new CurrencyRateSaved($chunk));
+                static::on($connection)
+                    ->upsert($mapped, $columns, ['rate', 'no', 'multiplier']);
+
+                event(new CurrencyRateSaved($mapped));
             }
         }
     }
 
+    /**
+     * @return string
+     */
     public function getTable()
     {
         return config('currency-rate.table-name');
     }
 
+    /**
+     * @param mixed $value
+     * @return float
+     */
     public function getCalculateRateAttribute($value)
     {
         return $this->rate * $this->multiplier;
     }
 
+    /**
+     * @param string $value
+     * @return void
+     */
     public function setCodeAttribute($value)
     {
         $this->attributes['code'] = strtoupper($value);

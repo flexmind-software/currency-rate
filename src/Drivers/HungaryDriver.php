@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
+use DateTimeImmutable;
 use DOMDocument;
 use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
@@ -22,7 +25,7 @@ class HungaryDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'hungary';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::HUF;
 
@@ -99,8 +102,8 @@ class HungaryDriver extends BaseDriver implements CurrencyInterface
             foreach ($row as $i => $item) {
                 if ($item != '-') {
                     $line = $currencies[$i];
-                    $line['date'] = date('Y-m-d', strtotime($date));
-                    $line['rate'] = (float)$item;
+                    $line['date'] = DateTimeImmutable::createFromFormat('Y.m.d.', $date)->format('Y-m-d');
+                    $line['rate'] = (float) $item;
 
                     $this->data[] = $line;
                 }
@@ -108,16 +111,25 @@ class HungaryDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Magyar Nemzeti Bank';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.mnb.hu/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.hungary.frequency');

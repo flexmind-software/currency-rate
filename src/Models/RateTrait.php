@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Models;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 
 trait RateTrait
@@ -14,7 +16,13 @@ trait RateTrait
      */
     private static array $rateCache = [];
 
-    public function rate(CurrencyCode|string $currencyFrom, CurrencyCode|string $currencyTo, DateTime $date)
+    /**
+     * @param CurrencyCode|string $currencyFrom
+     * @param CurrencyCode|string $currencyTo
+     * @param DateTimeImmutable $date
+     * @return float|int
+     */
+    public function rate(CurrencyCode|string $currencyFrom, CurrencyCode|string $currencyTo, DateTimeImmutable $date)
     {
         $currencyFrom = $currencyFrom instanceof CurrencyCode ? $currencyFrom->value : $currencyFrom;
         $currencyTo = $currencyTo instanceof CurrencyCode ? $currencyTo->value : $currencyTo;
@@ -35,11 +43,11 @@ trait RateTrait
     /**
      * @param CurrencyCode|string $currencyFrom
      * @param CurrencyCode|string $currencyTo
-     * @param DateTime $date
+     * @param DateTimeImmutable $date
      *
      * @return array{from: ?float, to: ?float}
      */
-    public function retrieveDataToCalculation(CurrencyCode|string $currencyFrom, CurrencyCode|string $currencyTo, DateTime $date): array
+    public function retrieveDataToCalculation(CurrencyCode|string $currencyFrom, CurrencyCode|string $currencyTo, DateTimeImmutable $date): array
     {
         $currencyFrom = $currencyFrom instanceof CurrencyCode ? $currencyFrom->value : $currencyFrom;
         $currencyTo = $currencyTo instanceof CurrencyCode ? $currencyTo->value : $currencyTo;

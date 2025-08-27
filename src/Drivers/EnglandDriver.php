@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateInterval;
-use DateTime;
+use DateTimeImmutable;
 use DOMNodeList;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
@@ -22,7 +24,7 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'england';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::GBP;
 
@@ -47,7 +49,7 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
                 $this->tables = $xpath->query('//table');
             }
 
-            $date = $this->date->sub(DateInterval::createFromDateString('1 day'));
+            $this->date = $this->date->sub(DateInterval::createFromDateString('1 day'));
         } while ($this->tables && $this->tables->count() == 1);
 
         if ($this->tables) {
@@ -87,7 +89,7 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
         }
 
         $date = trim(str_replace(' £1 ', '', head($itemList)[1]));
-        $date = DateTime::createFromFormat('j M Y', $date)->format('Y-m-d');
+        $date = DateTimeImmutable::createFromFormat('j M Y', $date)->format('Y-m-d');
 
         foreach ($itemList as $i => $value) {
             if ($value[0] == 'Currency') {
@@ -138,16 +140,25 @@ class EnglandDriver extends BaseDriver implements CurrencyInterface
         return $map[$currencyName] ?? null;
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Bank of England';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bankofengland.co.uk/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.england.frequency');

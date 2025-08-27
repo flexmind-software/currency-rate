@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -20,7 +22,7 @@ class SwitzerlandDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'switzerland';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::CHF;
 
@@ -58,7 +60,7 @@ class SwitzerlandDriver extends BaseDriver implements CurrencyInterface
                 $this->data[] = [
                     'no' => null,
                     'code' => $match[5],
-                    'date' => DateTime::createFromFormat('Y-m-d', trim($match[6])),
+                    'date' => DateTimeImmutable::createFromFormat('Y-m-d', trim($match[6])),
                     'driver' => static::DRIVER_NAME,
                     'multiplier' => $this->stringToFloat(trim($match[4])),
                     'rate' => $this->stringToFloat(trim($match[2])),
@@ -67,16 +69,25 @@ class SwitzerlandDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Swiss National Bank';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.snb.ch/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.switzerland.frequency');

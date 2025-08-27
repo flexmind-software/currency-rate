@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
@@ -23,7 +25,7 @@ class BosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'bosnia-and-herzegovina';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::BAM;
     /**
@@ -69,16 +71,25 @@ class BosniaAndHerzegovinaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Centralna Banka Bosne I Hergegovine';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.cbbh.ba/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.bosnia-and-herzegovina.frequency');

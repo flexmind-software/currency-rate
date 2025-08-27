@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DOMElement;
@@ -21,7 +23,7 @@ class IcelandDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'iceland';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::ISK;
 
@@ -112,16 +114,25 @@ class IcelandDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Seðlabanki Íslands';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://cb.is';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.iceland.frequency');

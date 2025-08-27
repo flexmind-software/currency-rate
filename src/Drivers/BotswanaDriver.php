@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Log;
+use FlexMindSoftware\CurrencyRate\Support\Logger;
 
 class BotswanaDriver extends BaseDriver implements CurrencyInterface
 {
@@ -21,7 +23,7 @@ class BotswanaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'botswana';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::BWP;
 
@@ -42,7 +44,7 @@ class BotswanaDriver extends BaseDriver implements CurrencyInterface
                 $this->parseResponse();
             }
         } catch (\Throwable $e) {
-            Log::debug('Can\'t connect to serwer', $e->getTrace());
+            Logger::debug('Can\'t connect to serwer', $e->getTrace());
         }
 
         return $this;
@@ -92,22 +94,31 @@ class BotswanaDriver extends BaseDriver implements CurrencyInterface
 
         if ($this->lastDate) {
             $this->data = array_filter($this->data, function ($item) {
-                return DateTime::createFromFormat('Y-m-d', $item['date'])->getTimestamp() >=
+                return DateTimeImmutable::createFromFormat('Y-m-d', $item['date'])->getTimestamp() >=
                     $this->lastDate->getTimestamp();
             });
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Bank of Botswana';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bankofbotswana.bw';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.botswana.frequency');

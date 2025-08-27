@@ -1,0 +1,8 @@
+<ENVELOPE>
+<Body>
+  <Cube date="2021-09-24">
+    <Rate currency="USD" multiplier="1">4.1500</Rate>
+    <Rate currency="JPY" multiplier="100">3.8000</Rate>
+  </Cube>
+</Body>
+</ENVELOPE>

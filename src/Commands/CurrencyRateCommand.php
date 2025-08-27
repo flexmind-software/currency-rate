@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Commands;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\CurrencyRateFacade as CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Jobs\QueueDownload;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate as CurrencyRateModel;
+use FlexMindSoftware\CurrencyRate\Support\Logger;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Bus;
 use Throwable;
 
 /**
@@ -24,6 +27,9 @@ class CurrencyRateCommand extends Command
 
     public $description = 'Download and save into database currency rates from different national bank';
 
+    /**
+     * @return int
+     */
     public function handle(): int
     {
         $currencyDate = $this->argument('date');
@@ -34,7 +40,7 @@ class CurrencyRateCommand extends Command
         $driverOption = $this->option('driver');
         $driver = $driverOption ?? 'all';
         $connectionOption = $this->option('connection');
-        $connection = is_string($connectionOption) ? $connectionOption : null;
+        $connection = is_string($connectionOption) ? $connectionOption : 'default';
 
         if ($driver === 'all') {
             $driver = $this->getAllDrivers();
@@ -44,20 +50,29 @@ class CurrencyRateCommand extends Command
 
         $drivers = Arr::wrap($driver);
         $drivers = array_filter($drivers);
-        $date = new DateTime("@$timestamp");
+        $date = new DateTimeImmutable("@$timestamp");
 
-        foreach ($drivers as $driver) {
-            if ($queue === 'none') {
-                $this->processDriver($driver, $date, $connection);
-            } else {
-                $this->queueDriver($driver, $date, $connection, $queue);
+        if ($queue === 'none' && count($drivers) > 1) {
+            $jobs = [];
+            foreach ($drivers as $driver) {
+                $jobs[] = new QueueDownload($driver, clone $date, $connection);
+            }
+
+            Bus::batch($jobs)->dispatch();
+        } else {
+            foreach ($drivers as $driver) {
+                if ($queue === 'none') {
+                    $this->processDriver($driver, $date, $connection);
+                } else {
+                    $this->queueDriver($driver, $date, $connection, $queue);
+                }
             }
         }
 
         return Command::SUCCESS;
     }
 
-    private function processDriver(string $driver, DateTime $date, ?string $connection): void
+    private function processDriver(string $driver, DateTimeImmutable $date, ?string $connection): void
     {
         try {
             $data = CurrencyRate::driver($driver)
@@ -69,14 +84,14 @@ class CurrencyRateCommand extends Command
                 $this->saveInDatabase($data, $connection);
             }
         } catch (Throwable $exception) {
-            Log::error(
+            Logger::error(
                 'Can\t grab data from [' . $driver . ']: ' . $exception->getMessage(),
                 $exception->getTrace()
             );
         }
     }
 
-    private function queueDriver(string $driver, DateTime $date, ?string $connection, string $queue): void
+    private function queueDriver(string $driver, DateTimeImmutable $date, ?string $connection, string $queue): void
     {
         QueueDownload::dispatch($driver, $date, $connection)->onQueue($queue);
     }

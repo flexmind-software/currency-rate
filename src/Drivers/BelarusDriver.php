@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -25,7 +27,7 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'belarus';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::BYN;
     /**
@@ -66,31 +68,40 @@ class BelarusDriver extends BaseDriver implements CurrencyInterface
         $xml = $this->parseXml($this->xml);
 
         if (count($xml->Currency)) {
-            $date = DateTime::createFromFormat('m/d/Y', $xml->attributes()[0])->format('Y-m-d');
+            $date = DateTimeImmutable::createFromFormat('m/d/Y', (string) $xml->attributes()[0])->format('Y-m-d');
 
             foreach ($xml->Currency as $xmlElement) {
                 $this->data[] = [
-                    'no' => (int)$xmlElement->attributes()[0],
+                    'no' => (string) $xmlElement->attributes()[0],
                     'code' => (string)$xmlElement->CharCode,
                     'date' => $date,
                     'driver' => static::DRIVER_NAME,
-                    'multiplier' => $this->stringToFloat((int)$xmlElement->Scale),
-                    'rate' => $this->stringToFloat($xmlElement->Rate),
+                    'multiplier' => $this->stringToFloat((string) $xmlElement->Scale),
+                    'rate' => $this->stringToFloat((string) $xmlElement->Rate),
                 ];
             }
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Natsional\'nyy bank Respubliki Belarus\'';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.nbrb.by/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.belarus.frequency');

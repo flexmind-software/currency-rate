@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Contracts;
 
-use DateTime;
+use DateTimeImmutable;
 
 interface CurrencyInterface
 {
@@ -14,11 +16,11 @@ interface CurrencyInterface
     /**
      * @param string $currencyFrom
      * @param string $currencyTo
-     * @param DateTime $date
+     * @param DateTimeImmutable $date
      *
      * @return float|int
      */
-    public function rate(string $currencyFrom, string $currencyTo, DateTime $date);
+    public function rate(string $currencyFrom, string $currencyTo, DateTimeImmutable $date);
 
     /**
      * @return string

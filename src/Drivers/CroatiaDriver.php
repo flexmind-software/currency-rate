@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateInterval;
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -23,7 +25,7 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'croatia';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::HRK;
 
@@ -117,7 +119,7 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
             $this->data[] = [
                 'no' => $item['Exchange rate list number'],
                 'code' => $item['Currency'],
-                'date' => DateTime::createFromFormat('d.m.Y', $item['Date'])->format('Y-m-d'),
+                'date' => DateTimeImmutable::createFromFormat('d.m.Y', $item['Date'])->format('Y-m-d'),
                 'driver' => static::DRIVER_NAME,
                 'multiplier' => floatval($item['Unit']),
                 'rate' => $this->stringToFloat($item['Middle rate']),
@@ -125,16 +127,25 @@ class CroatiaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Hrvatska Narodna Banka';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.hnb.hr/home';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.croatia.frequency');

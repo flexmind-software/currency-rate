@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -20,7 +22,7 @@ class RussiaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'russia';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::RUB;
 
@@ -75,7 +77,7 @@ class RussiaDriver extends BaseDriver implements CurrencyInterface
 
         $h3 = $xpath->query('//h2[@class="h3"]')->item(0)->nodeValue;
         preg_match('/(.*)([0-9]{2}\/[0-9]{2}\/[0-9]{4})(.+)/im', $h3, $match);
-        $exchangeDate = DateTime::createFromFormat('d/m/Y', $match[2])->format('Y-m-d');
+        $exchangeDate = DateTimeImmutable::createFromFormat('d/m/Y', $match[2])->format('Y-m-d');
 
         $this->data = array_map(function ($item) use ($exchangeDate) {
             return [
@@ -89,16 +91,25 @@ class RussiaDriver extends BaseDriver implements CurrencyInterface
         }, $this->data);
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Central Bank of the Russian Federation';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.cbr.ru/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.russia.frequency');

@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Jobs;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\CurrencyRateFacade as CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate as CurrencyRateModel;
+use FlexMindSoftware\CurrencyRate\Support\Logger;
+use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
@@ -12,7 +16,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use Throwable;
 
 class QueueDownload implements ShouldQueue, ShouldBeUnique, ShouldBeUniqueUntilProcessing
@@ -21,6 +25,7 @@ class QueueDownload implements ShouldQueue, ShouldBeUnique, ShouldBeUniqueUntilP
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+    use Batchable;
 
     /**
      * The number of seconds after which the job's unique lock will be released.
@@ -35,9 +40,9 @@ class QueueDownload implements ShouldQueue, ShouldBeUnique, ShouldBeUniqueUntilP
      */
     protected string $driverName;
     /**
-     * @var DateTime
+     * @var DateTimeImmutable
      */
-    protected DateTime $dateTime;
+    protected DateTimeImmutable $dateTime;
     /**
      * @var string
      */
@@ -45,10 +50,10 @@ class QueueDownload implements ShouldQueue, ShouldBeUnique, ShouldBeUniqueUntilP
 
     /**
      * @param string $driverName
-     * @param DateTime $dateTime
+     * @param DateTimeImmutable $dateTime
      * @param string $connection
      */
-    public function __construct(string $driverName, DateTime $dateTime, string $connection)
+    public function __construct(string $driverName, DateTimeImmutable $dateTime, string $connection)
     {
         $this->driverName = $driverName;
         $this->dateTime = $dateTime;
@@ -67,22 +72,34 @@ class QueueDownload implements ShouldQueue, ShouldBeUnique, ShouldBeUniqueUntilP
         return sprintf('%s_%s_%s', $prefix, $this->driverName, $this->dateTime->format('Y_m_d'));
     }
 
+    /**
+     * @return void
+     */
     public function handle(): void
     {
-        try {
-            $data = CurrencyRate::driver($this->driverName)
-                ->setDataTime($this->dateTime)
-                ->grabExchangeRates()
-                ->retrieveData();
+        $limit = (int) config('currency-rate.queue_concurrency', 10);
 
-            if ($data && $this->databaseConnection) {
-                CurrencyRateModel::saveIn($data, $this->databaseConnection);
-            }
-        } catch (Throwable $exception) {
-            Log::error(
-                'QueueDownload job failed: ' . $exception->getMessage(),
-                $exception->getTrace()
-            );
-        }
+        Redis::funnel('currency-rate:queue-download')
+            ->limit($limit)
+            ->block(0)
+            ->then(function () {
+                try {
+                    $data = CurrencyRate::driver($this->driverName)
+                        ->setDataTime($this->dateTime)
+                        ->grabExchangeRates()
+                        ->retrieveData();
+
+                    if ($data && $this->databaseConnection) {
+                        CurrencyRateModel::saveIn($data, $this->databaseConnection);
+                    }
+                } catch (Throwable $exception) {
+                    Logger::error(
+                        'QueueDownload job failed: ' . $exception->getMessage(),
+                        $exception->getTrace()
+                    );
+                }
+            }, function () {
+                $this->release(10);
+            });
     }
 }

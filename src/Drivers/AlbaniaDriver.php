@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use DateInterval;
-use DateTime;
+use DateTimeImmutable;
 use DOMNodeList;
 use DOMXPath;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
@@ -24,7 +26,7 @@ class AlbaniaDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'albania';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::ALL;
     /**
@@ -59,11 +61,11 @@ class AlbaniaDriver extends BaseDriver implements CurrencyInterface
     }
 
     /**
-     * @param DateTime $date
+     * @param DateTimeImmutable $date
      *
      * @return array
      */
-    private function formParam(DateTime $date): array
+    private function formParam(DateTimeImmutable $date): array
     {
         $dateToUni = now()->format('Ymd120148109196597389634909');
 
@@ -94,7 +96,7 @@ class AlbaniaDriver extends BaseDriver implements CurrencyInterface
         }
 
         preg_match('#(.*)Date\s([0-9]{2}\.[0-9]{2}\.[0-9]{4})(.+)#im', $this->html, $matches);
-        $date = DateTime::createFromFormat('d.m.Y', $matches[2])->format('Y-m-d');
+        $date = DateTimeImmutable::createFromFormat('d.m.Y', $matches[2])->format('Y-m-d');
 
         $itemList = array_values($itemList);
 
@@ -114,16 +116,25 @@ class AlbaniaDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Bankës së Shqipërisë';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.bankofalbania.org/home/';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.albania.frequency');

@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
-use DateTime;
+use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
@@ -20,7 +22,7 @@ class AzerbaijanDriver extends BaseDriver implements CurrencyInterface
      */
     public const DRIVER_NAME = 'azerbaijan';
     /**
-     * @var string
+     * @var CurrencyCode
      */
     public CurrencyCode $currency = CurrencyCode::AZN;
 
@@ -46,7 +48,7 @@ class AzerbaijanDriver extends BaseDriver implements CurrencyInterface
     private function parseResponse(): void
     {
         $xmlElement = $this->parseXml($this->xml);
-        $date = DateTime::createFromFormat('d.m.Y', (string) $xmlElement['Date'])->format('Y-m-d');
+        $date = DateTimeImmutable::createFromFormat('d.m.Y', (string) $xmlElement['Date'])->format('Y-m-d');
 
         foreach ($xmlElement->Valute as $item) {
             $this->data[] = [
@@ -60,16 +62,25 @@ class AzerbaijanDriver extends BaseDriver implements CurrencyInterface
         }
     }
 
+    /**
+     * @return string
+     */
     public function fullName(): string
     {
         return 'Azerbaijan';
     }
 
+    /**
+     * @return string
+     */
     public function homeUrl(): string
     {
         return 'https://www.cbar.az';
     }
 
+    /**
+     * @return string
+     */
     public function infoAboutFrequency(): string
     {
         return __('currency-rate::description.azerbaijan.frequency');
