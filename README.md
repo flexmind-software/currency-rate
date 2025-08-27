@@ -439,6 +439,7 @@ The package keeps track of rate changes in the `audit_logs` table. Each record s
 ### Adding new locales
 
 Translations for driver descriptions live in `resources/langs/{locale}/description.php`.
+Currently supported locales: `en`, `es`, `fr`, `pl`.
 To contribute a new locale:
 
 1. Create a new directory for the locale under `resources/langs` (for example `es` for Spanish).
