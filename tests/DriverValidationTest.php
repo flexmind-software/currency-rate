@@ -34,4 +34,3 @@ class DriverValidationTest extends TestCase
         $provider->packageBooted();
     }
 }
-
