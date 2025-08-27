@@ -42,6 +42,8 @@ return [
 
     'cache-ttl' => env('FLEXMIND_CURRENCY_RATE_CACHE_TTL', 3600),
 
+    'cache_store' => env('FLEXMIND_CURRENCY_RATE_CACHE_STORE', 'array'),
+
     'retry' => [
         'count'  => (int) env('FLEXMIND_CURRENCY_RATE_RETRY_COUNT', 3), 
         'sleep'  => (int) env('FLEXMIND_CURRENCY_RATE_RETRY_SLEEP', 1000),
