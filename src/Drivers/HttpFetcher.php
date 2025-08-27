@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FlexMindSoftware\CurrencyRate\Drivers;
 
 use FlexMindSoftware\CurrencyRate\Support\CacheFactory;
+use FlexMindSoftware\CurrencyRate\Support\Logger;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\Http;
 use Psr\Http\Client\ClientInterface;
@@ -28,10 +29,19 @@ trait HttpFetcher
         // --- CACHE KEY (kolejność parametrów nie ma znaczenia)
         ksort($query);
         $key = 'currency-rate:' . $url . (empty($query) ? '' : '?' . http_build_query($query));
+        $driver = defined('static::DRIVER_NAME') ? static::DRIVER_NAME : static::class;
+
+        Logger::debug('Fetching data', [
+            'driver' => $driver,
+            'url' => $url,
+            'query' => $query,
+        ]);
 
         $cache = CacheFactory::make();
 
         if ($cache->has($key)) {
+            Logger::debug('Fetch cache hit', ['key' => $key]);
+
             return $cache->get($key);
         }
 
@@ -68,6 +78,7 @@ trait HttpFetcher
                 }
 
                 if ($body !== null) {
+                    Logger::debug('Fetch succeeded', ['url' => $url, 'query' => $query]);
                     $cache->put($key, $body, (int) config('currency-rate.cache-ttl'));
 
                     return $body;
@@ -77,6 +88,13 @@ trait HttpFetcher
                 throw new \RuntimeException('Request failed with non-2xx status');
             } catch (Throwable $e) {
                 $exception = $e;
+                Logger::warning('Fetch attempt failed', [
+                    'driver' => $driver,
+                    'attempt' => $attempt,
+                    'url' => $url,
+                    'query' => $query,
+                    'exception' => $e,
+                ]);
 
                 if ($attempt >= $tries) {
                     break; // koniec prób
@@ -89,6 +107,14 @@ trait HttpFetcher
                 }
             }
         }
+
+        Logger::error('Fetch failed after all retries', [
+            'driver' => $driver,
+            'url' => $url,
+            'query' => $query,
+            'attempts' => $attempt,
+            'exception' => $exception,
+        ]);
 
         // po wszystkich próbach zwracamy null (bez rzucania dalej)
         return null;
