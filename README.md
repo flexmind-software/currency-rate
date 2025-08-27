@@ -74,16 +74,21 @@ return [
     'fed' => [
         'api_key' => env('FRED_API_KEY'),
     ],
+    'queue_concurrency' => env('FLEXMIND_CURRENCY_RATE_QUEUE_CONCURRENCY', 10),
 ];
 ```
 
 The `drivers` array defines which currency rate providers are available when running
 the command with `--driver=all`. Add or remove entries from this list to customise
-the drivers used in your application. See [config/currency-rate.php](config/currency-rate.php) for additional configuration options, including the cache TTL for HTTP requests.
+the drivers used in your application. See [config/currency-rate.php](config/currency-rate.php) for additional configuration options, including the cache TTL for HTTP requests and the `queue_concurrency` limit for queued jobs.
 
 ### Redis cache store
 
 To cache HTTP responses in Redis, set the `FLEXMIND_CURRENCY_RATE_CACHE_STORE` environment variable to `redis` and configure your Redis connection in the application's `database.redis` configuration.
+
+### Queue concurrency
+
+The package can throttle how many `QueueDownload` jobs run at the same time. Configure the `queue_concurrency` option (or `FLEXMIND_CURRENCY_RATE_QUEUE_CONCURRENCY` environment variable) to define the maximum number of concurrent jobs. Exceeding jobs will be released and retried once a slot becomes available.
 
 ### Available Drivers
 
@@ -179,6 +184,25 @@ Execute immediately without queueing:
 ```bash
 php artisan flexmind:currency-rate --queue=none
 ```
+
+## API
+
+Request the latest rate for a given currency code:
+
+```
+GET /api/currency-rate/{code}
+```
+
+Example response:
+
+```json
+{
+    "value": 4.5,
+    "date": "2023-10-01"
+}
+```
+
+If the currency code does not exist, the endpoint returns a `404` status.
 
 ## Testing
 
@@ -418,9 +442,14 @@ Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed re
 
 Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
 
+## Audit Logs
+
+The package keeps track of rate changes in the `audit_logs` table. Each record stores the `currency_code`, previous and new rate (`old_rate`, `new_rate`) and the time of change (`changed_at`). This allows auditing modifications to currency rates over time.
+
 ### Adding new locales
 
 Translations for driver descriptions live in `resources/langs/{locale}/description.php`.
+Currently supported locales: `en`, `es`, `fr`, `pl`.
 To contribute a new locale:
 
 1. Create a new directory for the locale under `resources/langs` (for example `es` for Spanish).

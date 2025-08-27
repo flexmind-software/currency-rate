@@ -48,9 +48,10 @@ return [
     'fed' => [
         'api_key' => env('FRED_API_KEY'),
     ],
+    'queue_concurrency' => env('FLEXMIND_CURRENCY_RATE_QUEUE_CONCURRENCY', 10),
 
     'retry' => [
-        'count'  => (int) env('FLEXMIND_CURRENCY_RATE_RETRY_COUNT', 3), 
+        'count'  => (int) env('FLEXMIND_CURRENCY_RATE_RETRY_COUNT', 3),
         'sleep'  => (int) env('FLEXMIND_CURRENCY_RATE_RETRY_SLEEP', 1000),
         'factor' => (int) env('FLEXMIND_CURRENCY_RATE_RETRY_FACTOR', 2),
     ],

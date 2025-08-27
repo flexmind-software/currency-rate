@@ -16,6 +16,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use Throwable;
 
 class QueueDownload implements ShouldQueue, ShouldBeUnique, ShouldBeUniqueUntilProcessing
@@ -76,20 +77,29 @@ class QueueDownload implements ShouldQueue, ShouldBeUnique, ShouldBeUniqueUntilP
      */
     public function handle(): void
     {
-        try {
-            $data = CurrencyRate::driver($this->driverName)
-                ->setDataTime($this->dateTime)
-                ->grabExchangeRates()
-                ->retrieveData();
+        $limit = (int) config('currency-rate.queue_concurrency', 10);
 
-            if ($data && $this->databaseConnection) {
-                CurrencyRateModel::saveIn($data, $this->databaseConnection);
-            }
-        } catch (Throwable $exception) {
-            Log::error(
-                'QueueDownload job failed: ' . $exception->getMessage(),
-                $exception->getTrace()
-            );
-        }
+        Redis::funnel('currency-rate:queue-download')
+            ->limit($limit)
+            ->block(0)
+            ->then(function () {
+                try {
+                    $data = CurrencyRate::driver($this->driverName)
+                        ->setDataTime($this->dateTime)
+                        ->grabExchangeRates()
+                        ->retrieveData();
+
+                    if ($data && $this->databaseConnection) {
+                        CurrencyRateModel::saveIn($data, $this->databaseConnection);
+                    }
+                } catch (Throwable $exception) {
+                    Log::error(
+                        'QueueDownload job failed: ' . $exception->getMessage(),
+                        $exception->getTrace()
+                    );
+                }
+            }, function () {
+                $this->release(10);
+            });
     }
 }
