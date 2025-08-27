@@ -139,6 +139,7 @@ Arguments:
 Options:
   --queue[=QUEUE]    Queue name, if set "none" cmd run without add job to queue [default: "none"]
   --driver[=DRIVER]  Driver to download rate [default: "all"]
+  --currency[=CUR]   Comma-separated list of currency codes to save
 ```
 
 ## Events

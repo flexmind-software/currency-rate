@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FlexMindSoftware\CurrencyRate;
 
 use FlexMindSoftware\CurrencyRate\Commands\CurrencyRateCommand;
+use FlexMindSoftware\CurrencyRate\Commands\DownloadCommand;
 use FlexMindSoftware\CurrencyRate\Drivers\UnitedStatesDriver;
 use InvalidArgumentException;
 use Spatie\LaravelPackageTools\Package;
@@ -27,7 +28,8 @@ class CurrencyRateServiceProvider extends PackageServiceProvider
             ->hasTranslations()
             ->hasRoute('api')
             ->hasMigration('create_currency_rate_table')
-            ->hasCommand(CurrencyRateCommand::class);
+            ->hasCommand(CurrencyRateCommand::class)
+            ->hasCommand(DownloadCommand::class);
     }
 
     /**
