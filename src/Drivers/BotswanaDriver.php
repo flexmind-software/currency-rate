@@ -8,7 +8,7 @@ use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\Contracts\CurrencyInterface;
 use FlexMindSoftware\CurrencyRate\Enums\CurrencyCode;
 use FlexMindSoftware\CurrencyRate\Models\RateTrait;
-use Illuminate\Support\Facades\Log;
+use FlexMindSoftware\CurrencyRate\Support\Logger;
 
 class BotswanaDriver extends BaseDriver implements CurrencyInterface
 {
@@ -44,7 +44,7 @@ class BotswanaDriver extends BaseDriver implements CurrencyInterface
                 $this->parseResponse();
             }
         } catch (\Throwable $e) {
-            Log::debug('Can\'t connect to serwer', $e->getTrace());
+            Logger::debug('Can\'t connect to serwer', $e->getTrace());
         }
 
         return $this;

@@ -7,6 +7,7 @@ namespace FlexMindSoftware\CurrencyRate\Jobs;
 use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\CurrencyRateFacade as CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate as CurrencyRateModel;
+use FlexMindSoftware\CurrencyRate\Support\Logger;
 use Illuminate\Bus\Batchable;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -15,7 +16,6 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Throwable;
 
@@ -93,7 +93,7 @@ class QueueDownload implements ShouldQueue, ShouldBeUnique, ShouldBeUniqueUntilP
                         CurrencyRateModel::saveIn($data, $this->databaseConnection);
                     }
                 } catch (Throwable $exception) {
-                    Log::error(
+                    Logger::error(
                         'QueueDownload job failed: ' . $exception->getMessage(),
                         $exception->getTrace()
                     );

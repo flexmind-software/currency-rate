@@ -45,6 +45,8 @@ return [
 
     'cache_store' => env('FLEXMIND_CURRENCY_RATE_CACHE_STORE', 'array'),
 
+    'log_channel' => env('FLEXMIND_CURRENCY_RATE_LOG_CHANNEL', null),
+
     'fed' => [
         'api_key' => env('FRED_API_KEY'),
     ],

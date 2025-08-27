@@ -8,10 +8,10 @@ use DateTimeImmutable;
 use FlexMindSoftware\CurrencyRate\CurrencyRateFacade as CurrencyRate;
 use FlexMindSoftware\CurrencyRate\Jobs\QueueDownload;
 use FlexMindSoftware\CurrencyRate\Models\CurrencyRate as CurrencyRateModel;
+use FlexMindSoftware\CurrencyRate\Support\Logger;
 use Illuminate\Console\Command;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\Log;
 use Throwable;
 
 /**
@@ -84,7 +84,7 @@ class CurrencyRateCommand extends Command
                 $this->saveInDatabase($data, $connection);
             }
         } catch (Throwable $exception) {
-            Log::error(
+            Logger::error(
                 'Can\t grab data from [' . $driver . ']: ' . $exception->getMessage(),
                 $exception->getTrace()
             );
